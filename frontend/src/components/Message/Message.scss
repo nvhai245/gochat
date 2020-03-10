@@ -1,0 +1,24 @@
+.Message {
+  &.me {
+    color: white;
+    float: right;
+    background-color: #328ec4;
+  }
+}
+
+.User {
+  margin-right: 3%;
+  &.me {
+    color: white;
+    float: right;
+    background-color: #328ec4;
+  }
+}
+
+.MessageBox {
+  text-align: left;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
