@@ -26,14 +26,14 @@ func (pool *Pool) Start() {
 			fmt.Println("Size of Connection Pool: ", len(pool.Clients))
 			for client, _ := range pool.Clients {
 				fmt.Println(client)
-				client.Conn.WriteJSON(Message{Type: 1, Body: "New User Joined...", Username: "admin"})
+				client.Conn.WriteJSON(Message{Type: "system", Body: "New User Joined...", Username: "admin"})
 			}
 			break
 		case client := <-pool.Unregister:
 			delete(pool.Clients, client)
 			fmt.Println("Size of Connection Pool: ", len(pool.Clients))
 			for client, _ := range pool.Clients {
-				client.Conn.WriteJSON(Message{Type: 1, Body: "User Disconnected...", Username: "admin"})
+				client.Conn.WriteJSON(Message{Type: "system", Body: "User Disconnected...", Username: "admin"})
 			}
 			break
 		case message := <-pool.Broadcast:
