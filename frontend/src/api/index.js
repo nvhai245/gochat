@@ -1,6 +1,6 @@
 var socket = new WebSocket("ws://localhost:8080/ws")
 
-let connect = cb => {
+let wsConnect = cb => {
     console.log("Attempting Connection");
 
     socket.onopen = () => {
@@ -26,4 +26,4 @@ let sendMsg = msg => {
     socket.send(msg);
 };
 
-export { connect, sendMsg };
+export { wsConnect, sendMsg };

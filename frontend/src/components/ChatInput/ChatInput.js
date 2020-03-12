@@ -4,7 +4,7 @@ import "./ChatInput.scss";
 export default function ChatInput(props) {
     return (
         <div className="ChatInput">
-            <input className="userInput" placeholder="username" onChange={props.updateUsername} />
+            <input disabled value={props.authorizedUser} className="userInput" placeholder="username"/>
             <input className="textInput" onKeyDown={props.send} />
         </div>
     )

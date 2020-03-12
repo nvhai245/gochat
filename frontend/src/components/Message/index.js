@@ -1,3 +1,3 @@
-import Message from "./Message.js";
+import Message from "./Message";
 
 export default Message;
