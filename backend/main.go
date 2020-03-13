@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/nvhai245/go-websocket-chat/pkg/websocket"
+	"github.com/google/uuid"
 )
 
 func setupRoutes() {
@@ -23,6 +24,7 @@ func serveWs(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
 	}
 
 	client := &websocket.Client{
+		ID: uuid.New().String(),
 		Conn: conn,
 		Pool: pool,
 	}

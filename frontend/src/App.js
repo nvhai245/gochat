@@ -65,7 +65,7 @@ function App(props) {
 
   return (
     <div className="App">
-      <Header />
+      <Header username={props.authorization.username} authorize={props.authorize}/>
       <div className="chatContainer">
         <ChatHistory chatHistory={chatHistory} />
         <ChatInput authorizedUser={props.authorization.username} send={send} />

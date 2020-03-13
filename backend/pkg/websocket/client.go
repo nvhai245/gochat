@@ -20,6 +20,7 @@ type Client struct {
 }
 
 type Message struct {
+	ID string
 	Type     string `json:"type"`
 	Body     string `json:"body"`
 	Username string `json:"username"`
@@ -75,7 +76,7 @@ func (c *Client) Read() {
 
 	for {
 		message := Message{}
-		errorMessage := Message{Type: "authfail", Body: "", Username: ""}
+		errorMessage := Message{ID: c.ID, Type: "authfail", Body: "", Username: ""}
 		_, p, err := c.Conn.ReadMessage()
 		if err != nil {
 			log.Println(err)
@@ -83,6 +84,7 @@ func (c *Client) Read() {
 		}
 		json.Unmarshal([]byte(string(p)), &message)
 		log.Println("message type is ", message.Type)
+		message.ID = c.ID
 		if message.Type == "register" {
 			success := Signup(message)
 			if success == false {
@@ -107,6 +109,8 @@ func (c *Client) Read() {
 			} else {
                 log.Println("Unauthorized")
             }
+		} else {
+			c.Pool.Broadcast <- message
 		}
 	}
 }
