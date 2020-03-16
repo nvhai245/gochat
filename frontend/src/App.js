@@ -49,13 +49,6 @@ function App(props) {
         alert("wrong username or password");
         window.location.reload();
       }
-      if (msgData.type === "login") {
-        let data = {username: username, isAdmin: false}
-        props.authorize(data)
-      }
-      if (msgData.type === "register") {
-        props.authorize({username: username, isAdmin: false})
-      }
     });
     console.log(props.authorization.username)
     if (props.authorization.username !== "") {
@@ -83,7 +76,7 @@ function App(props) {
       }}
       marginThreshold={200}
       >
-        <SignUp setUsername={setUsername} handleClose={handleClose}/>
+        <SignUp authorize={props.authorize} handleClose={handleClose}/>
       </Popover>
     </div>
   );

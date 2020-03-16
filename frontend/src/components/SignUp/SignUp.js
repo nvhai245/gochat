@@ -1,27 +1,73 @@
 import React, { useState } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { sendMsg } from '../../api';
+import axios from 'axios';
 
 export default function SignUp(props) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const handleSignup = (event) => {
         event.preventDefault();
-        let newMsg;
-        newMsg = { type: "register", body: password, username: username }
-        sendMsg(JSON.stringify(newMsg));
+        var bodyFormData = new FormData();
+        bodyFormData.set('username', username);
+        bodyFormData.set('password', password);
+        axios({
+            method: 'post',
+            url: 'http://localhost:8080/signup',
+            data: bodyFormData,
+            withCredentials: true,
+            headers: { 'Content-Type': 'multipart/form-data'}
+        })
+            .then(function (response) {
+                //handle success
+                if (response.status === 401) {
+                    alert("Signup failed")
+                }
+                if (response.status === 200) {
+                    let data = { username: username, isAdmin: false };
+                    props.authorize(data);
+                }
+                console.log(response);
+            })
+            .catch(function (response) {
+                //handle error
+                console.log(response);
+            });
         props.handleClose();
     };
     const handleLogin = (event) => {
         event.preventDefault();
-        let newMsg;
-        newMsg = { type: "login", body: password, username: username }
-        sendMsg(JSON.stringify(newMsg));
+        var bodyFormData = new FormData();
+        bodyFormData.set('username', username);
+        bodyFormData.set('password', password);
+        axios({
+            method: 'post',
+            url: 'http://localhost:8080/login',
+            data: bodyFormData,
+            withCredentials: true,
+            headers: { 'Content-Type': 'multipart/form-data'}
+        })
+            .then(function (response) {
+                //handle success
+                if (response.status === 401) {
+                    alert("Signup failed")
+                }
+                if (response.status === 200) {
+                    let data = { username: username, isAdmin: false };
+                    props.authorize(data);
+                }
+                console.log(response);
+            })
+            .catch(function (response) {
+                //handle error
+                console.log(response);
+            });
         props.handleClose();
+        window.location.reload();
     };
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);
-        props.setUsername(event.target.value);
+        setUsername(event.target.value);
     };
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
