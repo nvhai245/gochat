@@ -7,4 +7,5 @@
 - Run the React client: <br />
        `cd go-websocket-chat/frontend/` <br />
        `npm install` <br />
+       `npm start`
 - Open [http://localhost:3000](http://localhost:3000) to use the app.
