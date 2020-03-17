@@ -53,7 +53,7 @@ func main() {
 		if r.Method == "POST" {
 			username, password := r.FormValue("username"), r.FormValue("password")
 			newUser := auth.User{Username: username, Password: password}
-			success, token := auth.Login(newUser)
+			success, token := auth.Signup(newUser)
 			if success == true {
 				http.SetCookie(w, &http.Cookie{
 					Name:    "go-chat",
