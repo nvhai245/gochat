@@ -27,13 +27,12 @@ export default function SignUp(props) {
                     let data = { username: username, isAdmin: false };
                     props.authorize(data);
                 }
-                console.log(response);
             })
             .catch(function (response) {
                 //handle error
-                console.log(response);
             });
         props.handleClose();
+        window.location.reload();
     };
     const handleLogin = (event) => {
         event.preventDefault();
@@ -56,11 +55,9 @@ export default function SignUp(props) {
                     let data = { username: username, isAdmin: false };
                     props.authorize(data);
                 }
-                console.log(response);
             })
             .catch(function (response) {
                 //handle error
-                console.log(response);
             });
         props.handleClose();
         window.location.reload();

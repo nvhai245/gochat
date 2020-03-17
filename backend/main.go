@@ -25,7 +25,7 @@ func serveWs(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("Cant find cookie :/\r\n")
 		return
 	}
-	valid := auth.Check(cookie.Value)
+	valid, username := auth.Check(cookie.Value)
 	if valid == true {
 		conn, err := websocket.Upgrade(w, r)
 		if err != nil {
@@ -34,6 +34,7 @@ func serveWs(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
 
 		client := &websocket.Client{
 			ID:   uuid.New().String(),
+			Username: username,
 			Conn: conn,
 			Pool: pool,
 		}
@@ -88,6 +89,21 @@ func main() {
 				w.WriteHeader(http.StatusUnauthorized)
 				return
 			}
+		}
+	})
+	http.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+		if r.Method == "POST" {
+			http.SetCookie(w, &http.Cookie{
+				Name:    "go-chat",
+				Value:   "",
+				Expires: time.Unix(0, 0),
+				HttpOnly: true,
+			})
+			w.WriteHeader(http.StatusOK)
+			return
 		}
 	})
 	fmt.Println("Chat server running")

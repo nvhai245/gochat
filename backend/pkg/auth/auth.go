@@ -52,7 +52,7 @@ func Login(user User) (isAuthenticated bool, jwt string) {
 	return false, ""
 }
 
-func Check(token string) (valid bool) {
+func Check(token string) (valid bool, username string) {
 	conn, err := grpc.Dial(":9090", grpc.WithInsecure())
 	if err != nil {
 		log.Println(err)
@@ -63,11 +63,11 @@ func Check(token string) (valid bool) {
 	response, err := client.Check(context.Background(), &pb.CheckRequest{Token: token}, grpc.Header(&header))
 	if err != nil {
 		log.Println(err)
-		return false
+		return false, ""
 	}
 	log.Println("Recieved from Auth service: ", response.Valid)
 	if response.Valid == true {
-		return true
+		return true, response.Username
 	}
-	return false
+	return false, ""
 }
