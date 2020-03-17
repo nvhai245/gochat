@@ -25,6 +25,7 @@ function Header(props) {
           sendMsg(JSON.stringify(newMsg));
           let data = { username: "", isAdmin: false }
           props.authorize(data);
+          window.location.reload();
         }
       })
       .catch(function (response) {

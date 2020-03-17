@@ -4,11 +4,17 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+	"log"
 
 	"github.com/google/uuid"
 	"github.com/nvhai245/go-websocket-chat/pkg/auth"
 	"github.com/nvhai245/go-websocket-chat/pkg/websocket"
+	"google.golang.org/grpc"
+	pb "github.com/nvhai245/go-chat-authservice/proto"
 )
+
+var grpcConn, grpcErr = grpc.Dial(":9090", grpc.WithInsecure())
+var grpcClient = pb.NewAuthClient(grpcConn)
 
 func setupRoutes() {
 	pool := websocket.NewPool()
@@ -25,7 +31,7 @@ func serveWs(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("Cant find cookie :/\r\n")
 		return
 	}
-	valid, username := auth.Check(cookie.Value)
+	valid, username := auth.Check(cookie.Value, grpcClient)
 	if valid == true {
 		conn, err := websocket.Upgrade(w, r)
 		if err != nil {
@@ -47,6 +53,10 @@ func serveWs(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	if grpcErr != nil {
+		log.Println(grpcErr)
+	}
+	defer grpcConn.Close()
 	http.HandleFunc("/signup", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
@@ -54,7 +64,7 @@ func main() {
 		if r.Method == "POST" {
 			username, password := r.FormValue("username"), r.FormValue("password")
 			newUser := auth.User{Username: username, Password: password}
-			success, token := auth.Signup(newUser)
+			success, token := auth.Signup(newUser, grpcClient)
 			if success == true {
 				http.SetCookie(w, &http.Cookie{
 					Name:    "go-chat",
@@ -76,7 +86,7 @@ func main() {
 		if r.Method == "POST" {
 			username, password := r.FormValue("username"), r.FormValue("password")
 			newUser := auth.User{Username: username, Password: password}
-			success, token := auth.Login(newUser)
+			success, token := auth.Login(newUser, grpcClient)
 			if success == true {
 				http.SetCookie(w, &http.Cookie{
 					Name:    "go-chat",

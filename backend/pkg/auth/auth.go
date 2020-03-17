@@ -14,13 +14,7 @@ type User struct {
 	Password string
 }
 
-func Signup(user User) (success bool, jwt string) {
-	conn, err := grpc.Dial(":9090", grpc.WithInsecure())
-	if err != nil {
-		log.Println(err)
-	}
-	defer conn.Close()
-	client := pb.NewAuthClient(conn)
+func Signup(user User, client pb.AuthClient) (success bool, jwt string) {
 	var header metadata.MD
 	response, err := client.Register(context.Background(), &pb.RegisterRequest{Username: user.Username, Password: user.Password}, grpc.Header(&header))
 	if err != nil {
@@ -32,13 +26,7 @@ func Signup(user User) (success bool, jwt string) {
 	return true, response.Token
 }
 
-func Login(user User) (isAuthenticated bool, jwt string) {
-	conn, err := grpc.Dial(":9090", grpc.WithInsecure())
-	if err != nil {
-		log.Println(err)
-	}
-	defer conn.Close()
-	client := pb.NewAuthClient(conn)
+func Login(user User, client pb.AuthClient) (isAuthenticated bool, jwt string) {
 	var header metadata.MD
 	response, err := client.Login(context.Background(), &pb.LoginRequest{Username: user.Username, Password: user.Password}, grpc.Header(&header))
 	if err != nil {
@@ -52,13 +40,7 @@ func Login(user User) (isAuthenticated bool, jwt string) {
 	return false, ""
 }
 
-func Check(token string) (valid bool, username string) {
-	conn, err := grpc.Dial(":9090", grpc.WithInsecure())
-	if err != nil {
-		log.Println(err)
-	}
-	defer conn.Close()
-	client := pb.NewAuthClient(conn)
+func Check(token string, client pb.AuthClient) (valid bool, username string) {
 	var header metadata.MD
 	response, err := client.Check(context.Background(), &pb.CheckRequest{Token: token}, grpc.Header(&header))
 	if err != nil {
