@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"log"
+	"io"
 
 	pb "github.com/nvhai245/go-chat-authservice/proto"
 	"google.golang.org/grpc"
@@ -52,4 +53,24 @@ func Check(token string, client pb.AuthClient) (valid bool, username string) {
 		return true, response.Username
 	}
 	return false, ""
+}
+
+func GetAllUser(client pb.AuthClient) (allUser []string) {
+	adminRequest := &pb.GetAllUserRequest{IsAdmin: true}
+	stream, err := client.GetAllUser(context.Background(), adminRequest)
+	if err != nil {
+		log.Println(err)
+	}
+	for {
+		user, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatalf("%v.GetAllUser(_) = _, %v", client, err)
+		}
+		log.Println(user)
+		allUser = append(allUser, user.Username)
+	}
+	return allUser
 }

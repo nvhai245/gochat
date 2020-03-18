@@ -22,16 +22,28 @@ func (pool *Pool) Start() {
 	for {
 		select {
 		case client := <-pool.Register:
+			var onlineUsers []string
 			pool.Clients[client] = true
 			fmt.Println("Size of Connection Pool: ", len(pool.Clients))
 			for cl, _ := range pool.Clients {
+				onlineUsers = append(onlineUsers, cl.Username)
+			}
+			for cl, _ := range pool.Clients {
 				fmt.Println(cl)
 				cl.Conn.WriteJSON(Message{Type: "system", Body: client.Username + " has joined the chat...", Username: "admin"})
+				cl.Conn.WriteJSON(Message{Type: "online", Body2: onlineUsers, Username: "admin"})
 			}
 			break
 		case client := <-pool.Unregister:
+			var onlineUsers []string
 			delete(pool.Clients, client)
 			fmt.Println("Size of Connection Pool: ", len(pool.Clients))
+			for cl, _ := range pool.Clients {
+				onlineUsers = append(onlineUsers, cl.Username)
+			}
+			for cl, _ := range pool.Clients {
+				cl.Conn.WriteJSON(Message{Type: "offline", Body2: onlineUsers, Username: "admin"})
+			}
 			break
 		case message := <-pool.Broadcast:
 			if message.Type == "chat" {
@@ -52,10 +64,6 @@ func (pool *Pool) Start() {
 							return
 						}
 					}
-				}
-				for client, _ := range pool.Clients {
-					fmt.Println(client)
-					client.Conn.WriteJSON(Message{Type: "system", Body: message.Username + " has joined the chat...", Username: "admin"})
 				}
 			}
 			if message.Type == "logout" {

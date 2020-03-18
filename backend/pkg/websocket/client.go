@@ -21,6 +21,7 @@ type Message struct {
 	Type     string `json:"type"`
 	Body     string `json:"body"`
 	Username string `json:"username"`
+	Body2 []string `json:"body2"`
 }
 
 func Check(token string) (authorized bool) {
