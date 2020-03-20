@@ -4,6 +4,9 @@
     float: right;
     background-color: #328ec4;
   }
+  display: inline-block;
+  word-wrap: break-word;
+  max-width: 80%;
 }
 
 .User {
@@ -21,4 +24,5 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  margin-bottom: 2%;
 }

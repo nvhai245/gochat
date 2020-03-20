@@ -18,13 +18,14 @@ type Client struct {
 
 type Message struct {
 	ID string
+	Count int64 `json:"count"`
 	Type     string `json:"type"`
 	Body     string `json:"body"`
 	Username string `json:"username"`
 	Body2 []string `json:"body2"`
 }
 
-func Check(token string) (authorized bool) {
+func SaveDb(token string) (authorized bool) {
 	return true
 }
 
@@ -45,13 +46,8 @@ func (c *Client) Read() {
 		log.Println("message type is ", message.Type)
 		message.ID = c.ID
 		if message.Type == "chat" {
-			authorized := Check(message.Body)
-			if authorized == true {
 				c.Pool.Broadcast <- message
 				fmt.Printf("Message Received: %+v\n", message)
-			} else {
-                log.Println("Unauthorized")
-            }
 		} else {
 			c.Pool.Broadcast <- message
 		}

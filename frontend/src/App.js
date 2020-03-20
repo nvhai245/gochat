@@ -11,15 +11,13 @@ import OnlineList from './components/OnlineList';
 import { connect } from 'react-redux';
 import { authorize } from './redux/actions/authorize';
 import axios from 'axios';
+import { db } from './db';
 
 function App(props) {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(true);
   const [users, setUsers] = useState([])
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -28,14 +26,9 @@ function App(props) {
 
 
   const [chatHistory, setChatHistory] = useState([]);
-  const [username, setUsername] = useState("");
-  const [authorizedUser, setAuthorizedUser] = useState("");
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const updateUsername = (event) => {
-    setUsername(event.target.value);
-  }
   const send = (event) => {
-    if (event.keyCode === 13) {
+    if (event.keyCode === 13 && event.target.value !== "") {
       let newMsg;
       newMsg = { type: "chat", body: event.target.value, username: props.authorization.username }
       sendMsg(JSON.stringify(newMsg));
@@ -45,15 +38,15 @@ function App(props) {
   useEffect(() => {
     wsConnect((msg) => {
       let msgData = JSON.parse(msg.data);
-      if (msgData.type !== "login" && msgData.type !== "register" && msgData.type !== "authfail") {
+      if (msgData.type !== "online" && msgData.type !== "offline" && msgData.type !== "authfail") {
         setChatHistory(prevState => ([...prevState, msg]));
       }
       if (msgData.type === "authfail") {
         alert("wrong username or password");
         window.location.reload();
       }
-      if(msgData.type === "online" || msgData.type === "offline") {
-          setOnlineUsers(msgData.body2);
+      if (msgData.type === "online" || msgData.type === "offline") {
+        setOnlineUsers(msgData.body2);
       }
     });
     console.log(props.authorization.username)
@@ -80,13 +73,15 @@ function App(props) {
   return (
     <div className="App">
       <Header username={props.authorization.username} authorize={props.authorize} />
-      <div className="appContainer">
-        <div className="chatContainer">
-          <ChatHistory chatHistory={chatHistory} />
-          <ChatInput authorizedUser={props.authorization.username} send={send} />
+      {props.authorization.username !== "" &&
+        <div className="appContainer">
+          <div className="chatContainer">
+            <ChatHistory currentUser={props.authorization.username} chatHistory={chatHistory} />
+            <ChatInput authorizedUser={props.authorization.username} send={send} />
+          </div>
+          <OnlineList onlineUsers={onlineUsers} users={users} />
         </div>
-        <OnlineList onlineUsers={onlineUsers} users={users} />
-      </div>
+      }
       <Popover
         open={open}
         anchorEl={anchorEl}
@@ -100,7 +95,7 @@ function App(props) {
         }}
         marginThreshold={200}
       >
-        <SignUp authorize={props.authorize} handleClose={handleClose} />
+        <SignUp formValue={props.form.signup && props.form.signup.values} authorize={props.authorize} handleClose={handleClose} />
       </Popover>
     </div>
   );

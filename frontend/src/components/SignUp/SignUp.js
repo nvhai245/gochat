@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 import Paper from '@material-ui/core/Paper';
+import SignupForm from '../SignupForm';
 import { sendMsg } from '../../api';
 import axios from 'axios';
 
-export default function SignUp(props) {
+function SignUp(props) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const handleSignup = (event) => {
         event.preventDefault();
         var bodyFormData = new FormData();
-        bodyFormData.set('username', username);
-        bodyFormData.set('password', password);
+        bodyFormData.set('username', props.formValue.username);
+        bodyFormData.set('password', props.formValue.password);
         axios({
             method: 'post',
             url: 'http://localhost:8080/signup',
             data: bodyFormData,
             withCredentials: true,
-            headers: { 'Content-Type': 'multipart/form-data'}
+            headers: { 'Content-Type': 'multipart/form-data' }
         })
             .then(function (response) {
                 //handle success
@@ -24,7 +25,7 @@ export default function SignUp(props) {
                     alert("Signup failed")
                 }
                 if (response.status === 200) {
-                    let data = { username: username, isAdmin: false };
+                    let data = { username: props.formValue.username, isAdmin: false };
                     props.authorize(data);
                 }
             })
@@ -37,14 +38,14 @@ export default function SignUp(props) {
     const handleLogin = (event) => {
         event.preventDefault();
         var bodyFormData = new FormData();
-        bodyFormData.set('username', username);
-        bodyFormData.set('password', password);
+        bodyFormData.set('username', props.formValue.username);
+        bodyFormData.set('password', props.formValue.password);
         axios({
             method: 'post',
             url: 'http://localhost:8080/login',
             data: bodyFormData,
             withCredentials: true,
-            headers: { 'Content-Type': 'multipart/form-data'}
+            headers: { 'Content-Type': 'multipart/form-data' }
         })
             .then(function (response) {
                 //handle success
@@ -52,7 +53,7 @@ export default function SignUp(props) {
                     alert("Signup failed")
                 }
                 if (response.status === 200) {
-                    let data = { username: username, isAdmin: false };
+                    let data = { username: props.formValue.username, isAdmin: false };
                     props.authorize(data);
                 }
             })
@@ -70,23 +71,16 @@ export default function SignUp(props) {
         setPassword(event.target.value);
     };
     return (
-        <Paper style={{ width: "60vw", height: "60vh", backgroundColor: "#EEEEEE", display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <form>
-                <input
-                    style={{ maxWidth: "30%", marginRight: "2%" }}
-                    type="text"
-                    className="usernameInput"
-                    placeholder="Username"
-                    onChange={handleUsernameChange}
-                />
-                <input type="password" className="passwordInput"
-                    placeholder="Password"
-                    style={{ marginRight: "2%" }}
-                    onChange={handlePasswordChange}
-                />
-                <button onClick={handleLogin} style={{ marginRight: "2%" }} type="submit">Login</button>
-                <button onClick={handleSignup} type="submit">Signup</button>
-            </form>
+        <Paper style={{ width: "60vw", height: "60vh", backgroundColor: "#EEEEEE", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+                <SignupForm />
+                <div>
+                    <button onClick={props.formValue && handleLogin} style={{ marginRight: "2%" }} type="submit">Login</button>
+                    <button onClick={props.formValue && handleSignup} type="submit">Signup</button>
+                </div>
+            </div>
         </Paper>
     )
 }
+
+export default SignUp

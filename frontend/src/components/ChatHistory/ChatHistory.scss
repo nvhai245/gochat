@@ -1,13 +1,15 @@
 .ChatHistory {
-  min-height: 50vh;
-  display: block;
-  padding: 20px;
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
   background-color: white;
   margin: 10px auto;
   box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.2);
   padding: 10px 20px;
   border-radius: 5px;
   clear: both;
+  overflow-y: auto;
   h2 {
     margin: 0;
     padding: 0;
