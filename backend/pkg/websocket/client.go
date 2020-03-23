@@ -25,10 +25,6 @@ type Message struct {
 	Body2 []string `json:"body2"`
 }
 
-func SaveDb(token string) (authorized bool) {
-	return true
-}
-
 func (c *Client) Read() {
 	defer func() {
 		c.Pool.Unregister <- c

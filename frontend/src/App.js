@@ -30,16 +30,23 @@ function App(props) {
   const send = (event) => {
     if (event.keyCode === 13 && event.target.value !== "") {
       let newMsg;
-      newMsg = { type: "chat", body: event.target.value, username: props.authorization.username }
+      newMsg = { count: db.get('count').value() + 1, type: "chat", body: event.target.value, username: props.authorization.username }
       sendMsg(JSON.stringify(newMsg));
       event.target.value = "";
     }
   };
   useEffect(() => {
+    setChatHistory(db.get('chatHistory').value());
+  }, []);
+  useEffect(() => {
     wsConnect((msg) => {
       let msgData = JSON.parse(msg.data);
       if (msgData.type !== "online" && msgData.type !== "offline" && msgData.type !== "authfail") {
         setChatHistory(prevState => ([...prevState, msg]));
+      }
+      if (msgData.type === "chat") {
+        db.get('chatHistory').push(msg).write();
+        db.update('count', n => n + 1).write();
       }
       if (msgData.type === "authfail") {
         alert("wrong username or password");

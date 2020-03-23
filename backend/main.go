@@ -10,6 +10,7 @@ import (
 	"github.com/google/uuid"
 	pb "github.com/nvhai245/go-chat-authservice/proto"
 	"github.com/nvhai245/go-websocket-chat/pkg/auth"
+	"github.com/nvhai245/go-websocket-chat/pkg/syncer"
 	"github.com/nvhai245/go-websocket-chat/pkg/websocket"
 	"google.golang.org/grpc"
 )
@@ -62,7 +63,11 @@ func main() {
 	if grpcErr != nil {
 		log.Println(grpcErr)
 	}
+	if syncer.GrpcErr2 != nil {
+		log.Println(syncer.GrpcErr2)
+	}
 	defer grpcConn.Close()
+	defer syncer.GrpcConn2.Close()
 	http.HandleFunc("/signup", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")

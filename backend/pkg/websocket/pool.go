@@ -1,6 +1,11 @@
 package websocket
 
-import "fmt"
+import (
+	"log"
+	"fmt"
+	"github.com/nvhai245/go-websocket-chat/pkg/syncer"
+	pb2 "github.com/nvhai245/go-chat-synchronizer/proto"
+)
 
 type Pool struct {
 	Register   chan *Client
@@ -53,6 +58,11 @@ func (pool *Pool) Start() {
 						fmt.Println(err)
 						return
 					}
+				}
+				writeData := []*pb2.WriteRequest{{Count: message.Count, Author: message.Username, Message: message.Body}}
+				success := syncer.Write(writeData, syncer.GrpcClient2)
+				if success == true {
+					log.Println("written to db: ", writeData)
 				}
 			}
 			if message.Type == "login" || message.Type == "register" {
