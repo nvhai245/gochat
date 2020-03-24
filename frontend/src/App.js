@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { wsConnect, sendMsg } from "./api";
@@ -36,16 +36,13 @@ function App(props) {
     }
   };
   useEffect(() => {
-    setChatHistory(db.get('chatHistory').value());
-  }, []);
-  useEffect(() => {
     wsConnect((msg) => {
       let msgData = JSON.parse(msg.data);
-      if (msgData.type !== "online" && msgData.type !== "offline" && msgData.type !== "authfail") {
-        setChatHistory(prevState => ([...prevState, msg]));
+      if (msgData.type === "chat" || msgData.type === "system") {
+        setChatHistory(prevState => ([...prevState, msgData]));
       }
       if (msgData.type === "chat") {
-        db.get('chatHistory').push(msg).write();
+        db.get('chatHistory').push(msgData).write();
         db.update('count', n => n + 1).write();
       }
       if (msgData.type === "authfail") {
@@ -54,6 +51,20 @@ function App(props) {
       }
       if (msgData.type === "online" || msgData.type === "offline") {
         setOnlineUsers(msgData.body2);
+      }
+      if (msgData.type === "update") {
+        let localCount = db.get('count').value();
+        console.log("Difference is ", msgData.count - localCount);
+        if (msgData.count - localCount > 0) {
+          let newMsg;
+          newMsg = {type: "readdb", body: localCount.toString(), body3: msgData.count.toString(), username: props.authorization.username}
+          sendMsg(JSON.stringify(newMsg));
+        }
+      }
+      if (msgData.type === "readdb") {
+        db.get('chatHistory').push(msgData).write();
+        db.update('count', n => n + 1).write();
+        setChatHistory(prevState => ([...prevState, msgData]));
       }
     });
     console.log(props.authorization.username)
@@ -83,7 +94,7 @@ function App(props) {
       {props.authorization.username !== "" &&
         <div className="appContainer">
           <div className="chatContainer">
-            <ChatHistory currentUser={props.authorization.username} chatHistory={chatHistory} />
+            <ChatHistory currentUser={props.authorization.username} setChatHistory={setChatHistory} chatHistory={chatHistory} />
             <ChatInput authorizedUser={props.authorization.username} send={send} />
           </div>
           <OnlineList onlineUsers={onlineUsers} users={users} />

@@ -23,6 +23,7 @@ type Message struct {
 	Body     string `json:"body"`
 	Username string `json:"username"`
 	Body2 []string `json:"body2"`
+	Body3 string `json:"body3"`
 }
 
 func (c *Client) Read() {

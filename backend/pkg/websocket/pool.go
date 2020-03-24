@@ -3,6 +3,8 @@ package websocket
 import (
 	"log"
 	"fmt"
+	"strconv"
+
 	"github.com/nvhai245/go-websocket-chat/pkg/syncer"
 	pb2 "github.com/nvhai245/go-chat-synchronizer/proto"
 )
@@ -38,6 +40,15 @@ func (pool *Pool) Start() {
 				cl.Conn.WriteJSON(Message{Type: "system", Body: client.Username + " has joined the chat...", Username: "admin"})
 				cl.Conn.WriteJSON(Message{Type: "online", Body2: onlineUsers, Username: "admin"})
 			}
+			difference := syncer.GetDifference(0, syncer.GrpcClient2)
+				for cl, _ := range pool.Clients {
+					if cl.Username == client.Username {
+						if err := cl.Conn.WriteJSON(Message{Type: "update", Count: difference, Body: "", Username: "admin"}); err != nil {
+							fmt.Println(err)
+							return
+						}
+					}
+				}
 			break
 		case client := <-pool.Unregister:
 			var onlineUsers []string
@@ -89,6 +100,27 @@ func (pool *Pool) Start() {
 				for client, _ := range pool.Clients {
 					fmt.Println(client)
 					client.Conn.WriteJSON(Message{Type: "system", Body: message.Username + " has left the chat...", Username: "admin"})
+				}
+			}
+			if message.Type == "readdb" {
+				first, err := strconv.ParseInt(message.Body, 10, 64)
+				if err != nil {
+					log.Println(err)
+				}
+				last, err2 := strconv.ParseInt(message.Body3, 10, 64)
+				if err2 != nil {
+					log.Println(err2)
+				}
+				messages := syncer.Read(first, last, syncer.GrpcClient2)
+				for client, _ := range pool.Clients {
+					if client.ID == message.ID {
+						for _, msg := range messages {
+							if err := client.Conn.WriteJSON(msg); err != nil {
+								fmt.Println(err)
+								return
+							}
+						}
+					}
 				}
 			}
 		}

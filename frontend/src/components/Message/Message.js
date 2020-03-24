@@ -5,8 +5,8 @@ export default function Message(props) {
     const mounted = useRef();               
     const [message, setMessage] = useState({});
     useEffect(() => {
-        let temp = JSON.parse(props.message);
-        setMessage(temp)
+        let temp = props.message;
+        setMessage(temp);
     }, [])
     useEffect(() => {
         if (!mounted.current) {
