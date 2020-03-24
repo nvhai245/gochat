@@ -28,11 +28,13 @@ function App(props) {
   const [chatHistory, setChatHistory] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const send = (event) => {
-    if (event.keyCode === 13 && event.target.value !== "") {
+    if (event.keyCode === 13 && event.target.value !== "" && !event.shiftKey) {
+      event.preventDefault();
       let newMsg;
       newMsg = { count: db.get('count').value() + 1, type: "chat", body: event.target.value, username: props.authorization.username }
       sendMsg(JSON.stringify(newMsg));
       event.target.value = "";
+      event.target.setAttribute('style','');
     }
   };
   useEffect(() => {
@@ -57,7 +59,7 @@ function App(props) {
         console.log("Difference is ", msgData.count - localCount);
         if (msgData.count - localCount > 0) {
           let newMsg;
-          newMsg = {type: "readdb", body: localCount.toString(), body3: msgData.count.toString(), username: props.authorization.username}
+          newMsg = { type: "readdb", body: localCount.toString(), body3: msgData.count.toString(), username: props.authorization.username }
           sendMsg(JSON.stringify(newMsg));
         }
       }

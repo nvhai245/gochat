@@ -2,6 +2,7 @@ import React from "react";
 import "./Header.scss";
 import { sendMsg } from '../../api';
 import axios from 'axios';
+import Button from '@material-ui/core/Button';
 
 function Header(props) {
   const logout = () => {
@@ -33,9 +34,9 @@ function Header(props) {
       });
   }
   return (
-    <div className="header">
-      <h2>Realtime Chat App</h2>
-      {props.username !== "" && <button onClick={logout}>Logout</button>}
+    <div style={{display: "flex"}} className="header">
+      <h2 style={{margin: "0 auto"}}>Realtime Chat App</h2>
+      {props.username !== "" && <Button size="large" style={{marginRight: "2%", color: "white"}} onClick={logout}><strong>Logout</strong></Button>}
     </div>
   )
 };

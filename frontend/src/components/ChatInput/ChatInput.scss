@@ -1,21 +1,32 @@
 .ChatInput {
+  justify-content: center ;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
+  width: 100%;
+  align-items: flex-end;
+  margin: 0px 0px;
+  overflow: hidden;
+}
 
-  input {
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    width: 98%;
-    box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.1);
-  }
+.textInput {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  width: 87%;
+  box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.1);
+  max-height: 5rem;
+  overflow: auto;
 }
 
 .userInput {
-  max-width: 20%;
-  margin-right: 3%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  max-width: 2.3vw;
+  min-height: 1.7vw;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.1);
+  margin-right: 2%;
 }

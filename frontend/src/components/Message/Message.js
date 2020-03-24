@@ -32,7 +32,7 @@ export default function Message(props) {
                 <div className="messageContainer" style={{ color: "white", maxWidth: "50%", display: "flex", alignItems: "flex-end" }}>
                     {message.username !== "admin" && <div className="User" style={{ backgroundColor: "#D6DEBD", borderRadius: "50%", height: "40px", width: "40px", marginRight: "0.2rem", padding: "auto auto" }}>{message.username + ":"}</div>}
                     {message.username === "" && <div className="User">unknown: </div>}
-                    <div className="Message" style={{ backgroundColor: "#2D2D2D", borderRadius: "1rem", padding: "10px 10px" }}>
+                    <div className="Message" style={{ backgroundColor: "#15223B", borderRadius: "1rem", padding: "10px 10px" }}>
                         {message.body}
                     </div>
                 </div>
