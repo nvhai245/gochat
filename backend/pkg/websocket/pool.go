@@ -4,6 +4,7 @@ import (
 	"log"
 	"fmt"
 	"strconv"
+	"encoding/json"
 
 	"github.com/nvhai245/go-websocket-chat/pkg/syncer"
 	pb2 "github.com/nvhai245/go-chat-synchronizer/proto"
@@ -121,6 +122,18 @@ func (pool *Pool) Start() {
 							}
 						}
 					}
+				}
+			}
+			if message.Type == "writedb" {
+				writeData := []*pb2.WriteRequest{}
+				for _, msg := range message.Body2 {
+					parsedMsg := Message{}
+					json.Unmarshal([]byte(msg), &parsedMsg)
+					writeData = append(writeData, &pb2.WriteRequest{Count: parsedMsg.Count, Author: parsedMsg.Username, Message: parsedMsg.Body})
+				}
+				success := syncer.Write(writeData, syncer.GrpcClient2)
+				if success == true {
+					log.Println("written to db: ", writeData)
 				}
 			}
 		}

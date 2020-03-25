@@ -37,6 +37,14 @@ function App(props) {
       event.target.setAttribute('style','');
     }
   };
+  const sendMessage = event => {
+    let textInput = document.getElementById("textMessageInput");
+    let newMsg
+    newMsg = { count: db.get('count').value() + 1, type: "chat", body: textInput.value, username: props.authorization.username }
+      sendMsg(JSON.stringify(newMsg));
+      textInput.value = "";
+      textInput.setAttribute('style','');
+  }
   useEffect(() => {
     wsConnect((msg) => {
       let msgData = JSON.parse(msg.data);
@@ -59,7 +67,16 @@ function App(props) {
         console.log("Difference is ", msgData.count - localCount);
         if (msgData.count - localCount > 0) {
           let newMsg;
-          newMsg = { type: "readdb", body: localCount.toString(), body3: msgData.count.toString(), username: props.authorization.username }
+          newMsg = { type: "readdb", body: localCount.toString(), body3: msgData.count.toString(), username: props.authorization.username };
+          sendMsg(JSON.stringify(newMsg));
+        }
+        if (msgData.count - localCount < 0) {
+          let newMsg;
+          newMsg = { type: "writedb", body: localCount.toString(), body3: msgData.count.toString(), body2: [], username: props.authorization.username };
+          for (let i = msgData.count + 1; i <= localCount; i++ ) {
+            let writeMsg = db.get('chatHistory').find({count: i}).value();
+            newMsg.body2.push(JSON.stringify(writeMsg));
+          }
           sendMsg(JSON.stringify(newMsg));
         }
       }
@@ -97,7 +114,7 @@ function App(props) {
         <div className="appContainer">
           <div className="chatContainer">
             <ChatHistory currentUser={props.authorization.username} setChatHistory={setChatHistory} chatHistory={chatHistory} />
-            <ChatInput authorizedUser={props.authorization.username} send={send} />
+            <ChatInput authorizedUser={props.authorization.username} send={send} sendMessage={sendMessage} />
           </div>
           <OnlineList onlineUsers={onlineUsers} users={users} />
         </div>
