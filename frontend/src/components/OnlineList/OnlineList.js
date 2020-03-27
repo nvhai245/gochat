@@ -1,6 +1,7 @@
 import React from 'react';
 import './OnlineList.scss';
 import Button from '@material-ui/core/Button';
+import Inbox from '../Inbox';
 
 export default function OnlineList(props) {
     console.log("users is : ", props.onlineUsers);
@@ -15,7 +16,7 @@ export default function OnlineList(props) {
                         <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABlklEQVQ4T63TP0gCURwH8N915ulRV0MQVINEcwQOgYr4ry5FqSHaHBqjprakFglyCgRLnBrcoqEGvYQ8BD2hwaWhKcKhgqRBTO/ZXXcvHJKUThB98/t93pcv70fAgIcYcB6GD3i9XspoNC6SJDmPMR4nCOJTUZRnhNADx3Ff3Yk7ErSGDQbDmt/v37BarR6apqcbjca7IAh3qVTqutls3nYjHYDP51sOBAI7DocjiBAa+X2NoiiV5/kkx3HxdDp9/zdFB8CybDAcDp8ghGYxxiBJEsiyDKqqgk6ne41GoweZTCapCbhcrr1IJHJaqVRG63URFOW7fVev18vx+Pk+z/MxTcBisWyHQkfHCEkz3WWJYuMtkYgdFovFC03AbDbb3O7VXbt9ZUtV1XYHGIOazXKXgpA7K5VKBU3AZDIZaJredDrZdZvNY2OYialarfqRz2cLuVzmRhTFq3K53NQEAEAPAAsMwyyRJDlHEMQYxriuKMoLQuhRluUnAKj3AkgAmAQA6p8v3mq0CgBSL6Dv1Rj+LvQb4QdhOqcRY27XNgAAAABJRU5ErkJggg=="
                         />
                     }
-                    <Button><strong>{user}</strong></Button>
+                    <Inbox user={user} />
                 </div>
             )}
         </div>

@@ -26,6 +26,8 @@ type Message struct {
 	Username string `json:"username"`
 	Body2 []string `json:"body2"`
 	Body3 string `json:"body3"`
+	Table string `json:"table"`
+	Receiver []string `json:"receiver"`
 }
 
 // Write message to db
@@ -53,8 +55,8 @@ func Write(messages []*pb2.WriteRequest, client pb2.SyncClient) (success bool) {
 	return false
 }
 
-func GetDifference(localCount int64, client pb2.SyncClient) (difference int64) {
-	d, err := client.GetDifference(context.Background(), &pb2.GetDifferenceRequest{Local: localCount})
+func GetDifference(localCount int64, table string, client pb2.SyncClient) (difference int64) {
+	d, err := client.GetDifference(context.Background(), &pb2.GetDifferenceRequest{Local: localCount, Table: table})
 	if err != nil {
 		log.Println(err)
 		return 0
@@ -63,8 +65,8 @@ func GetDifference(localCount int64, client pb2.SyncClient) (difference int64) {
 	return d.Difference
 }
 
-func Read(localCount int64, dbCount int64, client pb2.SyncClient) (messages []Message) {
-	readRequest := &pb2.ReadRequest{First: localCount + 1, Last: dbCount}
+func Read(localCount int64, dbCount int64, table string, client pb2.SyncClient) (messages []Message) {
+	readRequest := &pb2.ReadRequest{First: localCount + 1, Last: dbCount, Table: table}
 	stream, err := client.Read(context.Background(), readRequest)
 	if err != nil {
 		log.Println(err)
@@ -80,7 +82,7 @@ func Read(localCount int64, dbCount int64, client pb2.SyncClient) (messages []Me
 			log.Fatalf("%v.Read(_) = _, %v", client, err)
 		}
 		log.Println(message)
-		msgs = append(msgs, Message{ID: "", Type: "readdb", Count: message.Count, Body: message.Message, Username: message.Author})
+		msgs = append(msgs, Message{ID: "", Type: "readdb", Count: message.Count, Body: message.Message, Username: message.Author, Table: table})
 	}
 	return msgs
 }

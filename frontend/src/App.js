@@ -31,7 +31,7 @@ function App(props) {
     if (event.keyCode === 13 && event.target.value !== "" && !event.shiftKey) {
       event.preventDefault();
       let newMsg;
-      newMsg = { count: db.get('count').value() + 1, type: "chat", body: event.target.value, username: props.authorization.username }
+      newMsg = { count: db.get('allcount').value() + 1, type: "chat", body: event.target.value, username: props.authorization.username, receiver: ["all"], table: "all" }
       sendMsg(JSON.stringify(newMsg));
       event.target.value = "";
       event.target.setAttribute('style','');
@@ -40,7 +40,7 @@ function App(props) {
   const sendMessage = event => {
     let textInput = document.getElementById("textMessageInput");
     let newMsg
-    newMsg = { count: db.get('count').value() + 1, type: "chat", body: textInput.value, username: props.authorization.username }
+    newMsg = { count: db.get('allcount').value() + 1, type: "chat", body: textInput.value, username: props.authorization.username, receiver: ["all"], table: "all" }
       sendMsg(JSON.stringify(newMsg));
       textInput.value = "";
       textInput.setAttribute('style','');
@@ -48,12 +48,16 @@ function App(props) {
   useEffect(() => {
     wsConnect((msg) => {
       let msgData = JSON.parse(msg.data);
-      if (msgData.type === "chat" || msgData.type === "system") {
+      if ((msgData.type === "chat" && msgData.receiver[0] === "all") || msgData.type === "system") {
         setChatHistory(prevState => ([...prevState, msgData]));
       }
       if (msgData.type === "chat") {
-        db.get('chatHistory').push(msgData).write();
-        db.update('count', n => n + 1).write();
+        if (!db.has(msgData.table).value()) {
+          db.set(msgData.table, []).write()
+          db.set(msgData.table + "count", 0).write()
+        }
+        db.get(msgData.table).push(msgData).write();
+        db.update(msgData.table + 'count', n => n + 1).write();
       }
       if (msgData.type === "authfail") {
         alert("wrong username or password");
@@ -63,26 +67,26 @@ function App(props) {
         setOnlineUsers(msgData.body2);
       }
       if (msgData.type === "update") {
-        let localCount = db.get('count').value();
+        let localCount = db.get(msgData.table + 'count').value();
         console.log("Difference is ", msgData.count - localCount);
         if (msgData.count - localCount > 0) {
           let newMsg;
-          newMsg = { type: "readdb", body: localCount.toString(), body3: msgData.count.toString(), username: props.authorization.username };
+          newMsg = { type: "readdb", body: localCount.toString(), body3: msgData.count.toString(), username: props.authorization.username, table: msgData.table };
           sendMsg(JSON.stringify(newMsg));
         }
         if (msgData.count - localCount < 0) {
           let newMsg;
-          newMsg = { type: "writedb", body: localCount.toString(), body3: msgData.count.toString(), body2: [], username: props.authorization.username };
+          newMsg = { type: "writedb", body: localCount.toString(), body3: msgData.count.toString(), body2: [], username: props.authorization.username, table: msgData.table };
           for (let i = msgData.count + 1; i <= localCount; i++ ) {
-            let writeMsg = db.get('chatHistory').find({count: i}).value();
+            let writeMsg = db.get(msgData.table).find({count: i}).value();
             newMsg.body2.push(JSON.stringify(writeMsg));
           }
           sendMsg(JSON.stringify(newMsg));
         }
       }
       if (msgData.type === "readdb") {
-        db.get('chatHistory').push(msgData).write();
-        db.update('count', n => n + 1).write();
+        db.get(msgData.table).push(msgData).write();
+        db.update(msgData.table + 'count', n => n + 1).write();
         setChatHistory(prevState => ([...prevState, msgData]));
       }
     });

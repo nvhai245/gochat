@@ -7,7 +7,7 @@ export default function ChatHistory(props) {
     const mounted = useRef();
     useEffect(() => {
         if (mounted.current) {
-            props.setChatHistory(db.get('chatHistory').value());
+            props.setChatHistory(db.get('all').value());
         }
     }, [mounted.current]);
     const messages = props.chatHistory.map(msgData => <Message currentUser={props.currentUser} message={msgData} />)

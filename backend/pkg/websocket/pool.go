@@ -1,13 +1,13 @@
 package websocket
 
 import (
-	"log"
-	"fmt"
-	"strconv"
 	"encoding/json"
+	"fmt"
+	"log"
+	"strconv"
 
-	"github.com/nvhai245/go-websocket-chat/pkg/syncer"
 	pb2 "github.com/nvhai245/go-chat-synchronizer/proto"
+	"github.com/nvhai245/go-websocket-chat/pkg/syncer"
 )
 
 type Pool struct {
@@ -26,6 +26,15 @@ func NewPool() *Pool {
 	}
 }
 
+func existIn(a string, list []string) bool {
+	for _, b := range list {
+		if b == a {
+			return true
+		}
+	}
+	return false
+}
+
 func (pool *Pool) Start() {
 	for {
 		select {
@@ -41,15 +50,15 @@ func (pool *Pool) Start() {
 				cl.Conn.WriteJSON(Message{Type: "system", Body: client.Username + " has joined the chat...", Username: "admin"})
 				cl.Conn.WriteJSON(Message{Type: "online", Body2: onlineUsers, Username: "admin"})
 			}
-			difference := syncer.GetDifference(0, syncer.GrpcClient2)
-				for cl, _ := range pool.Clients {
-					if cl.Username == client.Username {
-						if err := cl.Conn.WriteJSON(Message{Type: "update", Count: difference, Body: "", Username: "admin"}); err != nil {
-							fmt.Println(err)
-							return
-						}
+			difference := syncer.GetDifference(0, "all", syncer.GrpcClient2)
+			for cl, _ := range pool.Clients {
+				if cl.Username == client.Username {
+					if err := cl.Conn.WriteJSON(Message{Type: "update", Count: difference, Body: "", Username: "admin", Table: "all"}); err != nil {
+						fmt.Println(err)
+						return
 					}
 				}
+			}
 			break
 		case client := <-pool.Unregister:
 			var onlineUsers []string
@@ -64,14 +73,24 @@ func (pool *Pool) Start() {
 			break
 		case message := <-pool.Broadcast:
 			if message.Type == "chat" {
-				fmt.Println("Sending message to all clients in Pool")
-				for client, _ := range pool.Clients {
-					if err := client.Conn.WriteJSON(message); err != nil {
-						fmt.Println(err)
-						return
+				if message.Receiver[0] == "all" {
+					for client, _ := range pool.Clients {
+						if err := client.Conn.WriteJSON(message); err != nil {
+							fmt.Println(err)
+							return
+						}
+					}
+				} else {
+					for client, _ := range pool.Clients {
+						if existIn(client.Username, message.Receiver) {
+							if err := client.Conn.WriteJSON(message); err != nil {
+								fmt.Println(err)
+								return
+							}
+						}
 					}
 				}
-				writeData := []*pb2.WriteRequest{{Count: message.Count, Author: message.Username, Message: message.Body}}
+				writeData := []*pb2.WriteRequest{{Count: message.Count, Author: message.Username, Message: message.Body, Table: message.Table}}
 				success := syncer.Write(writeData, syncer.GrpcClient2)
 				if success == true {
 					log.Println("written to db: ", writeData)
@@ -112,7 +131,7 @@ func (pool *Pool) Start() {
 				if err2 != nil {
 					log.Println(err2)
 				}
-				messages := syncer.Read(first, last, syncer.GrpcClient2)
+				messages := syncer.Read(first, last, message.Table, syncer.GrpcClient2)
 				for client, _ := range pool.Clients {
 					if client.ID == message.ID {
 						for _, msg := range messages {
@@ -128,13 +147,19 @@ func (pool *Pool) Start() {
 				writeData := []*pb2.WriteRequest{}
 				for _, msg := range message.Body2 {
 					parsedMsg := Message{}
-					json.Unmarshal([]byte(msg), &parsedMsg)
-					writeData = append(writeData, &pb2.WriteRequest{Count: parsedMsg.Count, Author: parsedMsg.Username, Message: parsedMsg.Body})
+					err := json.Unmarshal([]byte(msg), &parsedMsg)
+					if err != nil {
+						log.Println(err)
+					}
+					writeData = append(writeData, &pb2.WriteRequest{Count: parsedMsg.Count, Author: parsedMsg.Username, Message: parsedMsg.Body, Table: parsedMsg.Table})
 				}
 				success := syncer.Write(writeData, syncer.GrpcClient2)
 				if success == true {
 					log.Println("written to db: ", writeData)
 				}
+			}
+			if message.Type == message.Table + "update" {
+
 			}
 		}
 	}
