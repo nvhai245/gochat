@@ -17,10 +17,10 @@
   max-height: 5rem;
   overflow: auto;
   outline: none;
+} 
+.textInput:focus {
+  border: 2px solid #44A4BE;
 }
-  :focus {
-    border: 2px solid #44A4BE;
-  }
 
 .userInput {
   padding: 10px;

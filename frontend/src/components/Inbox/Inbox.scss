@@ -1,5 +1,26 @@
-.inboxContainer {
-    height: 45vh;
-    width: 20vw;
-    margin-right: 5%;
+.inbox {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.toolbar {
+    width: 100%;
+    height: 13%;
+    display: flex;
+    align-items: center;
+}
+
+.inboxHistory {
+    width: 100%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.inboxInput {
+    display: flex;
+    align-items: center;
 }

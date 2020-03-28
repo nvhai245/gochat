@@ -86,3 +86,13 @@ func Read(localCount int64, dbCount int64, table string, client pb2.SyncClient) 
 	}
 	return msgs
 }
+
+func CheckExist(table1 string, table2 string, client pb2.SyncClient) (table string) {
+	checkRequest := &pb2.CheckRequest{Table1: table1, Table2: table2}
+	rightTable, err := client.CheckExist(context.Background(), checkRequest)
+	if err != nil {
+		log.Println(err)
+		return "all"
+	}
+	return rightTable.Table
+}

@@ -158,8 +158,27 @@ func (pool *Pool) Start() {
 					log.Println("written to db: ", writeData)
 				}
 			}
-			if message.Type == message.Table + "update" {
-
+			if message.Type == "checkExist" {
+				table := syncer.CheckExist(message.Body, message.Body3, syncer.GrpcClient2)
+				for client, _ := range pool.Clients {
+					if client.ID == message.ID {
+						if err := client.Conn.WriteJSON(Message{Type: "checkExist", Table: table, Username: "admin"}); err != nil {
+							fmt.Println(err)
+							return
+						}
+					}
+				}
+			}
+			if message.Type == "getDifference" {
+				difference := syncer.GetDifference(0, message.Table, syncer.GrpcClient2)
+				for client, _ := range pool.Clients {
+					if client.ID == message.ID {
+						if err := client.Conn.WriteJSON(Message{Count: difference, Type: "update", Table: message.Table, Username: "admin"}); err != nil {
+							fmt.Println(err)
+							return
+						}
+					}
+				}
 			}
 		}
 	}
