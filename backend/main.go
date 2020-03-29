@@ -80,7 +80,7 @@ func main() {
 				http.SetCookie(w, &http.Cookie{
 					Name:     "go-chat",
 					Value:    token,
-					Expires:  time.Now().Add(5 * time.Minute),
+					Expires:  time.Now().Add(60 * time.Minute),
 					HttpOnly: true,
 				})
 				w.WriteHeader(http.StatusOK)
@@ -102,7 +102,7 @@ func main() {
 				http.SetCookie(w, &http.Cookie{
 					Name:     "go-chat",
 					Value:    token,
-					Expires:  time.Now().Add(5 * time.Minute),
+					Expires:  time.Now().Add(60 * time.Minute),
 					HttpOnly: true,
 				})
 				w.WriteHeader(http.StatusOK)

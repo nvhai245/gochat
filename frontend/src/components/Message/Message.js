@@ -17,6 +17,7 @@ export default function Message(props) {
             if (element && element.scroll) {
                 element.scrollTop = element.scrollHeight;
             }
+            props.mounted.current.scrollTop = props.mounted.current.scrollHeight;
           }
     }, [mounted.current]);
     return (

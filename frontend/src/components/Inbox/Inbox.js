@@ -12,7 +12,7 @@ import CallIcon from '@material-ui/icons/Call';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import IconButton from '@material-ui/core/IconButton';
 import ChatHistory from '../ChatHistory';
-import ChatInput from '../ChatInput';
+import InboxInput from '../InboxInput';
 import { db } from '../../db';
 
 const useStyles = makeStyles(theme => ({
@@ -22,14 +22,22 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Inbox(props) {
-    const send = () => {
-
-    }
+    const send = event => {
+        if (event.keyCode === 13 && event.target.value && event.target.value !== "" && !event.shiftKey) {
+          event.preventDefault();
+          console.log("count here", db.get(table + "count").value() + 1);
+          let newMsg;
+          newMsg = { count: db.get(table + "count").value() + 1, type: "chat", body: event.target.value, username: props.currentUser, receiver: [props.currentUser, props.user], table: table }
+          props.sendMsg(JSON.stringify(newMsg));
+          event.target.value = "";
+          event.target.setAttribute('style', '');
+        }
+      }
     const sendMessage = () => {
         
     }
-    const [chatHistory, setChatHistory] = useState([]);
     const [table, setTable] = useState("");
+    const [chatHistory, setChatHistory] = useState([]);
     useEffect(() => {
         let table1 = props.currentUser + "inboxto" + props.user;
         let table2 = props.user + "inboxto" + props.currentUser;
@@ -45,7 +53,7 @@ export default function Inbox(props) {
             let newMsg = { type: "checkExist", body: table1, body3: table2, username: props.currentUser };
             props.sendMsg(JSON.stringify(newMsg));
         }
-    });
+    }, []);
     useEffect(() => {
         let table1 = props.currentUser + "inboxto" + props.user;
         let table2 = props.user + "inboxto" + props.currentUser;
@@ -55,7 +63,19 @@ export default function Inbox(props) {
         if (props.newlyCreatedTable.includes(table2)) {
             setTable(table2);
         }
-    }, [props.newlyCreatedTable])
+    }, [props.newlyCreatedTable]);
+    useEffect(() => {
+        if (props.mostRecentMsg.type === "chat" && props.mostRecentMsg.table === table) {
+            db.get(props.mostRecentMsg.table).push(props.mostRecentMsg).write();
+        db.update(props.mostRecentMsg.table + 'count', n => n + 1).write();
+            setChatHistory(prevState => ([...prevState, props.mostRecentMsg]));
+        }
+        if (props.mostRecentMsg.type  === "readdb" && props.mostRecentMsg.table === table) {
+            db.get(props.mostRecentMsg.table).push(props.mostRecentMsg).write();
+        db.update(props.mostRecentMsg.table + 'count', n => n + 1).write();
+            setChatHistory(prevState => ([...prevState, props.mostRecentMsg]));
+        }
+    }, [props.mostRecentMsg]);
     return (
         <div className="inbox">
             <div className="toolbar">
@@ -79,7 +99,7 @@ export default function Inbox(props) {
             </div>
             <Divider />
             <div className="inboxInput">
-                <ChatInput authorizedUser={props.currentUser} send={send} sendMessage={sendMessage} />
+                <InboxInput authorizedUser={props.currentUser} send={send} />
             </div>
         </div>
     )

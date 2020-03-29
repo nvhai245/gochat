@@ -6,11 +6,16 @@ import { db } from '../../db';
 export default function ChatHistory(props) {
     const mounted = useRef();
     useEffect(() => {
-        if (mounted.current && props.table !== "") {
+        if (props.table !== "") {
+            props.setChatHistory(db.get(props.table).value());
+        }
+    }, [props.chatHistory]);
+    useEffect(() => {
+        if (props.table !== "") {
             props.setChatHistory(db.get(props.table).value());
         }
     }, [mounted.current]);
-    const messages = props.chatHistory.map(msgData => <Message currentUser={props.currentUser} message={msgData} />)
+    const messages = props.chatHistory ? props.chatHistory.map(msgData => <Message mounted={mounted} currentUser={props.currentUser} message={msgData} />) : ""
     return (
             <div ref={mounted} className="ChatHistory" id="chat-history-scroll">
                 {messages}
