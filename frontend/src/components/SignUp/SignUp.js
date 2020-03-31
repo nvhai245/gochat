@@ -27,13 +27,13 @@ function SignUp(props) {
                 if (response.status === 200) {
                     let data = { username: props.formValue.username, isAdmin: false };
                     props.authorize(data);
+                    props.handleClose();
+                    window.location.reload();
                 }
             })
             .catch(function (response) {
                 //handle error
             });
-        props.handleClose();
-        window.location.reload();
     };
     const handleLogin = (event) => {
         event.preventDefault();
@@ -55,13 +55,13 @@ function SignUp(props) {
                 if (response.status === 200) {
                     let data = { username: props.formValue.username, isAdmin: false };
                     props.authorize(data);
+                    props.handleClose();
+                    window.location.reload();
                 }
             })
             .catch(function (response) {
                 //handle error
             });
-        props.handleClose();
-        window.location.reload();
     };
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);

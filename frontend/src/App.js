@@ -35,7 +35,7 @@ function App(props) {
     if (inboxList.indexOf(target) < 0) {
       let l = inboxList;
       l.push(target);
-      let newInboxList = (l) => l.filter((v,i) => l.indexOf(v) === i)
+      let newInboxList = [...new Set(l)];
       setInboxList(newInboxList);
     } else {
       let newInBoxList = inboxList.filter(user => user !== target);
@@ -80,13 +80,12 @@ function App(props) {
         db.update(msgData.table + 'count', n => n + 1).write();
           setChatHistory(prevState => ([...prevState, msgData]));
       }
-      if (msgData.type === "chat" && msgData.username !== props.authorization.username) {
-        if (inboxList.indexOf(msgData.username) < 0) {
+      if (msgData.type === "chat" && msgData.username !== props.authorization.username && msgData.receiver[1] === props.authorization.username) {
           let l = inboxList;
       l.push(msgData.username);
-      let newInboxList = (l) => l.filter((v,i) => l.indexOf(v) === i)
+      let newInboxList = [...new Set(l)];
+      console.log("newinboxlist", newInboxList);
       setInboxList(newInboxList);
-        }
       }
       if (msgData.type === "authfail") {
         alert("wrong username or password");
@@ -121,8 +120,6 @@ function App(props) {
       }
       if (msgData.type === "checkExist") {
         if (!db.has(msgData.table).value()) {
-          db.set(msgData.table, []).write();
-        db.set(msgData.table + "count", 0).write();
         setNewlyCreatedTable(prevState => ([...prevState, msgData.table]));
         }
       }
@@ -165,7 +162,7 @@ function App(props) {
           <div className="inboxArea">
             {inboxList.map((user, i) =>
               <Paper className="inboxContainer" elevation={3}>
-                <Inbox mostRecentMsg={mostRecentMsg} newlyCreatedTable={newlyCreatedTable} sendMsg={sendMsg} currentUser={props.authorization.username} addInboxList={addInboxList} user={user} />
+                <Inbox key={user} mostRecentMsg={mostRecentMsg} newlyCreatedTable={newlyCreatedTable} sendMsg={sendMsg} currentUser={props.authorization.username} addInboxList={addInboxList} user={user} />
               </Paper>
             )}
           </div>

@@ -9,7 +9,7 @@ export default function ChatHistory(props) {
         if (props.table !== "") {
             props.setChatHistory(db.get(props.table).value());
         }
-    }, [props.chatHistory]);
+    }, [props.table]);
     useEffect(() => {
         if (props.table !== "") {
             props.setChatHistory(db.get(props.table).value());
