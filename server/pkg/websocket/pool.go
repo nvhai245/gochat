@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	pb2 "github.com/nvhai245/gochat/services/sync/proto"
-	"github.com/nvhai245/gochat/pkg/syncer"
+	"github.com/nvhai245/gochat/server/pkg/syncer"
 )
 
 type Pool struct {
