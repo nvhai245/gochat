@@ -9,9 +9,9 @@ import (
 
 	"github.com/google/uuid"
 	pb "github.com/nvhai245/gochat/services/auth/proto"
-	"github.com/nvhai245/gochat/pkg/auth"
-	"github.com/nvhai245/gochat/pkg/syncer"
-	"github.com/nvhai245/gochat/pkg/websocket"
+	"github.com/nvhai245/gochat/server/pkg/auth"
+	"github.com/nvhai245/gochat/server/pkg/syncer"
+	"github.com/nvhai245/gochat/server/pkg/websocket"
 	"google.golang.org/grpc"
 )
 

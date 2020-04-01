@@ -11,7 +11,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/dgrijalva/jwt-go"
 	_ "github.com/nvhai245/gochat/services/auth/model"
-	pb "github.com/nvhai245/gochat/services/auth//proto"
+	pb "github.com/nvhai245/gochat/services/auth/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 
