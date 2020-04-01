@@ -5,7 +5,7 @@ import (
 	"io"
 	"log"
 
-	pb2 "github.com/nvhai245/go-chat-synchronizer/proto"
+	pb2 "github.com/nvhai245/gochat/services/sync/proto"
 	"google.golang.org/grpc"
 )
 

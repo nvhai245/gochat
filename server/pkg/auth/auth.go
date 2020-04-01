@@ -5,7 +5,7 @@ import (
 	"log"
 	"io"
 
-	pb "github.com/nvhai245/go-chat-authservice/proto"
+	pb "github.com/nvhai245/gochat/services/auth/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )

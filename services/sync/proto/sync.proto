@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+service Sync {
+    rpc Write (stream WriteRequest) returns (WriteResponse);
+    rpc GetDifference (GetDifferenceRequest) returns (GetDifferenceResponse);
+    rpc Read (ReadRequest) returns (stream ReadResponse);
+    rpc CheckExist (CheckRequest) returns (CheckResponse);
+}
+
+message WriteRequest {
+    int64 count = 1;
+    string author = 2;
+    string message = 3;
+    string table = 4;
+}
+
+message WriteResponse {
+    bool success = 1;
+}
+
+message ReadRequest {
+    int64 first = 1;
+    int64 last = 2;
+    string table = 3;
+}
+
+message ReadResponse {
+    int64 count = 1;
+    string author = 2;
+    string message = 3;
+}
+
+message GetDifferenceRequest {
+    int64 local = 1;
+    string table = 2;
+}
+
+message GetDifferenceResponse {
+    int64 difference = 1;
+}
+
+message CheckRequest {
+    string table1 = 1;
+    string table2 = 2;
+}
+
+message CheckResponse {
+    string table = 1;
+}

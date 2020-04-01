@@ -8,10 +8,10 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	pb "github.com/nvhai245/go-chat-authservice/proto"
-	"github.com/nvhai245/go-websocket-chat/pkg/auth"
-	"github.com/nvhai245/go-websocket-chat/pkg/syncer"
-	"github.com/nvhai245/go-websocket-chat/pkg/websocket"
+	pb "github.com/nvhai245/gochat/services/auth/proto"
+	"github.com/nvhai245/gochat/pkg/auth"
+	"github.com/nvhai245/gochat/pkg/syncer"
+	"github.com/nvhai245/gochat/pkg/websocket"
 	"google.golang.org/grpc"
 )
 

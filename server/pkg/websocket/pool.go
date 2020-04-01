@@ -6,8 +6,8 @@ import (
 	"log"
 	"strconv"
 
-	pb2 "github.com/nvhai245/go-chat-synchronizer/proto"
-	"github.com/nvhai245/go-websocket-chat/pkg/syncer"
+	pb2 "github.com/nvhai245/gochat/services/sync/proto"
+	"github.com/nvhai245/gochat/pkg/syncer"
 )
 
 type Pool struct {
