@@ -43,6 +43,14 @@ function App(props) {
     }
   }
 
+  const inboxPopUp = (user) => {
+      let l = inboxList;
+        console.log("newinboxlist", l);
+        l.push(user);
+        let newInboxList = [...new Set(l)];
+        setInboxList(newInboxList);
+  }
+
 
   const [chatHistory, setChatHistory] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
@@ -78,18 +86,13 @@ function App(props) {
         }
         db.get(msgData.table).push(msgData).write();
         db.update(msgData.table + 'count', n => n + 1).write();
-          setChatHistory(prevState => ([...prevState, msgData]));
+        setChatHistory(prevState => ([...prevState, msgData]));
       }
       if (msgData.type === "chat" && msgData.username !== props.authorization.username && msgData.receiver[1] === props.authorization.username) {
-          let l = inboxList;
-      l.push(msgData.username);
-      let newInboxList = [...new Set(l)];
-      console.log("newinboxlist", newInboxList);
-      setInboxList(newInboxList);
+        inboxPopUp(msgData.username);
       }
       if (msgData.type === "authfail") {
         alert("wrong username or password");
-        window.location.reload();
       }
       if (msgData.type === "online" || msgData.type === "offline") {
         setOnlineUsers(msgData.body2);
@@ -116,18 +119,28 @@ function App(props) {
       if (msgData.type === "readdb" && msgData.table === "all") {
         db.get(msgData.table).push(msgData).write();
         db.update(msgData.table + 'count', n => n + 1).write();
-          setChatHistory(prevState => ([...prevState, msgData]));
+        setChatHistory(prevState => ([...prevState, msgData]));
       }
       if (msgData.type === "checkExist") {
         if (!db.has(msgData.table).value()) {
-        setNewlyCreatedTable(prevState => ([...prevState, msgData.table]));
+          setNewlyCreatedTable(prevState => ([...prevState, msgData.table]));
         }
       }
     });
-    console.log(props.authorization.username)
-    if (props.authorization.username !== "") {
-      setOpen(false)
+  }, [props.authorization.username, inboxList]);
+  useEffect(() => {
+    function getCookie(name) {
+      var value = "; " + document.cookie;
+      var parts = value.split("; " + name + "=");
+      if (parts.length == 2) return parts.pop().split(";").shift();
     }
+    let data = { username: getCookie('authorizedUser'), isAdmin: false };
+    if (data.username) {
+      props.authorize(data);
+    }
+  }, []);
+
+  useEffect(() => {
     axios({
       method: 'get',
       url: 'http://localhost:8080/users',
@@ -148,7 +161,7 @@ function App(props) {
   return (
     <div className="App">
       <Header username={props.authorization.username} authorize={props.authorize} />
-      {props.authorization.username !== "" &&
+      {props.authorization.username &&
         <div>
           <div className="appContainer">
             <div className="chatContainer">
@@ -169,21 +182,9 @@ function App(props) {
         </div>
 
       }
-      <Popover
-        open={open}
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-        marginThreshold={200}
-      >
-        <SignUp formValue={props.form.signup && props.form.signup.values} authorize={props.authorize} handleClose={handleClose} />
-      </Popover>
+      {!props.authorization.username &&
+          <SignUp formValue={props.form.signup && props.form.signup.values} authorize={props.authorize} handleClose={handleClose} />
+      }
     </div>
   );
 }

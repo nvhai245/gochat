@@ -24,9 +24,8 @@ function Header(props) {
           let newMsg;
           newMsg = { type: "logout", body: "", username: props.username }
           sendMsg(JSON.stringify(newMsg));
-          let data = { username: "", isAdmin: false }
+          let data = { username: undefined, isAdmin: false };
           props.authorize(data);
-          window.location.reload();
         }
       })
       .catch(function (response) {
@@ -36,7 +35,7 @@ function Header(props) {
   return (
     <div style={{display: "flex"}} className="header">
       <h2 style={{margin: "0 auto"}}>Realtime Chat App</h2>
-      {props.username !== "" && <Button size="large" style={{marginRight: "2%", color: "white"}} onClick={logout}><strong>Logout</strong></Button>}
+      {props.username && <Button size="large" style={{marginRight: "2%", color: "white"}} onClick={logout}><strong>Logout</strong></Button>}
     </div>
   )
 };

@@ -83,6 +83,12 @@ func main() {
 					Expires:  time.Now().Add(60 * time.Minute),
 					HttpOnly: true,
 				})
+				http.SetCookie(w, &http.Cookie{
+					Name:     "authorizedUser",
+					Value:    username,
+					Expires:  time.Now().Add(60 * time.Minute),
+					HttpOnly: false,
+				})
 				w.WriteHeader(http.StatusOK)
 			} else {
 				w.WriteHeader(http.StatusUnauthorized)
@@ -105,6 +111,12 @@ func main() {
 					Expires:  time.Now().Add(60 * time.Minute),
 					HttpOnly: true,
 				})
+				http.SetCookie(w, &http.Cookie{
+					Name:     "authorizedUser",
+					Value:    username,
+					Expires:  time.Now().Add(60 * time.Minute),
+					HttpOnly: false,
+				})
 				w.WriteHeader(http.StatusOK)
 			} else {
 				w.WriteHeader(http.StatusUnauthorized)
@@ -122,6 +134,12 @@ func main() {
 				Value:    "",
 				Expires:  time.Unix(0, 0),
 				HttpOnly: true,
+			})
+			http.SetCookie(w, &http.Cookie{
+				Name:     "authorizedUser",
+				Value:    "",
+				Expires:  time.Unix(0, 0),
+				HttpOnly: false,
 			})
 			w.WriteHeader(http.StatusOK)
 			return

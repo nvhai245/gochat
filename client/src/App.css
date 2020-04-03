@@ -29,6 +29,7 @@
 
 .inboxContainer {
   height: 55vh;
+  min-width: 250px;;
   width: 20vw;
   margin-right: 1vw;
   margin-bottom: none;

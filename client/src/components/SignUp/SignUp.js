@@ -3,6 +3,8 @@ import Paper from '@material-ui/core/Paper';
 import SignupForm from '../SignupForm';
 import { sendMsg } from '../../api';
 import axios from 'axios';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 function SignUp(props) {
     const [username, setUsername] = useState("");
@@ -10,8 +12,8 @@ function SignUp(props) {
     const handleSignup = (event) => {
         event.preventDefault();
         var bodyFormData = new FormData();
-        bodyFormData.set('username', props.formValue.username);
-        bodyFormData.set('password', props.formValue.password);
+        bodyFormData.set('username', username);
+        bodyFormData.set('password', password);
         axios({
             method: 'post',
             url: 'http://localhost:8080/signup',
@@ -25,8 +27,6 @@ function SignUp(props) {
                     alert("Signup failed")
                 }
                 if (response.status === 200) {
-                    let data = { username: props.formValue.username, isAdmin: false };
-                    props.authorize(data);
                     props.handleClose();
                     window.location.reload();
                 }
@@ -38,8 +38,8 @@ function SignUp(props) {
     const handleLogin = (event) => {
         event.preventDefault();
         var bodyFormData = new FormData();
-        bodyFormData.set('username', props.formValue.username);
-        bodyFormData.set('password', props.formValue.password);
+        bodyFormData.set('username', username);
+        bodyFormData.set('password', password);
         axios({
             method: 'post',
             url: 'http://localhost:8080/login',
@@ -49,14 +49,11 @@ function SignUp(props) {
         })
             .then(function (response) {
                 //handle success
-                if (response.status === 401) {
-                    alert("Signup failed")
-                }
                 if (response.status === 200) {
-                    let data = { username: props.formValue.username, isAdmin: false };
-                    props.authorize(data);
                     props.handleClose();
                     window.location.reload();
+                } else {
+                    alert("Wrong username or password");
                 }
             })
             .catch(function (response) {
@@ -65,18 +62,18 @@ function SignUp(props) {
     };
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);
-        setUsername(event.target.value);
     };
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
     };
     return (
-        <Paper style={{ width: "60vw", height: "60vh", backgroundColor: "#EEEEEE", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-                <SignupForm />
-                <div>
-                    <button onClick={props.formValue && handleLogin} style={{ marginRight: "2%" }} type="submit">Login</button>
-                    <button onClick={props.formValue && handleSignup} type="submit">Signup</button>
+        <Paper style={{ width: "60vw", height: "60vh", margin: "auto auto", backgroundColor: "#EEEEEE", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+                        <TextField style={{marginBottom: "3%"}} autoComplete="current-username" variant="outlined" label="Username" onChange={handleUsernameChange} name="username" type="text" />
+                        <TextField style={{marginBottom: "3%"}} autoComplete="current-password" variant="outlined" label="Password" onChange={handlePasswordChange} name="password" type="password" />
+                <div style={{display: "flex"}}>
+                    <Button color="primary" variant="contained" onClick={handleLogin} style={{ marginRight: "2%" }}>Login</Button>
+                    <Button color="secondary" variant="contained" onClick={handleSignup}>Signup</Button>
                 </div>
             </div>
         </Paper>
