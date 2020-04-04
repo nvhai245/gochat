@@ -6,8 +6,8 @@ import (
 	"log"
 	"strconv"
 
-	pb2 "github.com/nvhai245/gochat/services/sync/proto"
 	"github.com/nvhai245/gochat/server/pkg/syncer"
+	pb2 "github.com/nvhai245/gochat/services/sync/proto"
 )
 
 type Pool struct {
@@ -90,7 +90,7 @@ func (pool *Pool) Start() {
 						}
 					}
 				}
-				writeData := []*pb2.WriteRequest{{Count: message.Count, Author: message.Username, Message: message.Body, Table: message.Table}}
+				writeData := []*pb2.WriteRequest{{Count: message.Count, Author: message.Username, Message: message.Body, Table: message.Table, Deleted: message.Deleted}}
 				success := syncer.Write(writeData, syncer.GrpcClient2)
 				if success == true {
 					log.Println("written to db: ", writeData)
@@ -151,7 +151,7 @@ func (pool *Pool) Start() {
 					if err != nil {
 						log.Println(err)
 					}
-					writeData = append(writeData, &pb2.WriteRequest{Count: parsedMsg.Count, Author: parsedMsg.Username, Message: parsedMsg.Body, Table: parsedMsg.Table})
+					writeData = append(writeData, &pb2.WriteRequest{Count: parsedMsg.Count, Author: parsedMsg.Username, Message: parsedMsg.Body, Table: parsedMsg.Table, Deleted: parsedMsg.Deleted})
 				}
 				success := syncer.Write(writeData, syncer.GrpcClient2)
 				if success == true {
@@ -176,6 +176,50 @@ func (pool *Pool) Start() {
 						if err := client.Conn.WriteJSON(Message{Count: difference, Type: "update", Table: message.Table, Username: "admin"}); err != nil {
 							fmt.Println(err)
 							return
+						}
+					}
+				}
+			}
+			if message.Type == "delete" {
+				success := syncer.Delete(message.Count, message.Table, syncer.GrpcClient2)
+				if success == true {
+					if message.Table == "all" {
+						for client, _ := range pool.Clients {
+							if err := client.Conn.WriteJSON(Message{Type: "delete", Count: message.Count, Table: message.Table, Username: "admin", Deleted: true}); err != nil {
+								fmt.Println(err)
+								return
+							}
+						}
+					} else {
+						for client, _ := range pool.Clients {
+							if existIn(client.Username, message.Receiver) {
+								if err := client.Conn.WriteJSON(Message{Type: "delete", Count: message.Count, Table: message.Table, Username: "admin", Deleted: true}); err != nil {
+									fmt.Println(err)
+									return
+								}
+							}
+						}
+					}
+				}
+			}
+			if message.Type == "restore" {
+				success := syncer.Restore(message.Count, message.Table, syncer.GrpcClient2)
+				if success == true {
+					if message.Table == "all" {
+						for client, _ := range pool.Clients {
+							if err := client.Conn.WriteJSON(Message{Type: "restore", Count: message.Count, Table: message.Table, Username: "admin", Deleted: false}); err != nil {
+								fmt.Println(err)
+								return
+							}
+						}
+					} else {
+						for client, _ := range pool.Clients {
+							if existIn(client.Username, message.Receiver) {
+								if err := client.Conn.WriteJSON(Message{Type: "restore", Count: message.Count, Table: message.Table, Username: "admin", Deleted: false}); err != nil {
+									fmt.Println(err)
+									return
+								}
+							}
 						}
 					}
 				}

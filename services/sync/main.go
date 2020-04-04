@@ -45,9 +45,9 @@ func (s *server) Write(stream pb.Sync_WriteServer) error {
 	for _, message := range allMessages {
 		quoted := pq.QuoteIdentifier(message.Table)
 		sqlStatement := fmt.Sprintf(`
-	INSERT INTO %s (count, author, message)
-	VALUES ($1, $2, $3)`, quoted)
-		rows, err := db.Query(sqlStatement, message.Count, message.Author, message.Message)
+	INSERT INTO %s (count, author, message, deleted)
+	VALUES ($1, $2, $3, $4)`, quoted)
+		rows, err := db.Query(sqlStatement, message.Count, message.Author, message.Message, false)
 		if err != nil {
 			log.Println(err)
 		}
@@ -69,10 +69,11 @@ func (s *server) GetDifference(ctx context.Context, localCount *pb.GetDifference
 		count   int64
 		author  string
 		message string
+		deleted bool
 	)
 
 	for rows.Next() {
-		if err := rows.Scan(&count, &author, &message); err != nil {
+		if err := rows.Scan(&count, &author, &message, &deleted); err != nil {
 			log.Fatal(err)
 		}
 	}
@@ -85,7 +86,7 @@ func (s *server) GetDifference(ctx context.Context, localCount *pb.GetDifference
 func (s *server) Read(messagesRange *pb.ReadRequest, stream pb.Sync_ReadServer) error {
 	for i := messagesRange.First; i <= messagesRange.Last; i++ {
 		quoted := pq.QuoteIdentifier(messagesRange.Table)
-		sqlStatement := fmt.Sprintf(`SELECT count, author, message FROM %s WHERE count=$1`, quoted)
+		sqlStatement := fmt.Sprintf(`SELECT count, author, message, deleted FROM %s WHERE count=$1`, quoted)
 		rows, err := db.Query(sqlStatement, i)
 		if err != nil {
 			log.Println(err)
@@ -93,7 +94,7 @@ func (s *server) Read(messagesRange *pb.ReadRequest, stream pb.Sync_ReadServer) 
 		defer rows.Close()
 		message := &pb.ReadResponse{}
 		for rows.Next() {
-			if err := rows.Scan(&message.Count, &message.Author, &message.Message); err != nil {
+			if err := rows.Scan(&message.Count, &message.Author, &message.Message, &message.Deleted); err != nil {
 				log.Fatal(err)
 			}
 		}
@@ -137,21 +138,53 @@ func (s *server) CheckExist(ctx context.Context, tables *pb.CheckRequest) (*pb.C
 		return &pb.CheckResponse{Table: tables.Table2}, nil
 	} else {
 		quoted := pq.QuoteIdentifier(tables.Table1)
-		sqlStatement := fmt.Sprintf(`CREATE TABLE %s (count INT NOT NULL UNIQUE, author TEXT NOT NULL, message TEXT NOT NULL)`, quoted)
+		sqlStatement := fmt.Sprintf(`CREATE TABLE %s (count INT NOT NULL UNIQUE, author TEXT NOT NULL, message TEXT NOT NULL, deleted BOOL)`, quoted)
 		_, err := db.Exec(sqlStatement)
 		if err != nil {
 			log.Println(err)
 		}
 		sqlStatement = fmt.Sprintf(`
-	INSERT INTO %s (count, author, message)
-	VALUES ($1, $2, $3)`, quoted)
-		rows4, err := db.Query(sqlStatement, 0, "admin", "Say hi")
+	INSERT INTO %s (count, author, message, deleted)
+	VALUES ($1, $2, $3, $4)`, quoted)
+		rows4, err := db.Query(sqlStatement, 0, "admin", "Say hi", false)
 		if err != nil {
 			log.Println(err)
 		}
 		defer rows4.Close();
 		return &pb.CheckResponse{Table: tables.Table1}, nil
 	}
+}
+
+func (s *server) Delete(ctx context.Context, message *pb.DeleteRequest) (*pb.DeleteResponse, error) {
+	quoted := pq.QuoteIdentifier(message.Table)
+	sqlStatement := fmt.Sprintf(`
+	UPDATE %s
+    SET deleted = $1
+    WHERE
+    count = $2`, quoted)
+	rows, err := db.Query(sqlStatement, true, message.Count)
+	if err != nil {
+		log.Println(err)
+		return &pb.DeleteResponse{Success: false}, nil
+	}
+	defer rows.Close()
+	return &pb.DeleteResponse{Success: true}, nil
+}
+
+func (s *server) Restore(ctx context.Context, message *pb.RestoreRequest) (*pb.RestoreResponse, error) {
+	quoted := pq.QuoteIdentifier(message.Table)
+	sqlStatement := fmt.Sprintf(`
+	UPDATE %s
+    SET deleted = $1
+    WHERE
+    count = $2`, quoted)
+	rows, err := db.Query(sqlStatement, false, message.Count)
+	if err != nil {
+		log.Println(err)
+		return &pb.RestoreResponse{Success: false}, nil
+	}
+	defer rows.Close()
+	return &pb.RestoreResponse{Success: true}, nil
 }
 
 func main() {

@@ -24,18 +24,18 @@ const useStyles = makeStyles(theme => ({
 
 export default function Inbox(props) {
     const send = event => {
-        if (event.keyCode === 13 && event.target.value && event.target.value !== "" && !event.shiftKey) {
+        if (event.keyCode === 13 && !event.shiftKey) {
+            event.preventDefault();
+        }
+        if (event.keyCode === 13 && event.target.value && event.target.value !== "" && event.target.value.indexOf("\n") !== 0 && !event.shiftKey) {
             event.preventDefault();
             console.log("count here", db.get(table + "count").value() + 1);
             let newMsg;
-            newMsg = { count: db.get(table + "count").value() + 1, type: "chat", body: event.target.value, username: props.currentUser, receiver: [props.currentUser, props.user], table: table }
+            newMsg = { count: db.get(table + "count").value() + 1, type: "chat", body: event.target.value, username: props.currentUser, receiver: [props.currentUser, props.user], table: table, deleted: false }
             sendMsg(JSON.stringify(newMsg));
             event.target.value = "";
             event.target.setAttribute('style', '');
         }
-    }
-    const sendMessage = () => {
-
     }
     const [table, setTable] = useState("");
     const [chatHistory, setChatHistory] = useState([]);
@@ -72,7 +72,9 @@ export default function Inbox(props) {
             if (db.has(props.mostRecentMsg.table).value()) {
                 db.get(props.mostRecentMsg.table).push(props.mostRecentMsg).write();
                 db.update(props.mostRecentMsg.table + 'count', n => n + 1).write();
-                setChatHistory(prevState => ([...prevState, props.mostRecentMsg]));
+                if (chatHistory) {
+                    setChatHistory(prevState => ([...prevState, props.mostRecentMsg]));
+                }
             }
         }
         if (props.mostRecentMsg.type === "readdb" && props.mostRecentMsg.table === table) {
@@ -93,6 +95,14 @@ export default function Inbox(props) {
             sendMsg(JSON.stringify(newMsg));
             }
         }
+        if ((props.mostRecentMsg.type === "delete") && (props.mostRecentMsg.table === table1 || props.mostRecentMsg.table === table2)) {
+            db.get(table).find({count: props.mostRecentMsg.count}).assign({deleted: true}).write();
+            setChatHistory(prevState => ([...prevState]));
+          }
+          if ((props.mostRecentMsg.type === "restore") && (props.mostRecentMsg.table === table1 || props.mostRecentMsg.table === table2)) {
+            db.get(table).find({count: props.mostRecentMsg.count}).assign({deleted: false}).write();
+            setChatHistory(prevState => ([...prevState]));
+          }
     }, [props.mostRecentMsg]);
     return (
         <div className="inbox">
@@ -101,6 +111,10 @@ export default function Inbox(props) {
                     <FaceIcon fontSize="large" />
                 </IconButton>
                 <Typography>{props.user}</Typography>
+                {(props.onlineUsers.length !== 0 && props.onlineUsers.includes(props.user)) && 
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABe0lEQVQ4T7WTvUsCcRjHv57h3ZloGiRJgUH5QkGDIbRagk1Baw0tDdIWIv0JIdIWDS0Ntboq+AcEkUOBYAZ1QacpvuTLeZ0ev4sarLMURPrBs/2ez/PhedFgxKcZMR//ALiwGKEb24ai+AFMA8hDo0miLV9ip1LvNVYbfCZTVNQ14/A7bU6rXsfSgtSSMrn7QpZ/SIKQUC9EDTifDDpmF8Jum8suimK3GE3TSL+kucc8F8Fu+fSnhRpwZomteXwBoS6whBBIkvQViqKAGWfE2+e7BPYqW/0BJ6Yrn3fdy7/yVLVRRUfudP8yNEPyJf4a+7XV/oBjU2xxeSmQE/Lsr/HKEKtcOYGD2gCDI0PQaDOHmXm9vaN8V4cCtLINTiqKERw2B/RgA0Z49FF2jvXr3AYrZdDSpCFL7xmhID2JSaRaIcShGmXvIulghgteahM2agUUpkBQRI7cIEXiKCEDoNm/B4AWwAQA+o8VlwG8AWgPAgx9Gv9wC0M6fABigowRmhtEUwAAAABJRU5ErkJggg=="
+                />
+                }
                 <IconButton edge="end" style={{ marginLeft: "auto" }} >
                     <CallIcon fontSize="small" />
                 </IconButton>

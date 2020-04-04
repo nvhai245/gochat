@@ -28,6 +28,7 @@ type Message struct {
 	Body3 string `json:"body3"`
 	Table string `json:"table"`
 	Receiver []string `json:"receiver"`
+	Deleted bool `json:"deleted"`
 }
 
 // Write message to db
@@ -82,7 +83,7 @@ func Read(localCount int64, dbCount int64, table string, client pb2.SyncClient) 
 			log.Fatalf("%v.Read(_) = _, %v", client, err)
 		}
 		log.Println(message)
-		msgs = append(msgs, Message{ID: "", Type: "readdb", Count: message.Count, Body: message.Message, Username: message.Author, Table: table})
+		msgs = append(msgs, Message{ID: "", Type: "readdb", Count: message.Count, Body: message.Message, Username: message.Author, Table: table, Deleted: message.Deleted})
 	}
 	return msgs
 }
@@ -95,4 +96,30 @@ func CheckExist(table1 string, table2 string, client pb2.SyncClient) (table stri
 		return "all"
 	}
 	return rightTable.Table
+}
+
+func Delete(count int64, table string, client pb2.SyncClient) (success bool) {
+	deleteRequest := &pb2.DeleteRequest{Count: count, Table: table}
+	s, err := client.Delete(context.Background(), deleteRequest)
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+	if s.Success == false {
+		return false
+	}
+	return true
+}
+
+func Restore(count int64, table string, client pb2.SyncClient) (success bool) {
+	restoreRequest := &pb2.RestoreRequest{Count: count, Table: table}
+	s, err := client.Restore(context.Background(), restoreRequest)
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+	if s.Success == false {
+		return false
+	}
+	return true
 }

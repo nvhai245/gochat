@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Paper from '@material-ui/core/Paper';
-import SignupForm from '../SignupForm';
 import { sendMsg } from '../../api';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
@@ -69,7 +68,7 @@ function SignUp(props) {
     return (
         <Paper style={{ width: "60vw", height: "60vh", margin: "auto auto", backgroundColor: "#EEEEEE", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-                        <TextField style={{marginBottom: "3%"}} autoComplete="current-username" variant="outlined" label="Username" onChange={handleUsernameChange} name="username" type="text" />
+                        <TextField autoFocus style={{marginBottom: "3%"}} autoComplete="current-username" variant="outlined" label="Username" onChange={handleUsernameChange} name="username" type="text" />
                         <TextField style={{marginBottom: "3%"}} autoComplete="current-password" variant="outlined" label="Password" onChange={handlePasswordChange} name="password" type="password" />
                 <div style={{display: "flex"}}>
                     <Button color="primary" variant="contained" onClick={handleLogin} style={{ marginRight: "2%" }}>Login</Button>

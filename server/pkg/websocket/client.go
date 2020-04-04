@@ -26,6 +26,7 @@ type Message struct {
 	Body3 string `json:"body3"`
 	Table string `json:"table"`
 	Receiver []string `json:"receiver"`
+	Deleted bool `json:"deleted"`
 }
 
 func (c *Client) Read() {

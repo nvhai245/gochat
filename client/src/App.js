@@ -1,14 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import shortid from 'shortid';
-import logo from './logo.svg';
 import './App.css';
 import { wsConnect, sendMsg } from "./api";
 import Header from './components/Header/Header';
 import ChatHistory from './components/ChatHistory';
 import ChatInput from './components/ChatInput';
-import Popover from '@material-ui/core/Popover';
 import SignUp from './components/SignUp';
 import OnlineList from './components/OnlineList';
 import Inbox from './components/Inbox';
@@ -55,10 +51,12 @@ function App(props) {
   const [chatHistory, setChatHistory] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const send = (event) => {
-    if (event.keyCode === 13 && event.target.value !== "" && !event.shiftKey) {
+    if (event.keyCode === 13 && !event.shiftKey) {
       event.preventDefault();
+    }
+    if (event.keyCode === 13 && event.target.value !== "" && event.target.value.indexOf("\n") !== 0 && !event.shiftKey) {
       let newMsg;
-      newMsg = { count: db.get('allcount').value() + 1, type: "chat", body: event.target.value, username: props.authorization.username, receiver: ["all"], table: "all" }
+      newMsg = { count: db.get('allcount').value() + 1, type: "chat", body: event.target.value, username: props.authorization.username, receiver: ["all"], table: "all", deleted: false }
       sendMsg(JSON.stringify(newMsg));
       event.target.value = "";
       event.target.setAttribute('style', '');
@@ -67,7 +65,7 @@ function App(props) {
   const sendMessage = event => {
     let textInput = document.getElementById("textMessageInput");
     let newMsg
-    newMsg = { count: db.get('allcount').value() + 1, type: "chat", body: textInput.value, username: props.authorization.username, receiver: ["all"], table: "all" }
+    newMsg = { count: db.get('allcount').value() + 1, type: "chat", body: textInput.value, username: props.authorization.username, receiver: ["all"], table: "all", deleted: false }
     sendMsg(JSON.stringify(newMsg));
     textInput.value = "";
     textInput.setAttribute('style', '');
@@ -75,7 +73,9 @@ function App(props) {
   useEffect(() => {
     wsConnect((msg) => {
       let msgData = JSON.parse(msg.data);
-      setMostRecentMsg(msgData);
+      if (msgData.type === "chat" || msgData.type === "readdb" || msgData.type === "checkExist" || msgData.type === "delete" || msgData.type === "restore") {
+        setMostRecentMsg(msgData);
+      }
       if (msgData.type === "system") {
         setChatHistory(prevState => ([...prevState, msgData]));
       }
@@ -126,6 +126,15 @@ function App(props) {
           setNewlyCreatedTable(prevState => ([...prevState, msgData.table]));
         }
       }
+
+      if ((msgData.type === "delete") && msgData.table === "all") {
+        db.get('all').find({count: msgData.count}).assign({deleted: true}).write();
+        setChatHistory(prevState => ([...prevState]));
+      }
+      if ((msgData.type === "restore") && msgData.table === "all") {
+        db.get('all').find({count: msgData.count}).assign({deleted: false}).write();
+        setChatHistory(prevState => ([...prevState]));
+      }
     });
   }, [props.authorization.username, inboxList]);
   useEffect(() => {
@@ -175,7 +184,7 @@ function App(props) {
           <div className="inboxArea">
             {inboxList.map((user, i) =>
               <Paper className="inboxContainer" elevation={3}>
-                <Inbox key={user} mostRecentMsg={mostRecentMsg} newlyCreatedTable={newlyCreatedTable} sendMsg={sendMsg} currentUser={props.authorization.username} addInboxList={addInboxList} user={user} />
+                <Inbox key={user} mostRecentMsg={mostRecentMsg} onlineUsers={onlineUsers} newlyCreatedTable={newlyCreatedTable} sendMsg={sendMsg} currentUser={props.authorization.username} addInboxList={addInboxList} user={user} />
               </Paper>
             )}
           </div>

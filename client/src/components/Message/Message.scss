@@ -1,4 +1,4 @@
-.Message {
+.UserMessage {
   &.me {
     color: white;
     float: right;
@@ -7,6 +7,41 @@
   display: inline-block;
   word-wrap: break-word;
   max-width: 80%;
+  background-color: #44A4BE;
+  border-radius: 1rem;
+  padding: 10px 10px;
+}
+
+.GuestMessage {
+  &.me {
+    color: white;
+    float: right;
+    background-color: #328ec4;
+  }
+  display: inline-block;
+  word-wrap: break-word;
+  max-width: 80%;
+  background-color: #DDDEEC;
+  color: black;
+  border-radius: 1rem; 
+  padding: 10px 10px;
+}
+
+.DeletedMessage {
+  &.me {
+    color: white;
+    float: right;
+    background-color: #328ec4;
+  }
+  display: inline-block;
+  word-wrap: break-word;
+  max-width: 80%;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 1rem; 
+  transform: skewX(-20deg);
+  color: black;
+  padding: 10px 10px;
 }
 
 .User {

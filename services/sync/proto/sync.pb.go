@@ -29,6 +29,7 @@ type WriteRequest struct {
 	Author               string   `protobuf:"bytes,2,opt,name=author,proto3" json:"author,omitempty"`
 	Message              string   `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
 	Table                string   `protobuf:"bytes,4,opt,name=table,proto3" json:"table,omitempty"`
+	Deleted              bool     `protobuf:"varint,5,opt,name=deleted,proto3" json:"deleted,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -85,6 +86,13 @@ func (m *WriteRequest) GetTable() string {
 		return m.Table
 	}
 	return ""
+}
+
+func (m *WriteRequest) GetDeleted() bool {
+	if m != nil {
+		return m.Deleted
+	}
+	return false
 }
 
 type WriteResponse struct {
@@ -185,6 +193,7 @@ type ReadResponse struct {
 	Count                int64    `protobuf:"varint,1,opt,name=count,proto3" json:"count,omitempty"`
 	Author               string   `protobuf:"bytes,2,opt,name=author,proto3" json:"author,omitempty"`
 	Message              string   `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	Deleted              bool     `protobuf:"varint,4,opt,name=deleted,proto3" json:"deleted,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -234,6 +243,13 @@ func (m *ReadResponse) GetMessage() string {
 		return m.Message
 	}
 	return ""
+}
+
+func (m *ReadResponse) GetDeleted() bool {
+	if m != nil {
+		return m.Deleted
+	}
+	return false
 }
 
 type GetDifferenceRequest struct {
@@ -408,6 +424,178 @@ func (m *CheckResponse) GetTable() string {
 	return ""
 }
 
+type DeleteRequest struct {
+	Count                int64    `protobuf:"varint,1,opt,name=count,proto3" json:"count,omitempty"`
+	Table                string   `protobuf:"bytes,4,opt,name=table,proto3" json:"table,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DeleteRequest) Reset()         { *m = DeleteRequest{} }
+func (m *DeleteRequest) String() string { return proto.CompactTextString(m) }
+func (*DeleteRequest) ProtoMessage()    {}
+func (*DeleteRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_56dcb3cab7b591a9, []int{8}
+}
+
+func (m *DeleteRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DeleteRequest.Unmarshal(m, b)
+}
+func (m *DeleteRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DeleteRequest.Marshal(b, m, deterministic)
+}
+func (m *DeleteRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteRequest.Merge(m, src)
+}
+func (m *DeleteRequest) XXX_Size() int {
+	return xxx_messageInfo_DeleteRequest.Size(m)
+}
+func (m *DeleteRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteRequest proto.InternalMessageInfo
+
+func (m *DeleteRequest) GetCount() int64 {
+	if m != nil {
+		return m.Count
+	}
+	return 0
+}
+
+func (m *DeleteRequest) GetTable() string {
+	if m != nil {
+		return m.Table
+	}
+	return ""
+}
+
+type DeleteResponse struct {
+	Success              bool     `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DeleteResponse) Reset()         { *m = DeleteResponse{} }
+func (m *DeleteResponse) String() string { return proto.CompactTextString(m) }
+func (*DeleteResponse) ProtoMessage()    {}
+func (*DeleteResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_56dcb3cab7b591a9, []int{9}
+}
+
+func (m *DeleteResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DeleteResponse.Unmarshal(m, b)
+}
+func (m *DeleteResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DeleteResponse.Marshal(b, m, deterministic)
+}
+func (m *DeleteResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteResponse.Merge(m, src)
+}
+func (m *DeleteResponse) XXX_Size() int {
+	return xxx_messageInfo_DeleteResponse.Size(m)
+}
+func (m *DeleteResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteResponse proto.InternalMessageInfo
+
+func (m *DeleteResponse) GetSuccess() bool {
+	if m != nil {
+		return m.Success
+	}
+	return false
+}
+
+type RestoreRequest struct {
+	Count                int64    `protobuf:"varint,1,opt,name=count,proto3" json:"count,omitempty"`
+	Table                string   `protobuf:"bytes,4,opt,name=table,proto3" json:"table,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *RestoreRequest) Reset()         { *m = RestoreRequest{} }
+func (m *RestoreRequest) String() string { return proto.CompactTextString(m) }
+func (*RestoreRequest) ProtoMessage()    {}
+func (*RestoreRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_56dcb3cab7b591a9, []int{10}
+}
+
+func (m *RestoreRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RestoreRequest.Unmarshal(m, b)
+}
+func (m *RestoreRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RestoreRequest.Marshal(b, m, deterministic)
+}
+func (m *RestoreRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RestoreRequest.Merge(m, src)
+}
+func (m *RestoreRequest) XXX_Size() int {
+	return xxx_messageInfo_RestoreRequest.Size(m)
+}
+func (m *RestoreRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_RestoreRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RestoreRequest proto.InternalMessageInfo
+
+func (m *RestoreRequest) GetCount() int64 {
+	if m != nil {
+		return m.Count
+	}
+	return 0
+}
+
+func (m *RestoreRequest) GetTable() string {
+	if m != nil {
+		return m.Table
+	}
+	return ""
+}
+
+type RestoreResponse struct {
+	Success              bool     `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *RestoreResponse) Reset()         { *m = RestoreResponse{} }
+func (m *RestoreResponse) String() string { return proto.CompactTextString(m) }
+func (*RestoreResponse) ProtoMessage()    {}
+func (*RestoreResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_56dcb3cab7b591a9, []int{11}
+}
+
+func (m *RestoreResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RestoreResponse.Unmarshal(m, b)
+}
+func (m *RestoreResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RestoreResponse.Marshal(b, m, deterministic)
+}
+func (m *RestoreResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RestoreResponse.Merge(m, src)
+}
+func (m *RestoreResponse) XXX_Size() int {
+	return xxx_messageInfo_RestoreResponse.Size(m)
+}
+func (m *RestoreResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_RestoreResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RestoreResponse proto.InternalMessageInfo
+
+func (m *RestoreResponse) GetSuccess() bool {
+	if m != nil {
+		return m.Success
+	}
+	return false
+}
+
 func init() {
 	proto.RegisterType((*WriteRequest)(nil), "WriteRequest")
 	proto.RegisterType((*WriteResponse)(nil), "WriteResponse")
@@ -417,6 +605,10 @@ func init() {
 	proto.RegisterType((*GetDifferenceResponse)(nil), "GetDifferenceResponse")
 	proto.RegisterType((*CheckRequest)(nil), "CheckRequest")
 	proto.RegisterType((*CheckResponse)(nil), "CheckResponse")
+	proto.RegisterType((*DeleteRequest)(nil), "DeleteRequest")
+	proto.RegisterType((*DeleteResponse)(nil), "DeleteResponse")
+	proto.RegisterType((*RestoreRequest)(nil), "RestoreRequest")
+	proto.RegisterType((*RestoreResponse)(nil), "RestoreResponse")
 }
 
 func init() {
@@ -424,30 +616,36 @@ func init() {
 }
 
 var fileDescriptor_56dcb3cab7b591a9 = []byte{
-	// 357 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x52, 0xcd, 0x4e, 0xc2, 0x40,
-	0x10, 0xce, 0xd2, 0x82, 0x32, 0xb6, 0xc4, 0x6c, 0x80, 0x34, 0x3d, 0x18, 0xd2, 0x84, 0xa4, 0xc6,
-	0x64, 0x55, 0x3c, 0x78, 0xe3, 0xe0, 0x4f, 0x3c, 0x79, 0x59, 0x13, 0x3d, 0x97, 0x65, 0x91, 0xc6,
-	0xda, 0x62, 0x77, 0x9b, 0xc8, 0xfb, 0xf9, 0x60, 0x86, 0xe9, 0x16, 0x16, 0xc3, 0xd1, 0xdb, 0x7c,
-	0xd3, 0xee, 0xf7, 0x33, 0x33, 0x70, 0xba, 0x2a, 0x0b, 0x5d, 0x5c, 0xaa, 0x75, 0x2e, 0x18, 0x96,
-	0x51, 0x06, 0xde, 0x5b, 0x99, 0x6a, 0xc9, 0xe5, 0x57, 0x25, 0x95, 0xa6, 0x7d, 0x68, 0x8b, 0xa2,
-	0xca, 0x75, 0x40, 0x46, 0x24, 0x76, 0x78, 0x0d, 0xe8, 0x10, 0x3a, 0x49, 0xa5, 0x97, 0x45, 0x19,
-	0xb4, 0x46, 0x24, 0xee, 0x72, 0x83, 0x68, 0x00, 0x47, 0x9f, 0x52, 0xa9, 0xe4, 0x5d, 0x06, 0x0e,
-	0x7e, 0x68, 0xe0, 0x86, 0x47, 0x27, 0xb3, 0x4c, 0x06, 0x2e, 0xf6, 0x6b, 0x10, 0x9d, 0x83, 0x6f,
-	0xd4, 0xd4, 0xaa, 0xc8, 0x95, 0xdc, 0x10, 0xa8, 0x4a, 0x08, 0xa9, 0x14, 0x0a, 0x1e, 0xf3, 0x06,
-	0x46, 0xcf, 0x70, 0xc2, 0x65, 0x32, 0xb7, 0x7c, 0x2d, 0xd2, 0x52, 0x6d, 0x7d, 0x21, 0xa0, 0x14,
-	0xdc, 0x2c, 0x51, 0x1a, 0x5d, 0x39, 0x1c, 0xeb, 0x9d, 0xb2, 0x63, 0x2b, 0xbf, 0x82, 0x57, 0xd3,
-	0x19, 0xe1, 0x7f, 0xca, 0x19, 0xdd, 0x41, 0xff, 0x49, 0xea, 0x87, 0x74, 0xb1, 0x90, 0xa5, 0xcc,
-	0x85, 0x3d, 0xc7, 0xac, 0x10, 0x49, 0xd6, 0xf0, 0x23, 0xd8, 0x79, 0x6b, 0xd9, 0xde, 0x6e, 0x61,
-	0xf0, 0x87, 0xc3, 0x98, 0x3c, 0x03, 0x98, 0x6f, 0xbb, 0x86, 0xc9, 0xea, 0x44, 0x53, 0xf0, 0xee,
-	0x97, 0x52, 0x7c, 0x34, 0xa2, 0x43, 0xe8, 0x20, 0xe3, 0x35, 0xfe, 0xdb, 0xe5, 0x06, 0x6d, 0xfb,
-	0x93, 0x26, 0x56, 0x8d, 0xa2, 0x31, 0xf8, 0xe6, 0xfd, 0x6e, 0x2a, 0xb5, 0x3f, 0x62, 0xf9, 0x9b,
-	0xfc, 0x10, 0x70, 0x5f, 0xd6, 0xb9, 0xa0, 0x31, 0xb4, 0x71, 0x7d, 0xd4, 0x67, 0xf6, 0xd1, 0x84,
-	0x3d, 0xb6, 0xb7, 0xd5, 0x98, 0xd0, 0x29, 0xf8, 0x7b, 0x91, 0xe8, 0x80, 0x1d, 0x1a, 0x53, 0x38,
-	0x64, 0x87, 0x93, 0x8f, 0xc1, 0xdd, 0xac, 0x8b, 0x7a, 0xcc, 0x3a, 0x82, 0xd0, 0x67, 0xf6, 0x0e,
-	0xaf, 0x08, 0xbd, 0x00, 0xc0, 0x00, 0x8f, 0xdf, 0xa9, 0xd2, 0xd4, 0x67, 0xf6, 0x34, 0xc2, 0x1e,
-	0xdb, 0x0b, 0x37, 0xeb, 0xe0, 0xc5, 0xdf, 0xfc, 0x06, 0x00, 0x00, 0xff, 0xff, 0xe7, 0x77, 0xd4,
-	0x08, 0x05, 0x03, 0x00, 0x00,
+	// 449 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x54, 0xc1, 0x6e, 0xd3, 0x40,
+	0x10, 0xd5, 0xc6, 0x8e, 0xdb, 0x0e, 0xb6, 0x53, 0xad, 0xda, 0xc8, 0xf2, 0x01, 0x45, 0x96, 0x2a,
+	0xb9, 0x14, 0x2d, 0x50, 0x0e, 0x1c, 0x40, 0x3d, 0x40, 0x11, 0x27, 0x2e, 0xcb, 0x81, 0xb3, 0xbb,
+	0x9e, 0x10, 0x0b, 0x63, 0x07, 0xef, 0x5a, 0x22, 0x3f, 0xc0, 0x5f, 0xf0, 0xaf, 0x28, 0xeb, 0xb5,
+	0xb3, 0x8e, 0x22, 0x22, 0xa1, 0xde, 0xf6, 0x4d, 0x76, 0x67, 0xde, 0xbc, 0xf7, 0x62, 0x38, 0x5f,
+	0x37, 0xb5, 0xaa, 0x5f, 0xc8, 0x4d, 0x25, 0x98, 0x3e, 0x26, 0xbf, 0x09, 0xf8, 0x5f, 0x9b, 0x42,
+	0x21, 0xc7, 0x9f, 0x2d, 0x4a, 0x45, 0x2f, 0x60, 0x2a, 0xea, 0xb6, 0x52, 0x11, 0x59, 0x90, 0xd4,
+	0xe1, 0x1d, 0xa0, 0x73, 0xf0, 0xb2, 0x56, 0xad, 0xea, 0x26, 0x9a, 0x2c, 0x48, 0x7a, 0xc6, 0x0d,
+	0xa2, 0x11, 0x9c, 0xfc, 0x40, 0x29, 0xb3, 0x6f, 0x18, 0x39, 0xfa, 0x87, 0x1e, 0x6e, 0xfb, 0xa8,
+	0xec, 0xa1, 0xc4, 0xc8, 0xd5, 0xf5, 0x0e, 0x6c, 0xef, 0xe7, 0x58, 0xa2, 0xc2, 0x3c, 0x9a, 0x2e,
+	0x48, 0x7a, 0xca, 0x7b, 0x98, 0x5c, 0x43, 0x60, 0x78, 0xc8, 0x75, 0x5d, 0x49, 0x7d, 0x55, 0xb6,
+	0x42, 0xa0, 0x94, 0x9a, 0xca, 0x29, 0xef, 0x61, 0xf2, 0x19, 0x9e, 0x70, 0xcc, 0x72, 0x8b, 0xf1,
+	0xb2, 0x68, 0xe4, 0xc0, 0x58, 0x03, 0x4a, 0xc1, 0x2d, 0x33, 0xa9, 0x34, 0x5f, 0x87, 0xeb, 0xf3,
+	0x8e, 0x93, 0x63, 0x71, 0x4a, 0xd6, 0xe0, 0x77, 0xed, 0xcc, 0xe0, 0xc7, 0x52, 0xc0, 0xda, 0xd5,
+	0x1d, 0xef, 0xfa, 0x1e, 0x2e, 0x3e, 0xa1, 0xba, 0x2f, 0x96, 0x4b, 0x6c, 0xb0, 0x12, 0xb6, 0xf6,
+	0x65, 0x2d, 0xb2, 0xb2, 0x9f, 0xac, 0xc1, 0x8e, 0xf5, 0xc4, 0x66, 0xfd, 0x06, 0x2e, 0xf7, 0x7a,
+	0x18, 0xfa, 0x4f, 0x01, 0xf2, 0xa1, 0x6a, 0x3a, 0x59, 0x95, 0xe4, 0x0e, 0xfc, 0x0f, 0x2b, 0x14,
+	0xdf, 0xfb, 0xa1, 0x73, 0xf0, 0x74, 0xc7, 0x57, 0xfa, 0xee, 0x19, 0x37, 0x68, 0xa8, 0xdf, 0xf6,
+	0x0b, 0x77, 0x28, 0xb9, 0x82, 0xc0, 0xbc, 0xdf, 0xe9, 0xd5, 0xf1, 0x23, 0x36, 0xbf, 0xb7, 0x10,
+	0xdc, 0xeb, 0x75, 0xff, 0x1d, 0xac, 0x83, 0x31, 0x49, 0x9e, 0x41, 0xd8, 0x3f, 0x3e, 0x9a, 0x86,
+	0x77, 0x10, 0x72, 0x94, 0xaa, 0x6e, 0xfe, 0x6b, 0xd2, 0x0d, 0xcc, 0x86, 0xd7, 0xc7, 0x46, 0xdd,
+	0xfe, 0x99, 0x80, 0xfb, 0x65, 0x53, 0x09, 0x9a, 0xc2, 0x54, 0x87, 0x95, 0x06, 0xcc, 0xfe, 0xf3,
+	0xc4, 0x21, 0x1b, 0x65, 0x38, 0x25, 0xf4, 0x0e, 0x82, 0x91, 0x4d, 0xf4, 0x92, 0x1d, 0xb2, 0x3e,
+	0x9e, 0xb3, 0xc3, 0x6e, 0x5e, 0x81, 0xbb, 0x0d, 0x27, 0xf5, 0x99, 0x15, 0xf9, 0x38, 0x60, 0x76,
+	0x62, 0x5f, 0x12, 0x7a, 0x03, 0xa0, 0x4d, 0xf9, 0xf8, 0xab, 0x90, 0x8a, 0x06, 0xcc, 0x76, 0x38,
+	0x0e, 0xd9, 0xd8, 0xb0, 0x6b, 0xf0, 0x3a, 0x75, 0x69, 0xc8, 0x46, 0x1e, 0xc5, 0x33, 0xb6, 0x27,
+	0xfb, 0x73, 0x38, 0x31, 0xf2, 0xd0, 0x19, 0x1b, 0xcb, 0x1c, 0x9f, 0xb3, 0x3d, 0xe5, 0x1e, 0x3c,
+	0xfd, 0x4d, 0x79, 0xfd, 0x37, 0x00, 0x00, 0xff, 0xff, 0x02, 0x09, 0xee, 0xa2, 0x67, 0x04, 0x00,
+	0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -466,6 +664,8 @@ type SyncClient interface {
 	GetDifference(ctx context.Context, in *GetDifferenceRequest, opts ...grpc.CallOption) (*GetDifferenceResponse, error)
 	Read(ctx context.Context, in *ReadRequest, opts ...grpc.CallOption) (Sync_ReadClient, error)
 	CheckExist(ctx context.Context, in *CheckRequest, opts ...grpc.CallOption) (*CheckResponse, error)
+	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
+	Restore(ctx context.Context, in *RestoreRequest, opts ...grpc.CallOption) (*RestoreResponse, error)
 }
 
 type syncClient struct {
@@ -560,12 +760,32 @@ func (c *syncClient) CheckExist(ctx context.Context, in *CheckRequest, opts ...g
 	return out, nil
 }
 
+func (c *syncClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
+	out := new(DeleteResponse)
+	err := c.cc.Invoke(ctx, "/Sync/Delete", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *syncClient) Restore(ctx context.Context, in *RestoreRequest, opts ...grpc.CallOption) (*RestoreResponse, error) {
+	out := new(RestoreResponse)
+	err := c.cc.Invoke(ctx, "/Sync/Restore", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SyncServer is the server API for Sync service.
 type SyncServer interface {
 	Write(Sync_WriteServer) error
 	GetDifference(context.Context, *GetDifferenceRequest) (*GetDifferenceResponse, error)
 	Read(*ReadRequest, Sync_ReadServer) error
 	CheckExist(context.Context, *CheckRequest) (*CheckResponse, error)
+	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
+	Restore(context.Context, *RestoreRequest) (*RestoreResponse, error)
 }
 
 // UnimplementedSyncServer can be embedded to have forward compatible implementations.
@@ -583,6 +803,12 @@ func (*UnimplementedSyncServer) Read(req *ReadRequest, srv Sync_ReadServer) erro
 }
 func (*UnimplementedSyncServer) CheckExist(ctx context.Context, req *CheckRequest) (*CheckResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckExist not implemented")
+}
+func (*UnimplementedSyncServer) Delete(ctx context.Context, req *DeleteRequest) (*DeleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (*UnimplementedSyncServer) Restore(ctx context.Context, req *RestoreRequest) (*RestoreResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Restore not implemented")
 }
 
 func RegisterSyncServer(s *grpc.Server, srv SyncServer) {
@@ -672,6 +898,42 @@ func _Sync_CheckExist_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Sync_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SyncServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Sync/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SyncServer).Delete(ctx, req.(*DeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Sync_Restore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RestoreRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SyncServer).Restore(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Sync/Restore",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SyncServer).Restore(ctx, req.(*RestoreRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Sync_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "Sync",
 	HandlerType: (*SyncServer)(nil),
@@ -683,6 +945,14 @@ var _Sync_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckExist",
 			Handler:    _Sync_CheckExist_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _Sync_Delete_Handler,
+		},
+		{
+			MethodName: "Restore",
+			Handler:    _Sync_Restore_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
