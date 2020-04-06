@@ -15,17 +15,11 @@ import { db } from './db';
 
 function App(props) {
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [open, setOpen] = useState(true);
   const [users, setUsers] = useState([]);
   const [inboxList, setInboxList] = useState([]);
   const [newlyCreatedTable, setNewlyCreatedTable] = useState([]);
-  const [mostRecentMsg, setMostRecentMsg] = useState({})
-
-  const handleClose = () => {
-    setAnchorEl(null);
-    setOpen(false);
-  };
+  const [mostRecentMsg, setMostRecentMsg] = useState({});
+  const [noti, setNoti] = useState([]);
 
   const addInboxList = (target) => {
     if (inboxList.indexOf(target) < 0) {
@@ -40,11 +34,11 @@ function App(props) {
   }
 
   const inboxPopUp = (user) => {
-      let l = inboxList;
-        console.log("newinboxlist", l);
-        l.push(user);
-        let newInboxList = [...new Set(l)];
-        setInboxList(newInboxList);
+    let l = inboxList;
+    console.log("newinboxlist", l);
+    l.push(user);
+    let newInboxList = [...new Set(l)];
+    setInboxList(newInboxList);
   }
 
 
@@ -128,12 +122,15 @@ function App(props) {
       }
 
       if ((msgData.type === "delete") && msgData.table === "all") {
-        db.get('all').find({count: msgData.count}).assign({deleted: true}).write();
+        db.get('all').find({ count: msgData.count }).assign({ deleted: true }).write();
         setChatHistory(prevState => ([...prevState]));
       }
       if ((msgData.type === "restore") && msgData.table === "all") {
-        db.get('all').find({count: msgData.count}).assign({deleted: false}).write();
+        db.get('all').find({ count: msgData.count }).assign({ deleted: false }).write();
         setChatHistory(prevState => ([...prevState]));
+      }
+      if (msgData.type === "getnoti") {
+        setNoti(prevState => ([...prevState, msgData]));
       }
     });
   }, [props.authorization.username, inboxList]);
@@ -147,7 +144,16 @@ function App(props) {
     if (data.username) {
       props.authorize(data);
     }
+
   }, []);
+
+  useEffect(() => {
+    if (onlineUsers.length > 0) {
+      let newMsg;
+      newMsg = { type: "getnoti", username: props.authorization.username };
+      sendMsg(JSON.stringify(newMsg));
+    }
+  }, [onlineUsers])
 
   useEffect(() => {
     axios({
@@ -169,7 +175,7 @@ function App(props) {
 
   return (
     <div className="App">
-      <Header username={props.authorization.username} authorize={props.authorize} />
+      <Header addInboxList={addInboxList} noti={noti} username={props.authorization.username} authorize={props.authorize} />
       {props.authorization.username &&
         <div>
           <div className="appContainer">
@@ -192,7 +198,7 @@ function App(props) {
 
       }
       {!props.authorization.username &&
-          <SignUp formValue={props.form.signup && props.form.signup.values} authorize={props.authorize} handleClose={handleClose} />
+        <SignUp formValue={props.form.signup && props.form.signup.values} authorize={props.authorize} />
       }
     </div>
   );

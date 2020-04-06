@@ -26,7 +26,6 @@ function SignUp(props) {
                     alert("Signup failed")
                 }
                 if (response.status === 200) {
-                    props.handleClose();
                     window.location.reload();
                 }
             })
@@ -49,7 +48,6 @@ function SignUp(props) {
             .then(function (response) {
                 //handle success
                 if (response.status === 200) {
-                    props.handleClose();
                     window.location.reload();
                 } else {
                     alert("Wrong username or password");

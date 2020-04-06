@@ -33,6 +33,11 @@ export default function Inbox(props) {
             let newMsg;
             newMsg = { count: db.get(table + "count").value() + 1, type: "chat", body: event.target.value, username: props.currentUser, receiver: [props.currentUser, props.user], table: table, deleted: false }
             sendMsg(JSON.stringify(newMsg));
+            if (!props.onlineUsers.includes(props.user)) {
+                let newMsg2;
+                newMsg2 = { count: db.get(table + "count").value() + 1, type: "addnoti", body: event.target.value, username: props.currentUser, receiver: [props.currentUser, props.user], table: table, deleted: false }
+                sendMsg(JSON.stringify(newMsg2));
+            }
             event.target.value = "";
             event.target.setAttribute('style', '');
         }
@@ -55,6 +60,13 @@ export default function Inbox(props) {
             sendMsg(JSON.stringify(newMsg));
         }
     }, []);
+    useEffect(() => {
+        if (table !== "") {
+            let newMsg2;
+            newMsg2 = {type: "removenoti", username: props.currentUser, table: table }
+            sendMsg(JSON.stringify(newMsg2));
+        }
+    }, [table])
     useEffect(() => {
         let table1 = props.currentUser + "inboxto" + props.user;
         let table2 = props.user + "inboxto" + props.currentUser;
@@ -89,20 +101,20 @@ export default function Inbox(props) {
         if (props.mostRecentMsg.type === "checkExist" && (props.mostRecentMsg.table === table1 || props.mostRecentMsg.table === table2)) {
             if (!db.has(props.mostRecentMsg.table).value()) {
                 db.set(props.mostRecentMsg.table, []).write();
-              db.set(props.mostRecentMsg.table + "count", 0).write();
-              setTable(props.mostRecentMsg.table);
-              let newMsg = { type: "getDifference", table: props.mostRecentMsg.table, username: props.currentUser };
-            sendMsg(JSON.stringify(newMsg));
+                db.set(props.mostRecentMsg.table + "count", 0).write();
+                setTable(props.mostRecentMsg.table);
+                let newMsg = { type: "getDifference", table: props.mostRecentMsg.table, username: props.currentUser };
+                sendMsg(JSON.stringify(newMsg));
             }
         }
         if ((props.mostRecentMsg.type === "delete") && (props.mostRecentMsg.table === table1 || props.mostRecentMsg.table === table2)) {
-            db.get(table).find({count: props.mostRecentMsg.count}).assign({deleted: true}).write();
+            db.get(table).find({ count: props.mostRecentMsg.count }).assign({ deleted: true }).write();
             setChatHistory(prevState => ([...prevState]));
-          }
-          if ((props.mostRecentMsg.type === "restore") && (props.mostRecentMsg.table === table1 || props.mostRecentMsg.table === table2)) {
-            db.get(table).find({count: props.mostRecentMsg.count}).assign({deleted: false}).write();
+        }
+        if ((props.mostRecentMsg.type === "restore") && (props.mostRecentMsg.table === table1 || props.mostRecentMsg.table === table2)) {
+            db.get(table).find({ count: props.mostRecentMsg.count }).assign({ deleted: false }).write();
             setChatHistory(prevState => ([...prevState]));
-          }
+        }
     }, [props.mostRecentMsg]);
     return (
         <div className="inbox">
@@ -111,9 +123,9 @@ export default function Inbox(props) {
                     <FaceIcon fontSize="large" />
                 </IconButton>
                 <Typography>{props.user}</Typography>
-                {(props.onlineUsers.length !== 0 && props.onlineUsers.includes(props.user)) && 
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABe0lEQVQ4T7WTvUsCcRjHv57h3ZloGiRJgUH5QkGDIbRagk1Baw0tDdIWIv0JIdIWDS0Ntboq+AcEkUOBYAZ1QacpvuTLeZ0ev4sarLMURPrBs/2ez/PhedFgxKcZMR//ALiwGKEb24ai+AFMA8hDo0miLV9ip1LvNVYbfCZTVNQ14/A7bU6rXsfSgtSSMrn7QpZ/SIKQUC9EDTifDDpmF8Jum8suimK3GE3TSL+kucc8F8Fu+fSnhRpwZomteXwBoS6whBBIkvQViqKAGWfE2+e7BPYqW/0BJ6Yrn3fdy7/yVLVRRUfudP8yNEPyJf4a+7XV/oBjU2xxeSmQE/Lsr/HKEKtcOYGD2gCDI0PQaDOHmXm9vaN8V4cCtLINTiqKERw2B/RgA0Z49FF2jvXr3AYrZdDSpCFL7xmhID2JSaRaIcShGmXvIulghgteahM2agUUpkBQRI7cIEXiKCEDoNm/B4AWwAQA+o8VlwG8AWgPAgx9Gv9wC0M6fABigowRmhtEUwAAAABJRU5ErkJggg=="
-                />
+                {(props.onlineUsers.length !== 0 && props.onlineUsers.includes(props.user)) &&
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABe0lEQVQ4T7WTvUsCcRjHv57h3ZloGiRJgUH5QkGDIbRagk1Baw0tDdIWIv0JIdIWDS0Ntboq+AcEkUOBYAZ1QacpvuTLeZ0ev4sarLMURPrBs/2ez/PhedFgxKcZMR//ALiwGKEb24ai+AFMA8hDo0miLV9ip1LvNVYbfCZTVNQ14/A7bU6rXsfSgtSSMrn7QpZ/SIKQUC9EDTifDDpmF8Jum8suimK3GE3TSL+kucc8F8Fu+fSnhRpwZomteXwBoS6whBBIkvQViqKAGWfE2+e7BPYqW/0BJ6Yrn3fdy7/yVLVRRUfudP8yNEPyJf4a+7XV/oBjU2xxeSmQE/Lsr/HKEKtcOYGD2gCDI0PQaDOHmXm9vaN8V4cCtLINTiqKERw2B/RgA0Z49FF2jvXr3AYrZdDSpCFL7xmhID2JSaRaIcShGmXvIulghgteahM2agUUpkBQRI7cIEXiKCEDoNm/B4AWwAQA+o8VlwG8AWgPAgx9Gv9wC0M6fABigowRmhtEUwAAAABJRU5ErkJggg=="
+                    />
                 }
                 <IconButton edge="end" style={{ marginLeft: "auto" }} >
                     <CallIcon fontSize="small" />

@@ -12,6 +12,7 @@ import (
 	"github.com/nvhai245/gochat/server/pkg/auth"
 	"github.com/nvhai245/gochat/server/pkg/syncer"
 	"github.com/nvhai245/gochat/server/pkg/websocket"
+	"github.com/nvhai245/gochat/server/pkg/notification"
 	"google.golang.org/grpc"
 )
 
@@ -66,8 +67,12 @@ func main() {
 	if syncer.GrpcErr2 != nil {
 		log.Println(syncer.GrpcErr2)
 	}
+	if notification.GrpcErr3 != nil {
+		log.Println(notification.GrpcErr3)
+	}
 	defer grpcConn.Close()
 	defer syncer.GrpcConn2.Close()
+	defer notification.GrpcConn3.Close()
 	http.HandleFunc("/signup", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")

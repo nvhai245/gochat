@@ -6,6 +6,7 @@ import (
 	"log"
 	"strconv"
 
+	"github.com/nvhai245/gochat/server/pkg/notification"
 	"github.com/nvhai245/gochat/server/pkg/syncer"
 	pb2 "github.com/nvhai245/gochat/services/sync/proto"
 )
@@ -39,6 +40,10 @@ func (pool *Pool) Start() {
 	for {
 		select {
 		case client := <-pool.Register:
+			success := notification.Create(client.Username, notification.GrpcClient3)
+			if success == true {
+				log.Println("notification table is ready for user ", client.Username)
+			}
 			var onlineUsers []string
 			pool.Clients[client] = true
 			fmt.Println("Size of Connection Pool: ", len(pool.Clients))
@@ -219,6 +224,35 @@ func (pool *Pool) Start() {
 									fmt.Println(err)
 									return
 								}
+							}
+						}
+					}
+				}
+			}
+			if message.Type == "addnoti" {
+				success := notification.Create(message.Receiver[1], notification.GrpcClient3)
+				if success == true {
+					log.Println("notification table is ready for user ", message.Receiver[1])
+				}
+				success = notification.Add(message.Receiver[1], message.Table, notification.GrpcClient3)
+				if success == true {
+					log.Println("added unread message for user ", message.Receiver[1])
+				}
+			}
+			if message.Type == "removenoti" {
+				success := notification.Remove(message.Username, message.Table, notification.GrpcClient3)
+				if success == true {
+					log.Println("removed unread message for user ", message.Username)
+				}
+			}
+			if message.Type == "getnoti" {
+				messages := notification.Get(message.Username, notification.GrpcClient3)
+				for client, _ := range pool.Clients {
+					if client.ID == message.ID {
+						for _, msg := range messages {
+							if err := client.Conn.WriteJSON(msg); err != nil {
+								fmt.Println(err)
+								return
 							}
 						}
 					}

@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+service Notification {
+    rpc Get (GetRequest) returns (stream GetResponse);
+    rpc Create (CreateRequest) returns (CreateResponse);
+    rpc Add (AddRequest) returns (AddResponse);
+    rpc Remove (RemoveRequest) returns (RemoveResponse);
+}
+
+message GetRequest {
+    string username = 1;
+}
+
+message GetResponse {
+    int64 count = 1;
+    string author = 2;
+    string message = 3;
+    bool deleted = 4;
+    string table = 5;
+}
+
+message CreateRequest {
+    string username = 1;
+}
+
+message CreateResponse {
+    bool success = 1;
+}
+
+message AddRequest {
+    string username = 1;
+    string table = 2;
+}
+
+message AddResponse {
+    bool success = 1;
+}
+
+message RemoveRequest {
+    string username = 1;
+    string table = 2;
+}
+
+message RemoveResponse {
+    bool success = 1;
+}
