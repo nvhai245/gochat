@@ -33,14 +33,6 @@ function App(props) {
     }
   }
 
-  const inboxPopUp = (user) => {
-    let l = inboxList;
-    console.log("newinboxlist", l);
-    l.push(user);
-    let newInboxList = [...new Set(l)];
-    setInboxList(newInboxList);
-  }
-
 
   const [chatHistory, setChatHistory] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
@@ -83,7 +75,7 @@ function App(props) {
         setChatHistory(prevState => ([...prevState, msgData]));
       }
       if (msgData.type === "chat" && msgData.username !== props.authorization.username && msgData.receiver[1] === props.authorization.username) {
-        inboxPopUp(msgData.username);
+        setInboxList(prevState => ([...new Set([...prevState, msgData.username])]));
       }
       if (msgData.type === "authfail") {
         alert("wrong username or password");
@@ -133,7 +125,7 @@ function App(props) {
         setNoti(prevState => ([...prevState, msgData]));
       }
     });
-  }, [props.authorization.username, inboxList]);
+  }, [props.authorization.username]);
   useEffect(() => {
     function getCookie(name) {
       var value = "; " + document.cookie;
@@ -175,7 +167,7 @@ function App(props) {
 
   return (
     <div className="App">
-      <Header addInboxList={addInboxList} noti={noti} username={props.authorization.username} authorize={props.authorize} />
+      <Header setNoti={setNoti} addInboxList={addInboxList} noti={noti} username={props.authorization.username} authorize={props.authorize} />
       {props.authorization.username &&
         <div>
           <div className="appContainer">

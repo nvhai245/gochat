@@ -6,8 +6,10 @@
        `go run services/auth/main.go` <br />
 - Run sync service (required for the app to run) <br />
        `go run services/sync/main.go` <br />
+- Run notification service (required for the app to run) <br />
+       `go run services/notification/main.go` <br />
 - Run the React client: <br />
        `cd client/` <br />
        `npm install` <br />
        `npm start`
-- Open [http://localhost:3000](http://localhost:3000) to use the app. The auth service will run on localhost:9090, and sync will run on localhost:9091
+- Open [http://localhost:3000](http://localhost:3000) to use the app. The auth service will run on localhost:9090, sync will run on localhost:9091, notification will run on localhost:9092.

@@ -4,6 +4,9 @@ import Message from '../Message/Message';
 import { db } from '../../db';
 
 export default function ChatHistory(props) {
+    if (props.table !== "all") {
+        console.log(props.chatHistory);
+    }
     const mounted = useRef();
     useEffect(() => {
         if (props.table !== "") {

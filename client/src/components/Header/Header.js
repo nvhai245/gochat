@@ -25,8 +25,9 @@ function Header(props) {
   };
 
   const handleListClick = (username) => {
-    props.addInboxList(username);
     setAnchorEl(null);
+    props.setNoti(prevState => ([...prevState.slice(0, prevState.findIndex(message => message.username === username)), ...prevState.slice(prevState.findIndex(message => message.username === username), prevState.length - 1)]));
+    props.addInboxList(username);
   }
 
   const open = Boolean(anchorEl);

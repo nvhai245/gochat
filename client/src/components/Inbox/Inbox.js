@@ -23,6 +23,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Inbox(props) {
+    const box = useRef();
     const send = event => {
         if (event.keyCode === 13 && !event.shiftKey) {
             event.preventDefault();
@@ -61,6 +62,9 @@ export default function Inbox(props) {
         }
     }, []);
     useEffect(() => {
+        console.log("changed");
+    }, [chatHistory]);
+    useEffect(() => {
         if (table !== "") {
             let newMsg2;
             newMsg2 = {type: "removenoti", username: props.currentUser, table: table }
@@ -86,6 +90,7 @@ export default function Inbox(props) {
                 db.update(props.mostRecentMsg.table + 'count', n => n + 1).write();
                 if (chatHistory) {
                     setChatHistory(prevState => ([...prevState, props.mostRecentMsg]));
+                    console.log("chat setted");
                 }
             }
         }
@@ -117,7 +122,7 @@ export default function Inbox(props) {
         }
     }, [props.mostRecentMsg]);
     return (
-        <div className="inbox">
+        <div ref={box} className="inbox">
             <div className="toolbar">
                 <IconButton>
                     <FaceIcon fontSize="large" />
@@ -143,7 +148,7 @@ export default function Inbox(props) {
             </div>
             <Divider />
             <div className="inboxInput">
-                <InboxInput authorizedUser={props.currentUser} send={send} />
+                <InboxInput box={box} authorizedUser={props.currentUser} send={send} />
             </div>
         </div>
     )
