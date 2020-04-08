@@ -52,7 +52,7 @@ export default function Message(props) {
     return (
         message.username === props.currentUser ?
             <div ref={mounted} className="MessageBox" style={{ display: "flex", justifyContent: "flex-end" }}>
-                <div className="messageContainer" style={{ color: "white", display: "flex", justifyContent: "flex-end", maxWidth: "50%", marginRight: "1rem" }}>
+                <div className="messageContainer" style={{ color: "white", display: "flex", justifyContent: "flex-end", maxWidth: "80%"}}>
                     <div className={message.deleted ? "DeletedMessage" : "UserMessage"}>
                     { message.deleted ? <i>Message has been deleted</i> : message.body }
                     </div>
@@ -62,6 +62,7 @@ export default function Message(props) {
         aria-controls="message-menu"
         aria-haspopup="true"
         onClick={handleClick}
+        size="small"
       >
         <MoreVertIcon />
       </IconButton>
@@ -90,7 +91,7 @@ export default function Message(props) {
                 </div>
             </div> :
             <div ref={mounted} className="MessageBox" style={{ justifyContent: "flex-start" }}>
-                <div className="messageContainer" style={{ color: "white", maxWidth: "50%", display: "flex", alignItems: "flex-end" }}>
+                <div className="messageContainer" style={{ color: "white", maxWidth: "80%", display: "flex", alignItems: "flex-end" }}>
                     {message.username !== "admin" && <div className="User" style={{ backgroundColor: "#D6DEBD", borderRadius: "50%", height: "40px", width: "40px", marginRight: "0.2rem", padding: "auto auto" }}>{message.username + ":"}</div>}
                     {message.username === "" && <div className="User">unknown: </div>}
                     <div className={message.deleted ? "DeletedMessage" : "GuestMessage"}>

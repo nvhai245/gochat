@@ -88,8 +88,8 @@ export default function Inbox(props) {
             if (db.has(props.mostRecentMsg.table).value()) {
                 db.get(props.mostRecentMsg.table).push(props.mostRecentMsg).write();
                 db.update(props.mostRecentMsg.table + 'count', n => n + 1).write();
-                if (chatHistory) {
-                    setChatHistory(prevState => ([...prevState, props.mostRecentMsg]));
+                if (chatHistory.length > 0) {
+                    setChatHistory(prevState => (prevState[prevState.length - 1].count !== props.mostRecentMsg.count ? [...prevState, props.mostRecentMsg] : [...prevState]));
                     console.log("chat setted");
                 }
             }
