@@ -11,8 +11,14 @@ import (
 )
 
 type User struct {
-	Username string
-	Password string
+	IsAdmin  bool      `json:"isadmin"`
+	Username string    `json:"username"`
+	Email    string    `json:"email"`
+	Avatar   string    `json:"avatar"`
+	Phone    string    `json:"phone"`
+	Birthday time.Time `json:"birthday"`
+	Fb       string    `json:"fb"`
+	Insta    string    `json:"insta"`
 }
 
 func Signup(user User, client pb.AuthClient) (success bool, jwt string) {
@@ -73,4 +79,8 @@ func GetAllUser(client pb.AuthClient) (allUser []string) {
 		allUser = append(allUser, user.Username)
 	}
 	return allUser
+}
+
+func GetUser(username string, client pb.AuthClient) (user User) {
+	
 }

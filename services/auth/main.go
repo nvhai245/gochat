@@ -12,6 +12,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	_ "github.com/nvhai245/gochat/services/auth/model"
 	pb "github.com/nvhai245/gochat/services/auth/proto"
+	userController "github.com/nvhai245/gochat/services/auth/controller/user"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 
@@ -172,6 +173,68 @@ func (s *server) GetAllUser(admin *pb.GetAllUserRequest, stream pb.Auth_GetAllUs
 		}
 	}
 	return nil
+}
+func (s *server) GetUser(ctx context.Context, user *pb.GetUserRequest) (*pb.AuthorizedUser, error) {
+	success, authorizedUser := userController.GetUser(user.Username, db)
+	if success == false {
+		return &pb.AuthorizedUser{}, nil
+	}
+	return &pb.AuthorizedUser{
+		Username: authorizedUser.Username, 
+		IsAdmin: authorizedUser.IsAdmin, 
+		Email: authorizedUser.Email
+		Avatar: authorizedUser.Avatar
+		Phone: authorizedUser.Phone
+		Birthday: authorizedUser.Birthday
+		Fb: authorizedUser.Fb
+		Insta: authorizedUser.Insta
+		}, nil
+}
+func (s *server) UpdateEmail(ctx context.Context, user *pb.UpdateEmailRequest) (*pb.UpdateEmailResponse, error) {
+	success, updated := userController.UpdateEmail(user.Email, db)
+	if success == false {
+		return &pb.UpdateEmailResponse{}
+	}
+	return &pb.UpdateEmailResponse{Email: updated}, nil
+}
+func (s *server) UpdateAvatar(ctx context.Context, user *pb.UpdateAvatarRequest) (*pb.UpdateAvatarResponse, error) {
+	success, updated := userController.UpdateAvatar(user.Avatar, db)
+	if success == false {
+		return &pb.UpdateAvatarResponse{}
+	}
+	return &pb.UpdateAvatarResponse{Avatar: updated}, nil
+}
+func (s *server) UpdatePhone(ctx context.Context, user *pb.UpdatePhoneRequest) (*pb.UpdatePhoneResponse, error) {
+	success, updated := userController.UpdatePhone(user.Phone, db)
+	if success == false {
+		return &pb.UpdatePhoneResponse{}
+	}
+	return &pb.UpdatePhoneResponse{Phone: updated}, nil
+}
+func (s *server) UpdateBirthday(ctx context.Context, user *pb.UpdateBirthdayRequest) (*pb.UpdateBirthdayResponse, error) {
+	t, err := time.Parse("20060102T150405", user.Birthday)
+	if err != nil {
+		log.Println(err)
+	}
+	success, updated := userController.UpdateBirthday(t, db)
+	if success == false {
+		return &pb.UpdateBirthdayResponse{}
+	}
+	return &pb.UpdateBirthdayResponse{Birthday: updated.String()}, nil
+}
+func (s *server) UpdateFb(ctx context.Context, user *pb.UpdateFbRequest) (*pb.UpdateFbResponse, error) {
+	success, updated := userController.UpdateFb(user.Fb, db)
+	if success == false {
+		return &pb.UpdateFbResponse{}
+	}
+	return &pb.UpdateFbResponse{Fb: updated}, nil
+}
+func (s *server) UpdateInsta(ctx context.Context, user *pb.UpdateInstaRequest) (*pb.UpdateInstaResponse, error) {
+	success, updated := userController.UpdateInsta(user.Insta, db)
+	if success == false {
+		return &pb.UpdateInstaResponse{}
+	}
+	return &pb.UpdateInstaResponse{Insta: updated}, nil
 }
 
 func main() {

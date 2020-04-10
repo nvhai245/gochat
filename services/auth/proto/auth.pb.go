@@ -431,6 +431,617 @@ func (m *User) GetIsAdmin() bool {
 	return false
 }
 
+type AuthorizedUser struct {
+	IsAdmin              bool     `protobuf:"varint,1,opt,name=isAdmin,proto3" json:"isAdmin,omitempty"`
+	Username             string   `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	Email                string   `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
+	Avatar               string   `protobuf:"bytes,4,opt,name=avatar,proto3" json:"avatar,omitempty"`
+	Phone                string   `protobuf:"bytes,5,opt,name=phone,proto3" json:"phone,omitempty"`
+	Birthday             string   `protobuf:"bytes,6,opt,name=birthday,proto3" json:"birthday,omitempty"`
+	Fb                   string   `protobuf:"bytes,7,opt,name=fb,proto3" json:"fb,omitempty"`
+	Insta                string   `protobuf:"bytes,8,opt,name=insta,proto3" json:"insta,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *AuthorizedUser) Reset()         { *m = AuthorizedUser{} }
+func (m *AuthorizedUser) String() string { return proto.CompactTextString(m) }
+func (*AuthorizedUser) ProtoMessage()    {}
+func (*AuthorizedUser) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a9d38a2cdbb4f144, []int{9}
+}
+
+func (m *AuthorizedUser) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AuthorizedUser.Unmarshal(m, b)
+}
+func (m *AuthorizedUser) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AuthorizedUser.Marshal(b, m, deterministic)
+}
+func (m *AuthorizedUser) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AuthorizedUser.Merge(m, src)
+}
+func (m *AuthorizedUser) XXX_Size() int {
+	return xxx_messageInfo_AuthorizedUser.Size(m)
+}
+func (m *AuthorizedUser) XXX_DiscardUnknown() {
+	xxx_messageInfo_AuthorizedUser.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_AuthorizedUser proto.InternalMessageInfo
+
+func (m *AuthorizedUser) GetIsAdmin() bool {
+	if m != nil {
+		return m.IsAdmin
+	}
+	return false
+}
+
+func (m *AuthorizedUser) GetUsername() string {
+	if m != nil {
+		return m.Username
+	}
+	return ""
+}
+
+func (m *AuthorizedUser) GetEmail() string {
+	if m != nil {
+		return m.Email
+	}
+	return ""
+}
+
+func (m *AuthorizedUser) GetAvatar() string {
+	if m != nil {
+		return m.Avatar
+	}
+	return ""
+}
+
+func (m *AuthorizedUser) GetPhone() string {
+	if m != nil {
+		return m.Phone
+	}
+	return ""
+}
+
+func (m *AuthorizedUser) GetBirthday() string {
+	if m != nil {
+		return m.Birthday
+	}
+	return ""
+}
+
+func (m *AuthorizedUser) GetFb() string {
+	if m != nil {
+		return m.Fb
+	}
+	return ""
+}
+
+func (m *AuthorizedUser) GetInsta() string {
+	if m != nil {
+		return m.Insta
+	}
+	return ""
+}
+
+type UpdateEmailRequest struct {
+	Email                string   `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdateEmailRequest) Reset()         { *m = UpdateEmailRequest{} }
+func (m *UpdateEmailRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateEmailRequest) ProtoMessage()    {}
+func (*UpdateEmailRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a9d38a2cdbb4f144, []int{10}
+}
+
+func (m *UpdateEmailRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateEmailRequest.Unmarshal(m, b)
+}
+func (m *UpdateEmailRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateEmailRequest.Marshal(b, m, deterministic)
+}
+func (m *UpdateEmailRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateEmailRequest.Merge(m, src)
+}
+func (m *UpdateEmailRequest) XXX_Size() int {
+	return xxx_messageInfo_UpdateEmailRequest.Size(m)
+}
+func (m *UpdateEmailRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateEmailRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateEmailRequest proto.InternalMessageInfo
+
+func (m *UpdateEmailRequest) GetEmail() string {
+	if m != nil {
+		return m.Email
+	}
+	return ""
+}
+
+type UpdateEmailResponse struct {
+	Success              bool     `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Email                string   `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdateEmailResponse) Reset()         { *m = UpdateEmailResponse{} }
+func (m *UpdateEmailResponse) String() string { return proto.CompactTextString(m) }
+func (*UpdateEmailResponse) ProtoMessage()    {}
+func (*UpdateEmailResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a9d38a2cdbb4f144, []int{11}
+}
+
+func (m *UpdateEmailResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateEmailResponse.Unmarshal(m, b)
+}
+func (m *UpdateEmailResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateEmailResponse.Marshal(b, m, deterministic)
+}
+func (m *UpdateEmailResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateEmailResponse.Merge(m, src)
+}
+func (m *UpdateEmailResponse) XXX_Size() int {
+	return xxx_messageInfo_UpdateEmailResponse.Size(m)
+}
+func (m *UpdateEmailResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateEmailResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateEmailResponse proto.InternalMessageInfo
+
+func (m *UpdateEmailResponse) GetSuccess() bool {
+	if m != nil {
+		return m.Success
+	}
+	return false
+}
+
+func (m *UpdateEmailResponse) GetEmail() string {
+	if m != nil {
+		return m.Email
+	}
+	return ""
+}
+
+type UpdateAvatarRequest struct {
+	Avatar               string   `protobuf:"bytes,1,opt,name=avatar,proto3" json:"avatar,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdateAvatarRequest) Reset()         { *m = UpdateAvatarRequest{} }
+func (m *UpdateAvatarRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateAvatarRequest) ProtoMessage()    {}
+func (*UpdateAvatarRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a9d38a2cdbb4f144, []int{12}
+}
+
+func (m *UpdateAvatarRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateAvatarRequest.Unmarshal(m, b)
+}
+func (m *UpdateAvatarRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateAvatarRequest.Marshal(b, m, deterministic)
+}
+func (m *UpdateAvatarRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateAvatarRequest.Merge(m, src)
+}
+func (m *UpdateAvatarRequest) XXX_Size() int {
+	return xxx_messageInfo_UpdateAvatarRequest.Size(m)
+}
+func (m *UpdateAvatarRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateAvatarRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateAvatarRequest proto.InternalMessageInfo
+
+func (m *UpdateAvatarRequest) GetAvatar() string {
+	if m != nil {
+		return m.Avatar
+	}
+	return ""
+}
+
+type UpdateAvatarResponse struct {
+	Success              bool     `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Avatar               string   `protobuf:"bytes,2,opt,name=avatar,proto3" json:"avatar,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdateAvatarResponse) Reset()         { *m = UpdateAvatarResponse{} }
+func (m *UpdateAvatarResponse) String() string { return proto.CompactTextString(m) }
+func (*UpdateAvatarResponse) ProtoMessage()    {}
+func (*UpdateAvatarResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a9d38a2cdbb4f144, []int{13}
+}
+
+func (m *UpdateAvatarResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateAvatarResponse.Unmarshal(m, b)
+}
+func (m *UpdateAvatarResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateAvatarResponse.Marshal(b, m, deterministic)
+}
+func (m *UpdateAvatarResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateAvatarResponse.Merge(m, src)
+}
+func (m *UpdateAvatarResponse) XXX_Size() int {
+	return xxx_messageInfo_UpdateAvatarResponse.Size(m)
+}
+func (m *UpdateAvatarResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateAvatarResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateAvatarResponse proto.InternalMessageInfo
+
+func (m *UpdateAvatarResponse) GetSuccess() bool {
+	if m != nil {
+		return m.Success
+	}
+	return false
+}
+
+func (m *UpdateAvatarResponse) GetAvatar() string {
+	if m != nil {
+		return m.Avatar
+	}
+	return ""
+}
+
+type UpdatePhoneRequest struct {
+	Phone                string   `protobuf:"bytes,1,opt,name=phone,proto3" json:"phone,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdatePhoneRequest) Reset()         { *m = UpdatePhoneRequest{} }
+func (m *UpdatePhoneRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdatePhoneRequest) ProtoMessage()    {}
+func (*UpdatePhoneRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a9d38a2cdbb4f144, []int{14}
+}
+
+func (m *UpdatePhoneRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdatePhoneRequest.Unmarshal(m, b)
+}
+func (m *UpdatePhoneRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdatePhoneRequest.Marshal(b, m, deterministic)
+}
+func (m *UpdatePhoneRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdatePhoneRequest.Merge(m, src)
+}
+func (m *UpdatePhoneRequest) XXX_Size() int {
+	return xxx_messageInfo_UpdatePhoneRequest.Size(m)
+}
+func (m *UpdatePhoneRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdatePhoneRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdatePhoneRequest proto.InternalMessageInfo
+
+func (m *UpdatePhoneRequest) GetPhone() string {
+	if m != nil {
+		return m.Phone
+	}
+	return ""
+}
+
+type UpdatePhoneResponse struct {
+	Success              bool     `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Phone                string   `protobuf:"bytes,2,opt,name=phone,proto3" json:"phone,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdatePhoneResponse) Reset()         { *m = UpdatePhoneResponse{} }
+func (m *UpdatePhoneResponse) String() string { return proto.CompactTextString(m) }
+func (*UpdatePhoneResponse) ProtoMessage()    {}
+func (*UpdatePhoneResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a9d38a2cdbb4f144, []int{15}
+}
+
+func (m *UpdatePhoneResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdatePhoneResponse.Unmarshal(m, b)
+}
+func (m *UpdatePhoneResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdatePhoneResponse.Marshal(b, m, deterministic)
+}
+func (m *UpdatePhoneResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdatePhoneResponse.Merge(m, src)
+}
+func (m *UpdatePhoneResponse) XXX_Size() int {
+	return xxx_messageInfo_UpdatePhoneResponse.Size(m)
+}
+func (m *UpdatePhoneResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdatePhoneResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdatePhoneResponse proto.InternalMessageInfo
+
+func (m *UpdatePhoneResponse) GetSuccess() bool {
+	if m != nil {
+		return m.Success
+	}
+	return false
+}
+
+func (m *UpdatePhoneResponse) GetPhone() string {
+	if m != nil {
+		return m.Phone
+	}
+	return ""
+}
+
+type UpdateBirthdayRequest struct {
+	Birthday             string   `protobuf:"bytes,1,opt,name=birthday,proto3" json:"birthday,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdateBirthdayRequest) Reset()         { *m = UpdateBirthdayRequest{} }
+func (m *UpdateBirthdayRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateBirthdayRequest) ProtoMessage()    {}
+func (*UpdateBirthdayRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a9d38a2cdbb4f144, []int{16}
+}
+
+func (m *UpdateBirthdayRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateBirthdayRequest.Unmarshal(m, b)
+}
+func (m *UpdateBirthdayRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateBirthdayRequest.Marshal(b, m, deterministic)
+}
+func (m *UpdateBirthdayRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateBirthdayRequest.Merge(m, src)
+}
+func (m *UpdateBirthdayRequest) XXX_Size() int {
+	return xxx_messageInfo_UpdateBirthdayRequest.Size(m)
+}
+func (m *UpdateBirthdayRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateBirthdayRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateBirthdayRequest proto.InternalMessageInfo
+
+func (m *UpdateBirthdayRequest) GetBirthday() string {
+	if m != nil {
+		return m.Birthday
+	}
+	return ""
+}
+
+type UpdateBirthdayResponse struct {
+	Success              bool     `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Birth                string   `protobuf:"bytes,2,opt,name=birth,proto3" json:"birth,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdateBirthdayResponse) Reset()         { *m = UpdateBirthdayResponse{} }
+func (m *UpdateBirthdayResponse) String() string { return proto.CompactTextString(m) }
+func (*UpdateBirthdayResponse) ProtoMessage()    {}
+func (*UpdateBirthdayResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a9d38a2cdbb4f144, []int{17}
+}
+
+func (m *UpdateBirthdayResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateBirthdayResponse.Unmarshal(m, b)
+}
+func (m *UpdateBirthdayResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateBirthdayResponse.Marshal(b, m, deterministic)
+}
+func (m *UpdateBirthdayResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateBirthdayResponse.Merge(m, src)
+}
+func (m *UpdateBirthdayResponse) XXX_Size() int {
+	return xxx_messageInfo_UpdateBirthdayResponse.Size(m)
+}
+func (m *UpdateBirthdayResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateBirthdayResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateBirthdayResponse proto.InternalMessageInfo
+
+func (m *UpdateBirthdayResponse) GetSuccess() bool {
+	if m != nil {
+		return m.Success
+	}
+	return false
+}
+
+func (m *UpdateBirthdayResponse) GetBirth() string {
+	if m != nil {
+		return m.Birth
+	}
+	return ""
+}
+
+type UpdateFbRequest struct {
+	Fb                   string   `protobuf:"bytes,1,opt,name=fb,proto3" json:"fb,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdateFbRequest) Reset()         { *m = UpdateFbRequest{} }
+func (m *UpdateFbRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateFbRequest) ProtoMessage()    {}
+func (*UpdateFbRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a9d38a2cdbb4f144, []int{18}
+}
+
+func (m *UpdateFbRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateFbRequest.Unmarshal(m, b)
+}
+func (m *UpdateFbRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateFbRequest.Marshal(b, m, deterministic)
+}
+func (m *UpdateFbRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateFbRequest.Merge(m, src)
+}
+func (m *UpdateFbRequest) XXX_Size() int {
+	return xxx_messageInfo_UpdateFbRequest.Size(m)
+}
+func (m *UpdateFbRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateFbRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateFbRequest proto.InternalMessageInfo
+
+func (m *UpdateFbRequest) GetFb() string {
+	if m != nil {
+		return m.Fb
+	}
+	return ""
+}
+
+type UpdateFbResponse struct {
+	Success              bool     `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Fb                   string   `protobuf:"bytes,2,opt,name=fb,proto3" json:"fb,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdateFbResponse) Reset()         { *m = UpdateFbResponse{} }
+func (m *UpdateFbResponse) String() string { return proto.CompactTextString(m) }
+func (*UpdateFbResponse) ProtoMessage()    {}
+func (*UpdateFbResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a9d38a2cdbb4f144, []int{19}
+}
+
+func (m *UpdateFbResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateFbResponse.Unmarshal(m, b)
+}
+func (m *UpdateFbResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateFbResponse.Marshal(b, m, deterministic)
+}
+func (m *UpdateFbResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateFbResponse.Merge(m, src)
+}
+func (m *UpdateFbResponse) XXX_Size() int {
+	return xxx_messageInfo_UpdateFbResponse.Size(m)
+}
+func (m *UpdateFbResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateFbResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateFbResponse proto.InternalMessageInfo
+
+func (m *UpdateFbResponse) GetSuccess() bool {
+	if m != nil {
+		return m.Success
+	}
+	return false
+}
+
+func (m *UpdateFbResponse) GetFb() string {
+	if m != nil {
+		return m.Fb
+	}
+	return ""
+}
+
+type UpdateInstaRequest struct {
+	Insta                string   `protobuf:"bytes,1,opt,name=insta,proto3" json:"insta,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdateInstaRequest) Reset()         { *m = UpdateInstaRequest{} }
+func (m *UpdateInstaRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateInstaRequest) ProtoMessage()    {}
+func (*UpdateInstaRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a9d38a2cdbb4f144, []int{20}
+}
+
+func (m *UpdateInstaRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateInstaRequest.Unmarshal(m, b)
+}
+func (m *UpdateInstaRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateInstaRequest.Marshal(b, m, deterministic)
+}
+func (m *UpdateInstaRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateInstaRequest.Merge(m, src)
+}
+func (m *UpdateInstaRequest) XXX_Size() int {
+	return xxx_messageInfo_UpdateInstaRequest.Size(m)
+}
+func (m *UpdateInstaRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateInstaRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateInstaRequest proto.InternalMessageInfo
+
+func (m *UpdateInstaRequest) GetInsta() string {
+	if m != nil {
+		return m.Insta
+	}
+	return ""
+}
+
+type UpdateInstaResponse struct {
+	Success              bool     `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Insta                string   `protobuf:"bytes,2,opt,name=insta,proto3" json:"insta,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdateInstaResponse) Reset()         { *m = UpdateInstaResponse{} }
+func (m *UpdateInstaResponse) String() string { return proto.CompactTextString(m) }
+func (*UpdateInstaResponse) ProtoMessage()    {}
+func (*UpdateInstaResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a9d38a2cdbb4f144, []int{21}
+}
+
+func (m *UpdateInstaResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateInstaResponse.Unmarshal(m, b)
+}
+func (m *UpdateInstaResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateInstaResponse.Marshal(b, m, deterministic)
+}
+func (m *UpdateInstaResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateInstaResponse.Merge(m, src)
+}
+func (m *UpdateInstaResponse) XXX_Size() int {
+	return xxx_messageInfo_UpdateInstaResponse.Size(m)
+}
+func (m *UpdateInstaResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateInstaResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateInstaResponse proto.InternalMessageInfo
+
+func (m *UpdateInstaResponse) GetSuccess() bool {
+	if m != nil {
+		return m.Success
+	}
+	return false
+}
+
+func (m *UpdateInstaResponse) GetInsta() string {
+	if m != nil {
+		return m.Insta
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterType((*LoginRequest)(nil), "LoginRequest")
 	proto.RegisterType((*LoginResponse)(nil), "LoginResponse")
@@ -441,6 +1052,19 @@ func init() {
 	proto.RegisterType((*GetUserRequest)(nil), "GetUserRequest")
 	proto.RegisterType((*GetAllUserRequest)(nil), "GetAllUserRequest")
 	proto.RegisterType((*User)(nil), "User")
+	proto.RegisterType((*AuthorizedUser)(nil), "AuthorizedUser")
+	proto.RegisterType((*UpdateEmailRequest)(nil), "UpdateEmailRequest")
+	proto.RegisterType((*UpdateEmailResponse)(nil), "UpdateEmailResponse")
+	proto.RegisterType((*UpdateAvatarRequest)(nil), "UpdateAvatarRequest")
+	proto.RegisterType((*UpdateAvatarResponse)(nil), "UpdateAvatarResponse")
+	proto.RegisterType((*UpdatePhoneRequest)(nil), "UpdatePhoneRequest")
+	proto.RegisterType((*UpdatePhoneResponse)(nil), "UpdatePhoneResponse")
+	proto.RegisterType((*UpdateBirthdayRequest)(nil), "UpdateBirthdayRequest")
+	proto.RegisterType((*UpdateBirthdayResponse)(nil), "UpdateBirthdayResponse")
+	proto.RegisterType((*UpdateFbRequest)(nil), "UpdateFbRequest")
+	proto.RegisterType((*UpdateFbResponse)(nil), "UpdateFbResponse")
+	proto.RegisterType((*UpdateInstaRequest)(nil), "UpdateInstaRequest")
+	proto.RegisterType((*UpdateInstaResponse)(nil), "UpdateInstaResponse")
 }
 
 func init() {
@@ -448,29 +1072,50 @@ func init() {
 }
 
 var fileDescriptor_a9d38a2cdbb4f144 = []byte{
-	// 341 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x53, 0xdd, 0x4a, 0xf3, 0x40,
-	0x14, 0x24, 0xfd, 0x9a, 0xaf, 0xf5, 0xd0, 0xf4, 0x67, 0xe9, 0x45, 0xc8, 0x95, 0x2e, 0x52, 0x14,
-	0x74, 0x2b, 0xfa, 0x00, 0x12, 0x05, 0xab, 0xe0, 0x55, 0xc0, 0x7b, 0x63, 0x7b, 0x68, 0x42, 0xdb,
-	0xa4, 0xe6, 0x6c, 0xf4, 0x49, 0x7d, 0x1f, 0xe9, 0x66, 0xb7, 0xcd, 0x5a, 0x10, 0xd1, 0xbb, 0xce,
-	0xee, 0xf4, 0xcc, 0x99, 0xd9, 0x09, 0xf4, 0xd7, 0x45, 0x2e, 0xf3, 0x71, 0x5c, 0xca, 0x44, 0xa8,
-	0x9f, 0xfc, 0x0e, 0x3a, 0x8f, 0xf9, 0x3c, 0xcd, 0x22, 0x7c, 0x2d, 0x91, 0x24, 0x0b, 0xa0, 0x5d,
-	0x12, 0x16, 0x59, 0xbc, 0x42, 0xdf, 0x39, 0x74, 0x4e, 0x0e, 0xa2, 0x2d, 0xde, 0xdc, 0xad, 0x63,
-	0xa2, 0xf7, 0xbc, 0x98, 0xf9, 0x8d, 0xea, 0xce, 0x60, 0x7e, 0x0d, 0x9e, 0x9e, 0x43, 0xeb, 0x3c,
-	0x23, 0x64, 0x3e, 0xb4, 0xa8, 0x9c, 0x4e, 0x91, 0x48, 0xcd, 0x69, 0x47, 0x06, 0xb2, 0x21, 0xb8,
-	0x32, 0x5f, 0x60, 0xa6, 0x67, 0x54, 0x80, 0x1f, 0x43, 0xe7, 0x36, 0xc1, 0xe9, 0xc2, 0x2c, 0xb2,
-	0x65, 0x39, 0x75, 0x56, 0x08, 0x9e, 0x66, 0x69, 0x99, 0x21, 0xb8, 0x6f, 0xf1, 0x32, 0x9d, 0x69,
-	0x91, 0x0a, 0x58, 0x2e, 0x1a, 0xb6, 0x0b, 0xfe, 0x00, 0xbd, 0x08, 0xe7, 0x29, 0x49, 0x2c, 0xfe,
-	0x6a, 0xfa, 0x06, 0xfa, 0xbb, 0x51, 0xbf, 0xf4, 0x7d, 0x06, 0xdd, 0x09, 0xca, 0x27, 0xfa, 0xd1,
-	0x36, 0xfc, 0x1c, 0x06, 0x13, 0x94, 0xe1, 0x72, 0x59, 0xff, 0x83, 0x0f, 0xad, 0x94, 0xc2, 0xd9,
-	0x2a, 0xcd, 0x8c, 0xa4, 0x86, 0xfc, 0x19, 0x9a, 0x1b, 0xe2, 0xb7, 0x06, 0x39, 0x74, 0x8c, 0xa1,
-	0xfb, 0x98, 0x12, 0xbd, 0x9d, 0x75, 0x56, 0x57, 0xf8, 0x67, 0x29, 0x5c, 0x7e, 0x38, 0xd0, 0x0c,
-	0x4b, 0x99, 0xb0, 0x11, 0xb8, 0xaa, 0x00, 0xcc, 0x13, 0xf5, 0x42, 0x05, 0x5d, 0x61, 0xf7, 0x62,
-	0x0c, 0x6d, 0x93, 0x19, 0xeb, 0x8b, 0x2f, 0x2f, 0x11, 0x0c, 0xc4, 0x5e, 0xa0, 0x23, 0x70, 0xd5,
-	0x93, 0x33, 0x4f, 0xd4, 0x0b, 0x12, 0x74, 0x85, 0xdd, 0x84, 0x23, 0x68, 0xe9, 0x20, 0x59, 0x4f,
-	0xd8, 0x91, 0x06, 0xae, 0x50, 0xe7, 0xa7, 0x00, 0xbb, 0xf4, 0x18, 0x13, 0x7b, 0x51, 0x6a, 0xe2,
-	0x85, 0xf3, 0xf2, 0x5f, 0x7d, 0x1e, 0x57, 0x9f, 0x01, 0x00, 0x00, 0xff, 0xff, 0x3f, 0x11, 0x04,
-	0x4a, 0x32, 0x03, 0x00, 0x00,
+	// 673 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x56, 0xdb, 0x6e, 0xd3, 0x40,
+	0x10, 0x95, 0x4d, 0xd2, 0xa4, 0x43, 0x6e, 0xdd, 0xa6, 0xc5, 0xf2, 0x13, 0xac, 0x50, 0xc5, 0xad,
+	0x5b, 0x44, 0x5f, 0x90, 0x40, 0x42, 0x29, 0xea, 0x4d, 0xe2, 0x01, 0x45, 0xea, 0x3b, 0x9b, 0x7a,
+	0x5b, 0x5b, 0x4d, 0xed, 0xe0, 0xdd, 0x14, 0xc1, 0xc7, 0xf1, 0x05, 0x7c, 0x14, 0xf2, 0xde, 0xbc,
+	0x9b, 0xf4, 0x12, 0xc1, 0x5b, 0xc6, 0x9e, 0x3d, 0x67, 0xce, 0xec, 0x99, 0x71, 0x60, 0x30, 0x2b,
+	0x0b, 0x51, 0xec, 0xd1, 0xb9, 0x48, 0x89, 0xfc, 0x89, 0x8f, 0xa0, 0xf3, 0xa5, 0xb8, 0xcc, 0xf2,
+	0x31, 0xfb, 0x3e, 0x67, 0x5c, 0xa0, 0x18, 0xda, 0x73, 0xce, 0xca, 0x9c, 0x5e, 0xb3, 0x28, 0x78,
+	0x1a, 0xbc, 0x58, 0x1f, 0xdb, 0xb8, 0x7a, 0x37, 0xa3, 0x9c, 0xff, 0x28, 0xca, 0x24, 0x0a, 0xd5,
+	0x3b, 0x13, 0xe3, 0x4f, 0xd0, 0xd5, 0x38, 0x7c, 0x56, 0xe4, 0x9c, 0xa1, 0x08, 0x5a, 0x7c, 0x7e,
+	0x7e, 0xce, 0x38, 0x97, 0x38, 0xed, 0xb1, 0x09, 0xd1, 0x10, 0x9a, 0xa2, 0xb8, 0x62, 0xb9, 0xc6,
+	0x50, 0x01, 0x7e, 0x0e, 0x9d, 0xcf, 0x29, 0x3b, 0xbf, 0x32, 0x85, 0xd8, 0xac, 0xc0, 0xcd, 0x1a,
+	0x41, 0x57, 0x67, 0x69, 0x9a, 0x21, 0x34, 0x6f, 0xe8, 0x34, 0x4b, 0x34, 0x89, 0x0a, 0x3c, 0x15,
+	0xa1, 0xaf, 0x02, 0x9f, 0x42, 0x7f, 0xcc, 0x2e, 0x33, 0x2e, 0x58, 0xf9, 0xbf, 0xa2, 0x0f, 0x60,
+	0x50, 0x43, 0xfd, 0xa3, 0xee, 0x37, 0xd0, 0x3b, 0x66, 0xe2, 0x8c, 0xaf, 0x54, 0x0d, 0xde, 0x85,
+	0x8d, 0x63, 0x26, 0x46, 0xd3, 0xa9, 0x7b, 0x20, 0x82, 0x56, 0xc6, 0x47, 0xc9, 0x75, 0x96, 0x1b,
+	0x4a, 0x1d, 0xe2, 0x6f, 0xd0, 0xa8, 0x12, 0xef, 0x15, 0x88, 0xa1, 0x63, 0x04, 0x9d, 0x50, 0x9e,
+	0xea, 0xea, 0xbc, 0x67, 0x2e, 0xc3, 0x23, 0x9f, 0xe1, 0x4f, 0x00, 0xbd, 0xd1, 0x5c, 0xa4, 0x45,
+	0x99, 0xfd, 0x62, 0x89, 0x24, 0xbb, 0xb3, 0x9c, 0xfb, 0xae, 0xa5, 0xea, 0x0e, 0xbb, 0xa6, 0xd9,
+	0x54, 0x12, 0xac, 0x8f, 0x55, 0x80, 0xb6, 0x61, 0x8d, 0xde, 0x50, 0x41, 0xcb, 0xa8, 0x21, 0x1f,
+	0xeb, 0xa8, 0xca, 0x9e, 0xa5, 0x45, 0xce, 0xa2, 0xa6, 0xca, 0x96, 0x41, 0x85, 0x3f, 0xc9, 0x4a,
+	0x91, 0x26, 0xf4, 0x67, 0xb4, 0xa6, 0xf0, 0x4d, 0x8c, 0x7a, 0x10, 0x5e, 0x4c, 0xa2, 0x96, 0x7c,
+	0x1a, 0x5e, 0x4c, 0x2a, 0x84, 0x2c, 0xe7, 0x82, 0x46, 0x6d, 0x85, 0x20, 0x03, 0xfc, 0x0a, 0xd0,
+	0xd9, 0x2c, 0xa1, 0x82, 0x1d, 0x56, 0xf4, 0x8e, 0x17, 0x55, 0x6d, 0x81, 0x53, 0x1b, 0x3e, 0x84,
+	0x4d, 0x2f, 0x77, 0x15, 0x03, 0x28, 0x98, 0xd0, 0x85, 0xd9, 0x35, 0x30, 0x23, 0x29, 0xcd, 0x70,
+	0xd6, 0xca, 0x03, 0x57, 0x39, 0x3e, 0x81, 0xa1, 0x9f, 0xfe, 0x20, 0x6d, 0x8d, 0x14, 0x7a, 0x48,
+	0x56, 0xeb, 0xd7, 0xaa, 0x79, 0x8e, 0x56, 0xd5, 0xd9, 0xc0, 0xe9, 0x6c, 0xad, 0x55, 0xe7, 0xae,
+	0xa2, 0x55, 0xc1, 0x84, 0x2e, 0xcc, 0x3e, 0x6c, 0x29, 0x98, 0x03, 0x7d, 0x2d, 0x8e, 0xe7, 0xed,
+	0xcd, 0x05, 0xfe, 0xcd, 0xe1, 0x13, 0xd8, 0x5e, 0x3c, 0xb4, 0x0a, 0xbd, 0x3c, 0x6f, 0xe8, 0x65,
+	0x80, 0x9f, 0x41, 0x5f, 0x21, 0x1d, 0x4d, 0x0c, 0xb1, 0xb2, 0x45, 0x60, 0x6c, 0x81, 0x3f, 0xc2,
+	0xa0, 0x4e, 0x79, 0x90, 0x46, 0x9d, 0x0e, 0xed, 0x69, 0xdb, 0xd2, 0xd3, 0xca, 0x4d, 0x4e, 0x4b,
+	0x95, 0xd5, 0x02, 0xd7, 0x6a, 0xb6, 0xa5, 0x3a, 0x77, 0x15, 0x4d, 0x0a, 0x26, 0x74, 0x60, 0xde,
+	0xfd, 0x6e, 0x40, 0xa3, 0x1a, 0x40, 0xb4, 0x03, 0x4d, 0xb9, 0x81, 0x51, 0x97, 0xb8, 0x1b, 0x3d,
+	0xee, 0x11, 0x7f, 0x31, 0xef, 0x41, 0xdb, 0x2c, 0x2d, 0x34, 0x20, 0x0b, 0xab, 0x30, 0xde, 0x20,
+	0x4b, 0x1b, 0x6d, 0x07, 0x9a, 0x72, 0xe7, 0xa2, 0x2e, 0x71, 0x37, 0x74, 0xdc, 0x23, 0xfe, 0x2a,
+	0x7e, 0x0d, 0x2d, 0xbd, 0xc9, 0x50, 0x9f, 0xf8, 0x3b, 0x2d, 0xee, 0x93, 0x85, 0x25, 0xf1, 0x1e,
+	0x1e, 0x3b, 0xc3, 0x83, 0x36, 0xc9, 0xf2, 0xd8, 0xc5, 0x43, 0x72, 0xdb, 0x7c, 0x7d, 0x80, 0x8e,
+	0x3b, 0x00, 0xc8, 0x64, 0x79, 0xe3, 0x13, 0x6f, 0x91, 0x5b, 0xa7, 0xc4, 0xd2, 0x4a, 0x1f, 0x5b,
+	0x5a, 0x77, 0x02, 0x2c, 0xad, 0x6f, 0xf5, 0x11, 0xf4, 0x7c, 0x17, 0xa2, 0x6d, 0x72, 0xab, 0x97,
+	0xe3, 0x27, 0xe4, 0x0e, 0xbb, 0xee, 0x41, 0xdb, 0x78, 0x0b, 0x0d, 0xc8, 0x82, 0x13, 0xe3, 0x0d,
+	0xb2, 0x64, 0x3c, 0x5b, 0xad, 0xb4, 0x88, 0xad, 0xd6, 0x35, 0x97, 0xad, 0xd6, 0x77, 0xd1, 0x4b,
+	0x80, 0xfa, 0x3b, 0x81, 0x10, 0x59, 0xfa, 0x68, 0xc4, 0x4d, 0x52, 0x45, 0x6f, 0x83, 0xc9, 0x9a,
+	0xfc, 0x23, 0xb0, 0xff, 0x37, 0x00, 0x00, 0xff, 0xff, 0x07, 0x82, 0x07, 0x65, 0x1c, 0x08, 0x00,
+	0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -488,7 +1133,13 @@ type AuthClient interface {
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 	Check(ctx context.Context, in *CheckRequest, opts ...grpc.CallOption) (*CheckResponse, error)
-	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*User, error)
+	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*AuthorizedUser, error)
+	UpdateEmail(ctx context.Context, in *UpdateEmailRequest, opts ...grpc.CallOption) (*UpdateEmailResponse, error)
+	UpdateAvatar(ctx context.Context, in *UpdateAvatarRequest, opts ...grpc.CallOption) (*UpdateAvatarResponse, error)
+	UpdatePhone(ctx context.Context, in *UpdatePhoneRequest, opts ...grpc.CallOption) (*UpdatePhoneResponse, error)
+	UpdateBirthday(ctx context.Context, in *UpdateBirthdayRequest, opts ...grpc.CallOption) (*UpdateBirthdayResponse, error)
+	UpdateFb(ctx context.Context, in *UpdateFbRequest, opts ...grpc.CallOption) (*UpdateFbResponse, error)
+	UpdateInsta(ctx context.Context, in *UpdateInstaRequest, opts ...grpc.CallOption) (*UpdateInstaResponse, error)
 	GetAllUser(ctx context.Context, in *GetAllUserRequest, opts ...grpc.CallOption) (Auth_GetAllUserClient, error)
 }
 
@@ -527,9 +1178,63 @@ func (c *authClient) Check(ctx context.Context, in *CheckRequest, opts ...grpc.C
 	return out, nil
 }
 
-func (c *authClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*User, error) {
-	out := new(User)
+func (c *authClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*AuthorizedUser, error) {
+	out := new(AuthorizedUser)
 	err := c.cc.Invoke(ctx, "/Auth/GetUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) UpdateEmail(ctx context.Context, in *UpdateEmailRequest, opts ...grpc.CallOption) (*UpdateEmailResponse, error) {
+	out := new(UpdateEmailResponse)
+	err := c.cc.Invoke(ctx, "/Auth/UpdateEmail", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) UpdateAvatar(ctx context.Context, in *UpdateAvatarRequest, opts ...grpc.CallOption) (*UpdateAvatarResponse, error) {
+	out := new(UpdateAvatarResponse)
+	err := c.cc.Invoke(ctx, "/Auth/UpdateAvatar", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) UpdatePhone(ctx context.Context, in *UpdatePhoneRequest, opts ...grpc.CallOption) (*UpdatePhoneResponse, error) {
+	out := new(UpdatePhoneResponse)
+	err := c.cc.Invoke(ctx, "/Auth/UpdatePhone", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) UpdateBirthday(ctx context.Context, in *UpdateBirthdayRequest, opts ...grpc.CallOption) (*UpdateBirthdayResponse, error) {
+	out := new(UpdateBirthdayResponse)
+	err := c.cc.Invoke(ctx, "/Auth/UpdateBirthday", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) UpdateFb(ctx context.Context, in *UpdateFbRequest, opts ...grpc.CallOption) (*UpdateFbResponse, error) {
+	out := new(UpdateFbResponse)
+	err := c.cc.Invoke(ctx, "/Auth/UpdateFb", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) UpdateInsta(ctx context.Context, in *UpdateInstaRequest, opts ...grpc.CallOption) (*UpdateInstaResponse, error) {
+	out := new(UpdateInstaResponse)
+	err := c.cc.Invoke(ctx, "/Auth/UpdateInsta", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -573,7 +1278,13 @@ type AuthServer interface {
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	Check(context.Context, *CheckRequest) (*CheckResponse, error)
-	GetUser(context.Context, *GetUserRequest) (*User, error)
+	GetUser(context.Context, *GetUserRequest) (*AuthorizedUser, error)
+	UpdateEmail(context.Context, *UpdateEmailRequest) (*UpdateEmailResponse, error)
+	UpdateAvatar(context.Context, *UpdateAvatarRequest) (*UpdateAvatarResponse, error)
+	UpdatePhone(context.Context, *UpdatePhoneRequest) (*UpdatePhoneResponse, error)
+	UpdateBirthday(context.Context, *UpdateBirthdayRequest) (*UpdateBirthdayResponse, error)
+	UpdateFb(context.Context, *UpdateFbRequest) (*UpdateFbResponse, error)
+	UpdateInsta(context.Context, *UpdateInstaRequest) (*UpdateInstaResponse, error)
 	GetAllUser(*GetAllUserRequest, Auth_GetAllUserServer) error
 }
 
@@ -590,8 +1301,26 @@ func (*UnimplementedAuthServer) Register(ctx context.Context, req *RegisterReque
 func (*UnimplementedAuthServer) Check(ctx context.Context, req *CheckRequest) (*CheckResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Check not implemented")
 }
-func (*UnimplementedAuthServer) GetUser(ctx context.Context, req *GetUserRequest) (*User, error) {
+func (*UnimplementedAuthServer) GetUser(ctx context.Context, req *GetUserRequest) (*AuthorizedUser, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
+}
+func (*UnimplementedAuthServer) UpdateEmail(ctx context.Context, req *UpdateEmailRequest) (*UpdateEmailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateEmail not implemented")
+}
+func (*UnimplementedAuthServer) UpdateAvatar(ctx context.Context, req *UpdateAvatarRequest) (*UpdateAvatarResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAvatar not implemented")
+}
+func (*UnimplementedAuthServer) UpdatePhone(ctx context.Context, req *UpdatePhoneRequest) (*UpdatePhoneResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdatePhone not implemented")
+}
+func (*UnimplementedAuthServer) UpdateBirthday(ctx context.Context, req *UpdateBirthdayRequest) (*UpdateBirthdayResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBirthday not implemented")
+}
+func (*UnimplementedAuthServer) UpdateFb(ctx context.Context, req *UpdateFbRequest) (*UpdateFbResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateFb not implemented")
+}
+func (*UnimplementedAuthServer) UpdateInsta(ctx context.Context, req *UpdateInstaRequest) (*UpdateInstaResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateInsta not implemented")
 }
 func (*UnimplementedAuthServer) GetAllUser(req *GetAllUserRequest, srv Auth_GetAllUserServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetAllUser not implemented")
@@ -673,6 +1402,114 @@ func _Auth_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Auth_UpdateEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateEmailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).UpdateEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Auth/UpdateEmail",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).UpdateEmail(ctx, req.(*UpdateEmailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_UpdateAvatar_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAvatarRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).UpdateAvatar(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Auth/UpdateAvatar",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).UpdateAvatar(ctx, req.(*UpdateAvatarRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_UpdatePhone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdatePhoneRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).UpdatePhone(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Auth/UpdatePhone",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).UpdatePhone(ctx, req.(*UpdatePhoneRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_UpdateBirthday_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateBirthdayRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).UpdateBirthday(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Auth/UpdateBirthday",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).UpdateBirthday(ctx, req.(*UpdateBirthdayRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_UpdateFb_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateFbRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).UpdateFb(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Auth/UpdateFb",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).UpdateFb(ctx, req.(*UpdateFbRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_UpdateInsta_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateInstaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).UpdateInsta(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Auth/UpdateInsta",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).UpdateInsta(ctx, req.(*UpdateInstaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Auth_GetAllUser_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(GetAllUserRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -713,6 +1550,30 @@ var _Auth_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUser",
 			Handler:    _Auth_GetUser_Handler,
+		},
+		{
+			MethodName: "UpdateEmail",
+			Handler:    _Auth_UpdateEmail_Handler,
+		},
+		{
+			MethodName: "UpdateAvatar",
+			Handler:    _Auth_UpdateAvatar_Handler,
+		},
+		{
+			MethodName: "UpdatePhone",
+			Handler:    _Auth_UpdatePhone_Handler,
+		},
+		{
+			MethodName: "UpdateBirthday",
+			Handler:    _Auth_UpdateBirthday_Handler,
+		},
+		{
+			MethodName: "UpdateFb",
+			Handler:    _Auth_UpdateFb_Handler,
+		},
+		{
+			MethodName: "UpdateInsta",
+			Handler:    _Auth_UpdateInsta_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/nvhai245/gochat/server/pkg/notification"
+	"github.com/nvhai245/gochat/server/pkg/auth"
 	"github.com/nvhai245/gochat/server/pkg/syncer"
 	pb2 "github.com/nvhai245/gochat/services/sync/proto"
 )
@@ -256,6 +257,48 @@ func (pool *Pool) Start() {
 							}
 						}
 					}
+				}
+			}
+			if message.Type == "getUser" {
+				messages := notification.Get(message.Username, notification.GrpcClient3)
+				for client, _ := range pool.Clients {
+					if client.ID == message.ID {}
+				}
+			}
+			if message.Type == "updateEmail" {
+				messages := notification.Get(message.Username, notification.GrpcClient3)
+				for client, _ := range pool.Clients {
+					if client.ID == message.ID {}
+				}
+			}
+			if message.Type == "updatePhone" {
+				messages := notification.Get(message.Username, notification.GrpcClient3)
+				for client, _ := range pool.Clients {
+					if client.ID == message.ID {}
+				}
+			}
+			if message.Type == "updateBirthday" {
+				messages := notification.Get(message.Username, notification.GrpcClient3)
+				for client, _ := range pool.Clients {
+					if client.ID == message.ID {}
+				}
+			}
+			if message.Type == "updateFb" {
+				messages := notification.Get(message.Username, notification.GrpcClient3)
+				for client, _ := range pool.Clients {
+					if client.ID == message.ID {}
+				}
+			}
+			if message.Type == "updateInsta" {
+				messages := notification.Get(message.Username, notification.GrpcClient3)
+				for client, _ := range pool.Clients {
+					if client.ID == message.ID {}
+				}
+			}
+			if message.Type == "updateAvatar" {
+				messages := notification.Get(message.Username, notification.GrpcClient3)
+				for client, _ := range pool.Clients {
+					if client.ID == message.ID {}
 				}
 			}
 		}

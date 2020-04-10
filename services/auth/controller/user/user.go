@@ -62,7 +62,7 @@ func UpdateBirthday(username string, birthday time.Time, db *sqlx.DB) (success b
 	                 SET birthday = $1
 					 WHERE username = $2
 					 RETURNING birthday`
-	err := db.QueryRow(sqlStatement, avatar, username).Scan(&updatedBirthday)
+	err := db.QueryRow(sqlStatement, birthday, username).Scan(&updatedBirthday)
 	if err != nil {
 		log.Println(err)
 		return false, birthday

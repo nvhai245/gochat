@@ -5,28 +5,29 @@ import (
 	"fmt"
 	"log"
 	_ "sync"
+	"time"
 
 	"github.com/gorilla/websocket"
 )
 
 type Client struct {
-	ID   string
+	ID       string
 	Username string
-	Conn *websocket.Conn
-	Pool *Pool
+	Conn     *websocket.Conn
+	Pool     *Pool
 }
 
 type Message struct {
-	ID string
-	Count int64 `json:"count"`
-	Type     string `json:"type"`
-	Body     string `json:"body"`
-	Username string `json:"username"`
-	Body2 []string `json:"body2"`
-	Body3 string `json:"body3"`
-	Table string `json:"table"`
+	ID       string
+	Count    int64    `json:"count"`
+	Type     string   `json:"type"`
+	Body     string   `json:"body"`
+	Username string   `json:"username"`
+	Body2    []string `json:"body2"`
+	Body3    string   `json:"body3"`
+	Table    string   `json:"table"`
 	Receiver []string `json:"receiver"`
-	Deleted bool `json:"deleted"`
+	Deleted  bool     `json:"deleted"`
 }
 
 func (c *Client) Read() {
@@ -46,8 +47,8 @@ func (c *Client) Read() {
 		log.Println("message type is ", message.Type)
 		message.ID = c.ID
 		if message.Type == "chat" {
-				c.Pool.Broadcast <- message
-				fmt.Printf("Message Received: %+v\n", message)
+			c.Pool.Broadcast <- message
+			fmt.Printf("Message Received: %+v\n", message)
 		} else {
 			c.Pool.Broadcast <- message
 		}
