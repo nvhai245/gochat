@@ -20,9 +20,6 @@ type UserObject struct {
 	Users []string `json:"users"`
 }
 
-var grpcConn, grpcErr = grpc.Dial(":9090", grpc.WithInsecure())
-var grpcClient = pb.NewAuthClient(grpcConn)
-
 func setupRoutes() {
 	pool := websocket.NewPool()
 	go pool.Start()
@@ -61,8 +58,8 @@ func serveWs(pool *websocket.Pool, w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	if grpcErr != nil {
-		log.Println(grpcErr)
+	if auth.GrpcErr != nil {
+		log.Println(auth.GrpcErr)
 	}
 	if syncer.GrpcErr2 != nil {
 		log.Println(syncer.GrpcErr2)
@@ -70,7 +67,7 @@ func main() {
 	if notification.GrpcErr3 != nil {
 		log.Println(notification.GrpcErr3)
 	}
-	defer grpcConn.Close()
+	defer auth.GrpcConn.Close()
 	defer syncer.GrpcConn2.Close()
 	defer notification.GrpcConn3.Close()
 	http.HandleFunc("/signup", func(w http.ResponseWriter, r *http.Request) {

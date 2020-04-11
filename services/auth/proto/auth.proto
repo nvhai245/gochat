@@ -70,6 +70,7 @@ message AuthorizedUser {
 
 message UpdateEmailRequest {
     string email = 1;
+    string username = 2;
 }
 
 message UpdateEmailResponse {
@@ -79,6 +80,7 @@ message UpdateEmailResponse {
 
 message UpdateAvatarRequest {
     string avatar = 1;
+    string username = 2;
 }
 
 message UpdateAvatarResponse {
@@ -88,6 +90,7 @@ message UpdateAvatarResponse {
 
 message UpdatePhoneRequest {
     string phone = 1;
+    string username = 2;
 }
 
 message UpdatePhoneResponse {
@@ -97,15 +100,17 @@ message UpdatePhoneResponse {
 
 message UpdateBirthdayRequest {
     string birthday = 1;
+    string username = 2;
 }
 
 message UpdateBirthdayResponse {
     bool success = 1;
-    string birth = 2;
+    string birthday = 2;
 }
 
 message UpdateFbRequest{
     string fb = 1;
+    string username = 2;
 }
 
 message UpdateFbResponse {
@@ -115,6 +120,7 @@ message UpdateFbResponse {
 
 message UpdateInstaRequest {
     string insta = 1;
+    string username = 2;
 }
 
 message UpdateInstaResponse {

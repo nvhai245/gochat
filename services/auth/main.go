@@ -182,32 +182,32 @@ func (s *server) GetUser(ctx context.Context, user *pb.GetUserRequest) (*pb.Auth
 	return &pb.AuthorizedUser{
 		Username: authorizedUser.Username, 
 		IsAdmin: authorizedUser.IsAdmin, 
-		Email: authorizedUser.Email
-		Avatar: authorizedUser.Avatar
-		Phone: authorizedUser.Phone
-		Birthday: authorizedUser.Birthday
-		Fb: authorizedUser.Fb
-		Insta: authorizedUser.Insta
+		Email: authorizedUser.Email,
+		Avatar: authorizedUser.Avatar,
+		Phone: authorizedUser.Phone,
+		Birthday: authorizedUser.Birthday.String(),
+		Fb: authorizedUser.Fb,
+		Insta: authorizedUser.Insta,
 		}, nil
 }
 func (s *server) UpdateEmail(ctx context.Context, user *pb.UpdateEmailRequest) (*pb.UpdateEmailResponse, error) {
-	success, updated := userController.UpdateEmail(user.Email, db)
+	success, updated := userController.UpdateEmail(user.Username, user.Email, db)
 	if success == false {
-		return &pb.UpdateEmailResponse{}
+		return &pb.UpdateEmailResponse{}, nil
 	}
 	return &pb.UpdateEmailResponse{Email: updated}, nil
 }
 func (s *server) UpdateAvatar(ctx context.Context, user *pb.UpdateAvatarRequest) (*pb.UpdateAvatarResponse, error) {
-	success, updated := userController.UpdateAvatar(user.Avatar, db)
+	success, updated := userController.UpdateAvatar(user.Username, user.Avatar, db)
 	if success == false {
-		return &pb.UpdateAvatarResponse{}
+		return &pb.UpdateAvatarResponse{}, nil
 	}
 	return &pb.UpdateAvatarResponse{Avatar: updated}, nil
 }
 func (s *server) UpdatePhone(ctx context.Context, user *pb.UpdatePhoneRequest) (*pb.UpdatePhoneResponse, error) {
-	success, updated := userController.UpdatePhone(user.Phone, db)
+	success, updated := userController.UpdatePhone(user.Username, user.Phone, db)
 	if success == false {
-		return &pb.UpdatePhoneResponse{}
+		return &pb.UpdatePhoneResponse{}, nil
 	}
 	return &pb.UpdatePhoneResponse{Phone: updated}, nil
 }
@@ -216,23 +216,23 @@ func (s *server) UpdateBirthday(ctx context.Context, user *pb.UpdateBirthdayRequ
 	if err != nil {
 		log.Println(err)
 	}
-	success, updated := userController.UpdateBirthday(t, db)
+	success, updated := userController.UpdateBirthday(user.Username, t, db)
 	if success == false {
-		return &pb.UpdateBirthdayResponse{}
+		return &pb.UpdateBirthdayResponse{}, nil
 	}
 	return &pb.UpdateBirthdayResponse{Birthday: updated.String()}, nil
 }
 func (s *server) UpdateFb(ctx context.Context, user *pb.UpdateFbRequest) (*pb.UpdateFbResponse, error) {
-	success, updated := userController.UpdateFb(user.Fb, db)
+	success, updated := userController.UpdateFb(user.Username, user.Fb, db)
 	if success == false {
-		return &pb.UpdateFbResponse{}
+		return &pb.UpdateFbResponse{}, nil
 	}
 	return &pb.UpdateFbResponse{Fb: updated}, nil
 }
 func (s *server) UpdateInsta(ctx context.Context, user *pb.UpdateInstaRequest) (*pb.UpdateInstaResponse, error) {
-	success, updated := userController.UpdateInsta(user.Insta, db)
+	success, updated := userController.UpdateInsta(user.Username, user.Insta, db)
 	if success == false {
-		return &pb.UpdateInstaResponse{}
+		return &pb.UpdateInstaResponse{}, nil
 	}
 	return &pb.UpdateInstaResponse{Insta: updated}, nil
 }

@@ -2,8 +2,9 @@ package auth
 
 import (
 	"context"
-	"log"
 	"io"
+	"log"
+	"time"
 
 	pb "github.com/nvhai245/gochat/services/auth/proto"
 	"google.golang.org/grpc"
@@ -13,6 +14,7 @@ import (
 type User struct {
 	IsAdmin  bool      `json:"isadmin"`
 	Username string    `json:"username"`
+	Password string    `json:"password"`
 	Email    string    `json:"email"`
 	Avatar   string    `json:"avatar"`
 	Phone    string    `json:"phone"`
@@ -20,6 +22,9 @@ type User struct {
 	Fb       string    `json:"fb"`
 	Insta    string    `json:"insta"`
 }
+
+var GrpcConn, GrpcErr = grpc.Dial(":9090", grpc.WithInsecure())
+var GrpcClient = pb.NewAuthClient(GrpcConn)
 
 func Signup(user User, client pb.AuthClient) (success bool, jwt string) {
 	var header metadata.MD
@@ -81,6 +86,77 @@ func GetAllUser(client pb.AuthClient) (allUser []string) {
 	return allUser
 }
 
-func GetUser(username string, client pb.AuthClient) (user User) {
-	
+func GetUser(username string, client pb.AuthClient) (success bool, user User) {
+	authorizedUser, err := client.GetUser(context.Background(), &pb.GetUserRequest{Username: username})
+	if err != nil {
+		log.Println(err)
+		return false, User{}
+	}
+	t, err := time.Parse("20060102T150405", authorizedUser.Birthday)
+	if err != nil {
+		log.Println(err)
+	}
+	return true, User{
+		IsAdmin:  authorizedUser.IsAdmin,
+		Username: authorizedUser.Username,
+		Email:    authorizedUser.Email,
+		Avatar:   authorizedUser.Avatar,
+		Phone:    authorizedUser.Phone,
+		Birthday: t,
+		Fb:       authorizedUser.Fb,
+		Insta:    authorizedUser.Insta,
+	}
+}
+
+func UpdateEmail(username string, email string, client pb.AuthClient) (success bool, updatedEmail string) {
+	updated, err := client.UpdateEmail(context.Background(), &pb.UpdateEmailRequest{Username: username, Email: email})
+	if err != nil {
+		log.Println(err)
+		return false, email
+	}
+	return true, updated.Email
+}
+func UpdatePhone(username string, phone string, client pb.AuthClient) (success bool, updatedPhone string) {
+	updated, err := client.UpdatePhone(context.Background(), &pb.UpdatePhoneRequest{Username: username, Phone: phone})
+	if err != nil {
+		log.Println(err)
+		return false, phone
+	}
+	return true, updated.Phone
+}
+func UpdateAvatar(username string, avatar string, client pb.AuthClient) (success bool, updatedAvatar string) {
+	updated, err := client.UpdateAvatar(context.Background(), &pb.UpdateAvatarRequest{Username: username, Avatar: avatar})
+	if err != nil {
+		log.Println(err)
+		return false, avatar
+	}
+	return true, updated.Avatar
+}
+func UpdateBirthday(username string, birthday time.Time, client pb.AuthClient) (success bool, updatedBirthday time.Time) {
+	updated, err := client.UpdateBirthday(context.Background(), &pb.UpdateBirthdayRequest{Username: username, Birthday: birthday.String()})
+	if err != nil {
+		log.Println(err)
+		return false, birthday
+	}
+	t, err := time.Parse("20060102T150405", updated.Birthday)
+	if err != nil {
+		log.Println(err)
+	}
+	return true, t
+}
+func UpdateFb(username string, fb string, client pb.AuthClient) (success bool, updatedFb string) {
+	updated, err := client.UpdateFb(context.Background(), &pb.UpdateFbRequest{Username: username, Fb: fb})
+	if err != nil {
+		log.Println(err)
+		return false, fb
+	}
+	return true, updated.Fb
+}
+func UpdateInsta(username string, insta string, client pb.AuthClient) (success bool, updatedInsta string) {
+	updated, err := client.UpdateInsta(context.Background(), &pb.UpdateInstaRequest{Username: username, Insta: insta})
+	if err != nil {
+		log.Println(err)
+		return false, insta
+	}
+	return true, updated.Insta
 }

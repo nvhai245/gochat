@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"time"
 
-	"github.com/nvhai245/gochat/server/pkg/notification"
 	"github.com/nvhai245/gochat/server/pkg/auth"
+	"github.com/nvhai245/gochat/server/pkg/notification"
 	"github.com/nvhai245/gochat/server/pkg/syncer"
 	pb2 "github.com/nvhai245/gochat/services/sync/proto"
 )
@@ -260,45 +261,102 @@ func (pool *Pool) Start() {
 				}
 			}
 			if message.Type == "getUser" {
-				messages := notification.Get(message.Username, notification.GrpcClient3)
-				for client, _ := range pool.Clients {
-					if client.ID == message.ID {}
+				success, user := auth.GetUser(message.Username, auth.GrpcClient)
+				if success {
+					userBytes, err := json.Marshal(user)
+					if err != nil {
+						log.Println("error:", err)
+					}
+					for client, _ := range pool.Clients {
+						if client.ID == message.ID {
+							if err := client.Conn.WriteJSON(Message{Type: "getUser", Username: message.Username, Body: string(userBytes)}); err != nil {
+								fmt.Println(err)
+								return
+							}
+						}
+					}
 				}
 			}
 			if message.Type == "updateEmail" {
-				messages := notification.Get(message.Username, notification.GrpcClient3)
-				for client, _ := range pool.Clients {
-					if client.ID == message.ID {}
+				success, email := auth.UpdateEmail(message.Username, message.Body, auth.GrpcClient)
+				if success {
+					for client, _ := range pool.Clients {
+						if client.ID == message.ID {
+							if err := client.Conn.WriteJSON(Message{Type: "updateEmail", Username: message.Username, Body: email}); err != nil {
+								log.Println(err)
+								return
+							}
+						}
+					}
 				}
 			}
 			if message.Type == "updatePhone" {
-				messages := notification.Get(message.Username, notification.GrpcClient3)
-				for client, _ := range pool.Clients {
-					if client.ID == message.ID {}
+				success, phone := auth.UpdatePhone(message.Username, message.Body, auth.GrpcClient)
+				if success {
+					for client, _ := range pool.Clients {
+						if client.ID == message.ID {
+							if err := client.Conn.WriteJSON(Message{Type: "updatePhone", Username: message.Username, Body: phone}); err != nil {
+								log.Println(err)
+								return
+							}
+						}
+					}
 				}
 			}
 			if message.Type == "updateBirthday" {
-				messages := notification.Get(message.Username, notification.GrpcClient3)
-				for client, _ := range pool.Clients {
-					if client.ID == message.ID {}
+				t, err := time.Parse("20060102T150405", message.Body)
+				if err != nil {
+					log.Println(err)
+				}
+				success, birthday := auth.UpdateBirthday(message.Username, t, auth.GrpcClient)
+				if success {
+					for client, _ := range pool.Clients {
+						if client.ID == message.ID {
+							if err := client.Conn.WriteJSON(Message{Type: "updateBirthday", Username: message.Username, Body: birthday.String()}); err != nil {
+								log.Println(err)
+								return
+							}
+						}
+					}
 				}
 			}
 			if message.Type == "updateFb" {
-				messages := notification.Get(message.Username, notification.GrpcClient3)
-				for client, _ := range pool.Clients {
-					if client.ID == message.ID {}
+				success, fb := auth.UpdateFb(message.Username, message.Body, auth.GrpcClient)
+				if success {
+					for client, _ := range pool.Clients {
+						if client.ID == message.ID {
+							if err := client.Conn.WriteJSON(Message{Type: "updateFb", Username: message.Username, Body: fb}); err != nil {
+								log.Println(err)
+								return
+							}
+						}
+					}
 				}
 			}
 			if message.Type == "updateInsta" {
-				messages := notification.Get(message.Username, notification.GrpcClient3)
-				for client, _ := range pool.Clients {
-					if client.ID == message.ID {}
+				success, insta := auth.UpdateInsta(message.Username, message.Body, auth.GrpcClient)
+				if success {
+					for client, _ := range pool.Clients {
+						if client.ID == message.ID {
+							if err := client.Conn.WriteJSON(Message{Type: "updateInsta", Username: message.Username, Body: insta}); err != nil {
+								log.Println(err)
+								return
+							}
+						}
+					}
 				}
 			}
 			if message.Type == "updateAvatar" {
-				messages := notification.Get(message.Username, notification.GrpcClient3)
-				for client, _ := range pool.Clients {
-					if client.ID == message.ID {}
+				success, avatar := auth.UpdateAvatar(message.Username, message.Body, auth.GrpcClient)
+				if success {
+					for client, _ := range pool.Clients {
+						if client.ID == message.ID {
+							if err := client.Conn.WriteJSON(Message{Type: "updateAvatar", Username: message.Username, Body: avatar}); err != nil {
+								log.Println(err)
+								return
+							}
+						}
+					}
 				}
 			}
 		}
