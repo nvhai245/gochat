@@ -10,7 +10,7 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	"github.com/dgrijalva/jwt-go"
-	_ "github.com/nvhai245/gochat/services/auth/model"
+	"github.com/nvhai245/gochat/services/auth/model"
 	pb "github.com/nvhai245/gochat/services/auth/proto"
 	userController "github.com/nvhai245/gochat/services/auth/controller/user"
 	"google.golang.org/grpc"
@@ -155,12 +155,7 @@ func (s *server) Check(ctx context.Context, checkData *pb.CheckRequest) (*pb.Che
 }
 
 func (s *server) GetAllUser(admin *pb.GetAllUserRequest, stream pb.Auth_GetAllUserServer) error {
-	type User struct {
-		Username string `db:"username"`
-		Hash []byte `db:"hash"`
-		IsAdmin bool `db:"isadmin"`
-	}
-	rows := []User{}
+	rows := []model.AuthorizedUser{}
 	sqlStatement := "SELECT * FROM users"
 	err := db.Select(&rows, sqlStatement)
 	if err != nil {
@@ -179,9 +174,10 @@ func (s *server) GetUser(ctx context.Context, user *pb.GetUserRequest) (*pb.Auth
 	if success == false {
 		return &pb.AuthorizedUser{}, nil
 	}
+	log.Println("getUser successful", authorizedUser)
 	return &pb.AuthorizedUser{
-		Username: authorizedUser.Username, 
-		IsAdmin: authorizedUser.IsAdmin, 
+		Username: authorizedUser.Username,
+		IsAdmin: authorizedUser.IsAdmin,
 		Email: authorizedUser.Email,
 		Avatar: authorizedUser.Avatar,
 		Phone: authorizedUser.Phone,

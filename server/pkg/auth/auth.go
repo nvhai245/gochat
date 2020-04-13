@@ -4,7 +4,6 @@ import (
 	"context"
 	"io"
 	"log"
-	"time"
 
 	pb "github.com/nvhai245/gochat/services/auth/proto"
 	"google.golang.org/grpc"
@@ -18,7 +17,7 @@ type User struct {
 	Email    string    `json:"email"`
 	Avatar   string    `json:"avatar"`
 	Phone    string    `json:"phone"`
-	Birthday time.Time `json:"birthday"`
+	Birthday string `json:"birthday"`
 	Fb       string    `json:"fb"`
 	Insta    string    `json:"insta"`
 }
@@ -92,17 +91,14 @@ func GetUser(username string, client pb.AuthClient) (success bool, user User) {
 		log.Println(err)
 		return false, User{}
 	}
-	t, err := time.Parse("20060102T150405", authorizedUser.Birthday)
-	if err != nil {
-		log.Println(err)
-	}
+	log.Println("getUser successful", authorizedUser)
 	return true, User{
 		IsAdmin:  authorizedUser.IsAdmin,
 		Username: authorizedUser.Username,
 		Email:    authorizedUser.Email,
 		Avatar:   authorizedUser.Avatar,
 		Phone:    authorizedUser.Phone,
-		Birthday: t,
+		Birthday: authorizedUser.Birthday,
 		Fb:       authorizedUser.Fb,
 		Insta:    authorizedUser.Insta,
 	}
@@ -132,17 +128,13 @@ func UpdateAvatar(username string, avatar string, client pb.AuthClient) (success
 	}
 	return true, updated.Avatar
 }
-func UpdateBirthday(username string, birthday time.Time, client pb.AuthClient) (success bool, updatedBirthday time.Time) {
-	updated, err := client.UpdateBirthday(context.Background(), &pb.UpdateBirthdayRequest{Username: username, Birthday: birthday.String()})
+func UpdateBirthday(username string, birthday string, client pb.AuthClient) (success bool, updatedBirthday string) {
+	updated, err := client.UpdateBirthday(context.Background(), &pb.UpdateBirthdayRequest{Username: username, Birthday: birthday})
 	if err != nil {
 		log.Println(err)
 		return false, birthday
 	}
-	t, err := time.Parse("20060102T150405", updated.Birthday)
-	if err != nil {
-		log.Println(err)
-	}
-	return true, t
+	return true, updated.Birthday
 }
 func UpdateFb(username string, fb string, client pb.AuthClient) (success bool, updatedFb string) {
 	updated, err := client.UpdateFb(context.Background(), &pb.UpdateFbRequest{Username: username, Fb: fb})

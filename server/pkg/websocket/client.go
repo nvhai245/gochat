@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	_ "sync"
-	"time"
 
 	"github.com/gorilla/websocket"
 )

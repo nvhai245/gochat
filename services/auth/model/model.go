@@ -43,6 +43,7 @@ type AuthorizedUser struct {
 	IsAdmin  bool      `db:"isadmin"`
 	Username string    `db:"username"`
 	Email    string    `db:"email"`
+	Hash     string    `db:"hash"`
 	Avatar   string    `db:"avatar"`
 	Phone    string    `db:"phone"`
 	Birthday time.Time `db:"birthday"`

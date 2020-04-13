@@ -12,6 +12,8 @@ import Divider from '@material-ui/core/Divider';
 import FaceIcon from '@material-ui/icons/Face';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import { Link } from 'react-router-dom';
+import Avatar from '@material-ui/core/Avatar';
 
 function Header(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -64,6 +66,11 @@ function Header(props) {
       <h2 style={{ margin: "0 auto" }}>Realtime Chat App</h2>
       {props.username &&
         <div style={{ display: "flex", alignItems: "center" }}>
+          <Link to="/profile">
+            <Button type="button">
+              <Avatar src={props.avatar} alt={props.username} />
+            </Button>
+          </Link>
           <IconButton onClick={handleClick}>
             <Badge badgeContent={props.noti.length} color="primary">
               <ChatIcon style={{ color: "white" }} />
@@ -71,19 +78,19 @@ function Header(props) {
           </IconButton>
           {props.noti.length > 0 &&
             <Popover
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'center',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
-            }}
-          >
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'center',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+              }}
+            >
               <List component="nav" style={{ display: "flex", flexDirection: "column", padding: "0.5rem 0.5rem" }}>
                 {props.noti.map(message =>
                   <div style={{ display: "flex", alignItems: "center" }}>
@@ -98,8 +105,8 @@ function Header(props) {
                   </div>
                 )}
               </List>
-          </Popover>
-      }
+            </Popover>
+          }
           <Button size="large" style={{ marginRight: "2%", color: "white" }} onClick={logout}><strong>Logout</strong></Button>
         </div>
       }

@@ -9,7 +9,7 @@ import (
 )
 
 func GetUser(username string, db *sqlx.DB) (success bool, authorizedUser model.AuthorizedUser) {
-	sqlStatement := `SELECT FROM users WHERE username = $1`
+	sqlStatement := `SELECT * FROM users WHERE username = $1`
 	err := db.Get(&authorizedUser, sqlStatement, username)
 	if err != nil {
 		log.Println(err)

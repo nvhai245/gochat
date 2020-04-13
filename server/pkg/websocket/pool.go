@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"strconv"
-	"time"
 
 	"github.com/nvhai245/gochat/server/pkg/auth"
 	"github.com/nvhai245/gochat/server/pkg/notification"
@@ -304,15 +303,11 @@ func (pool *Pool) Start() {
 				}
 			}
 			if message.Type == "updateBirthday" {
-				t, err := time.Parse("20060102T150405", message.Body)
-				if err != nil {
-					log.Println(err)
-				}
-				success, birthday := auth.UpdateBirthday(message.Username, t, auth.GrpcClient)
+				success, birthday := auth.UpdateBirthday(message.Username, message.Body, auth.GrpcClient)
 				if success {
 					for client, _ := range pool.Clients {
 						if client.ID == message.ID {
-							if err := client.Conn.WriteJSON(Message{Type: "updateBirthday", Username: message.Username, Body: birthday.String()}); err != nil {
+							if err := client.Conn.WriteJSON(Message{Type: "updateBirthday", Username: message.Username, Body: birthday}); err != nil {
 								log.Println(err)
 								return
 							}
