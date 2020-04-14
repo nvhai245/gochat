@@ -181,7 +181,7 @@ func (s *server) GetUser(ctx context.Context, user *pb.GetUserRequest) (*pb.Auth
 		Email: authorizedUser.Email,
 		Avatar: authorizedUser.Avatar,
 		Phone: authorizedUser.Phone,
-		Birthday: authorizedUser.Birthday.String(),
+		Birthday: authorizedUser.Birthday,
 		Fb: authorizedUser.Fb,
 		Insta: authorizedUser.Insta,
 		}, nil
@@ -208,15 +208,11 @@ func (s *server) UpdatePhone(ctx context.Context, user *pb.UpdatePhoneRequest) (
 	return &pb.UpdatePhoneResponse{Phone: updated}, nil
 }
 func (s *server) UpdateBirthday(ctx context.Context, user *pb.UpdateBirthdayRequest) (*pb.UpdateBirthdayResponse, error) {
-	t, err := time.Parse("20060102T150405", user.Birthday)
-	if err != nil {
-		log.Println(err)
-	}
-	success, updated := userController.UpdateBirthday(user.Username, t, db)
+	success, updated := userController.UpdateBirthday(user.Username, user.Birthday, db)
 	if success == false {
 		return &pb.UpdateBirthdayResponse{}, nil
 	}
-	return &pb.UpdateBirthdayResponse{Birthday: updated.String()}, nil
+	return &pb.UpdateBirthdayResponse{Birthday: updated}, nil
 }
 func (s *server) UpdateFb(ctx context.Context, user *pb.UpdateFbRequest) (*pb.UpdateFbResponse, error) {
 	success, updated := userController.UpdateFb(user.Username, user.Fb, db)

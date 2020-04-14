@@ -1,9 +1,5 @@
 package model
 
-import (
-	"time"
-)
-
 // User model
 type User struct {
 	ID       string `json:"id"`
@@ -40,13 +36,13 @@ type LoginData struct {
 
 // AuthorizedUser struct
 type AuthorizedUser struct {
-	IsAdmin  bool      `db:"isadmin"`
-	Username string    `db:"username"`
-	Email    string    `db:"email"`
-	Hash     string    `db:"hash"`
-	Avatar   string    `db:"avatar"`
-	Phone    string    `db:"phone"`
-	Birthday time.Time `db:"birthday"`
-	Fb       string    `db:"fb"`
-	Insta    string    `db:"insta"`
+	IsAdmin  bool   `db:"isadmin"`
+	Username string `db:"username"`
+	Email    string `db:"email"`
+	Hash     string `db:"hash"`
+	Avatar   string `db:"avatar"`
+	Phone    string `db:"phone"`
+	Birthday string `db:"birthday"`
+	Fb       string `db:"fb"`
+	Insta    string `db:"insta"`
 }

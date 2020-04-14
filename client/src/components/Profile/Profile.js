@@ -24,6 +24,12 @@ import InstagramIcon from '@material-ui/icons/Instagram';
 import { Paper } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { sendMsg } from '../../api';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker,
+} from '@material-ui/pickers';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -50,6 +56,7 @@ export default function Profile(props) {
     const [fbEditing, setFbEditing] = useState(false);
     const [instaEditing, setInstaEditing] = useState(false);
     const [birthdayEditing, setBirthdayEditing] = useState(false);
+    const [selectedDate, setSelectedDate] = useState("");
 
     const enableEmailEdit = () => {
         setEmailEditing(true);
@@ -112,10 +119,18 @@ export default function Profile(props) {
         props.setOpenBackdrop(true);
     }
 
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+    }
+
     useEffect(() => {
         let element = document.getElementById("emailInput");
         element.focus();
     }, [emailEditing]);
+
+    useEffect(() => {
+        setSelectedDate(props.user.birthday)
+    }, [props.user.birthday]);
 
     useEffect(() => {
         let element = document.getElementById("phoneInput");
@@ -163,7 +178,7 @@ export default function Profile(props) {
                                     <Avatar src={props.user.avatar} style={{ position: "absolute", width: "10vw", height: "10vw", top: "-5vw", left: "-5vw" }} />
                                 </div>
                                 <div className={classes.username}>
-                                    <h2 style={{marginBlockEnd: "unset", marginBlockStart: "unset"}}>{props.user.username}</h2>
+                                    <h2 style={{ marginBlockEnd: "unset", marginBlockStart: "unset" }}>{props.user.username}</h2>
                                 </div>
                                 <List>
                                     <ListItem>
@@ -228,7 +243,22 @@ export default function Profile(props) {
                                             </Avatar>
                                         </ListItemAvatar>
                                         <ListItemText>
-                                            <TextField id="birthdayInput" label="Birthday" defaultValue={props.user.birthday} variant="outlined" fullWidth disabled={!birthdayEditing} />
+                                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                                <KeyboardDatePicker
+                                                    margin="normal"
+                                                    id="birthdayInput"
+                                                    label="Birthday"
+                                                    format="MM/dd/yyyy"
+                                                    value={selectedDate}
+                                                    onChange={handleDateChange}
+                                                    inputVariant="outlined"
+                                                    fullWidth 
+                                                    disabled={!birthdayEditing} 
+                                                    KeyboardButtonProps={{
+                                                        'aria-label': 'change date',
+                                                    }}
+                                                />
+                                            </MuiPickersUtilsProvider>
                                         </ListItemText>
                                         {birthdayEditing ?
                                             <Button onClick={editBirthday} style={{ marginLeft: "1rem" }} color="primary" variant="contained">

@@ -219,7 +219,7 @@ function App(props) {
       <Switch>
         <div className="App">
           <Header avatar={authorizedUser.avatar} setNoti={setNoti} addInboxList={addInboxList} noti={noti} username={props.authorization.username} authorize={props.authorize} />
-          {authorizedUser.username &&
+          {authorizedUser.username && props.authorization.username &&
             <Route path="/profile">
               <Backdrop className={classes.backdrop} open={openBackdrop}>
                 <CircularProgress color="inherit" />

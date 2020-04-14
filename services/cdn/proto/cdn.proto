@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+service Cdn {
+    rpc UploadImage (stream UploadImageRequest) returns (Ack); 
+}
+
+message UploadImageRequest {
+    bytes image = 1;
+}
+
+message Ack {
+    string image_url = 1;
+}

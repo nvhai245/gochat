@@ -1,12 +1,15 @@
 package user
 
 import (
-	"time"
 	"log"
+	_ "time"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/nvhai245/gochat/services/auth/model"
 )
+
+const ISO8601 = "2006-01-02T15:04:05"
+const dateLayout = "2006-01-02"
 
 func GetUser(username string, db *sqlx.DB) (success bool, authorizedUser model.AuthorizedUser) {
 	sqlStatement := `SELECT * FROM users WHERE username = $1`
@@ -57,7 +60,7 @@ func UpdatePhone(username string, phone string, db *sqlx.DB) (success bool, upda
 	return true, updatedPhone
 }
 
-func UpdateBirthday(username string, birthday time.Time, db *sqlx.DB) (success bool, updatedBirthday time.Time) {
+func UpdateBirthday(username string, birthday string, db *sqlx.DB) (success bool, updatedBirthday string) {
 	sqlStatement := `UPDATE users
 	                 SET birthday = $1
 					 WHERE username = $2
