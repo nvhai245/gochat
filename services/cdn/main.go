@@ -51,7 +51,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	grpcServer := grpc.NewServer()
-	pb.RegisterSyncServer(grpcServer, &server{})
+	pb.RegisterCdnServer(grpcServer, &server{})
 	// determine whether to use TLS
 
 	if err := grpcServer.Serve(lis); err != nil {

@@ -54,7 +54,12 @@ export default function Message(props) {
             <div ref={mounted} className="MessageBox" style={{ display: "flex", justifyContent: "flex-end" }}>
                 <div className="messageContainer" style={{ color: "white", display: "flex", justifyContent: "flex-end", maxWidth: "80%"}}>
                     <div className={message.deleted ? "DeletedMessage" : "UserMessage"}>
-                    { message.deleted ? <i>Message has been deleted</i> : message.body }
+                    { message.deleted ? <i>Message has been deleted</i> 
+                    : 
+                    message.body.indexOf("https://res.cloudinary.com/nvhai245") == 0 ?
+                    <img style={{ height: "100px", width: "100px", objectFit: "contain"}} src={message.body} alt="" />
+                    :
+                    message.body }
                     </div>
                     <div className="messageOptions">
       <IconButton
@@ -95,7 +100,13 @@ export default function Message(props) {
                     {message.username !== "admin" && <div className="User" style={{ backgroundColor: "#D6DEBD", borderRadius: "50%", height: "40px", width: "40px", marginRight: "0.2rem", padding: "auto auto" }}>{message.username + ":"}</div>}
                     {message.username === "" && <div className="User">unknown: </div>}
                     <div className={message.deleted ? "DeletedMessage" : "GuestMessage"}>
-                        { message.deleted ? <i>Message has been deleted</i> : message.body }
+                        { message.deleted ? <i>Message has been deleted</i> 
+                        : 
+                        message.body && message.body.indexOf("https://res.cloudinary.com/nvhai245") == 0 ?
+                        <img style={{ height: "100px", width: "100px", objectFit: "contain"}} src={message.body} alt="" />
+                        :
+                        message.body
+                      }
                     </div>
                 </div>
             </div>

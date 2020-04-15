@@ -1,12 +1,15 @@
 .App {
   text-align: center;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   height: 100%;
 }
 
 .chatContainer {
   width: 50%;
   margin-right: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .inboxArea {

@@ -23,6 +23,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Inbox(props) {
+    const [img, setImg] = useState();
+    const [loading, setLoading] = useState(0);
+    const deleteImage = () => {
+        setImg();
+        setLoading(0);
+    }
     const box = useRef();
     const send = event => {
         if (event.keyCode === 13 && !event.shiftKey) {
@@ -34,6 +40,13 @@ export default function Inbox(props) {
             let newMsg;
             newMsg = { count: db.get(table + "count").value() + 1, type: "chat", body: event.target.value, username: props.currentUser, receiver: [props.currentUser, props.user], table: table, deleted: false }
             sendMsg(JSON.stringify(newMsg));
+            if (img) {
+                let newMsg;
+            newMsg = { count: db.get(table + "count").value() + 2, type: "chat", body: img, username: props.currentUser, receiver: [props.currentUser, props.user], table: table, deleted: false }
+            sendMsg(JSON.stringify(newMsg));
+            setImg();
+            setLoading(0);
+            }
             if (!props.onlineUsers.includes(props.user)) {
                 let newMsg2;
                 newMsg2 = { count: db.get(table + "count").value() + 1, type: "addnoti", body: event.target.value, username: props.currentUser, receiver: [props.currentUser, props.user], table: table, deleted: false }
@@ -148,7 +161,7 @@ export default function Inbox(props) {
             </div>
             <Divider />
             <div className="inboxInput">
-                <InboxInput box={box} authorizedUser={props.currentUser} send={send} />
+                <InboxInput table={table} img={img} setImg={setImg} deleteImage={deleteImage} loading={loading} setLoading={setLoading} box={box} authorizedUser={props.currentUser} send={send} />
             </div>
         </div>
     )

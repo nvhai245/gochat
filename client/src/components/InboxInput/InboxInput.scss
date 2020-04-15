@@ -1,12 +1,14 @@
 .InboxInput {
     justify-content: center ;
     display: flex;
+    flex-direction: column;
     height: 100%;
     width: 100%;
-    align-items: center;
+    align-items: flex-start;
     margin: 0px 0px;
     overflow: hidden;
     margin-top: 0.5rem;
+    position: relative;
   }
   
   .textInboxInput {

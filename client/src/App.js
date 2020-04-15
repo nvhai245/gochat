@@ -40,6 +40,12 @@ function App(props) {
   const [noti, setNoti] = useState([]);
   const [authorizedUser, setAuthorizedUser] = useState({});
   const [openBackdrop, setOpenBackdrop] = useState(false);
+  const [img, setImg] = useState();
+    const [loading, setLoading] = useState(0);
+    const deleteImage = () => {
+        setImg();
+        setLoading(0);
+    }
 
   const addInboxList = (target) => {
     if (inboxList.indexOf(target) < 0) {
@@ -66,6 +72,12 @@ function App(props) {
       sendMsg(JSON.stringify(newMsg));
       event.target.value = "";
       event.target.setAttribute('style', '');
+      if (img) {
+        let newMsg;
+      newMsg = { count: db.get('allcount').value() + 2, type: "chat", body: img, username: props.authorization.username, receiver: ["all"], table: "all", deleted: false }
+      sendMsg(JSON.stringify(newMsg));
+      deleteImage();
+      }
     }
   };
   const sendMessage = event => {
@@ -227,7 +239,7 @@ function App(props) {
               <Profile setOpenBackdrop={setOpenBackdrop} user={authorizedUser} />
             </Route>
           }
-          <Route path="/">
+          <Route exact path="/">
             {props.authorization.username &&
               <div>
                 <div className="appContainer">
@@ -235,7 +247,7 @@ function App(props) {
                     <div className="chatHistoryContainer">
                       <ChatHistory table="all" currentUser={props.authorization.username} setChatHistory={setChatHistory} chatHistory={chatHistory} />
                     </div>
-                    <ChatInput authorizedUser={props.authorization.username} send={send} sendMessage={sendMessage} />
+                    <ChatInput img={img} setImg={setImg} deleteImage={deleteImage} loading={loading} setLoading={setLoading} authorizedUser={props.authorization.username} send={send} sendMessage={sendMessage} />
                   </div>
                   <OnlineList addInboxList={addInboxList} onlineUsers={onlineUsers} users={users} />
                 </div>
