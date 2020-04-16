@@ -8,6 +8,7 @@ import Popover from '@material-ui/core/Popover';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import ImageUpload from '../ImageUpload';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import VideoUpload from '../VideoUpload';
 
 export default function InboxInput(props) {
     const mounted = useRef();
@@ -44,7 +45,8 @@ export default function InboxInput(props) {
                     <InsertEmoticonIcon />
                 </IconButton>
             </div>
-            <ImageUpload table={props.table} key={props.table} setImg={props.setImg} setLoading={props.setLoading} />
+            <ImageUpload table={props.table} setImg={props.setImg} setLoading={props.setLoading} />
+            <VideoUpload table={props.table} setImg={props.setImg} setLoading={props.setLoading} />
             </div>
             <div style={{marginTop: "0.3rem"}}>
             {props.loading > 0 &&

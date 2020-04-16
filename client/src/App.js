@@ -259,7 +259,6 @@ function App(props) {
                   )}
                 </div>
               </div>
-
             }
             {!props.authorization.username &&
               <SignUp formValue={props.form.signup && props.form.signup.values} authorize={props.authorize} />

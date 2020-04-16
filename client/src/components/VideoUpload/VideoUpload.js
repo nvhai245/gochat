@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import './ImageUpload.scss';
+import './VideoUpload.scss';
 import axios from 'axios';
 import IconButton from '@material-ui/core/IconButton';
-import ImageIcon from '@material-ui/icons/Image';
+import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 
-export default function ImageUpload(props) {
+export default function VideoUpload(props) {
     const handleChange = e => {
         const reader = new FileReader(); // eslint-disable-line
         const file = e.target.files[0];
@@ -16,7 +16,7 @@ export default function ImageUpload(props) {
             formData.append('api_key', '557364961884294');
             formData.append('timestamp', (Date.now() / 1000) | 0); // eslint-disable-line
             axios
-                .post('https://api.cloudinary.com/v1_1/nvhai245/image/upload', formData, {
+                .post('https://api.cloudinary.com/v1_1/nvhai245/video/upload', formData, {
                     onUploadProgress: ProgressEvent => {
                         const load = (ProgressEvent.loaded / ProgressEvent.total) * 100;
                         console.log(load);
@@ -37,16 +37,16 @@ export default function ImageUpload(props) {
     return (
         <div style={{ display: "flex" }}>
             <input
-                accept="image/*"
-                id={"image-" + props.table}
+                accept="video/*"
+                id={"video-" + props.table}
                 multiple
                 type="file"
                 style={{ display: "none" }}
                 onChange={handleChange}
             />
-            <label htmlFor={"image-" + props.table}>
+            <label htmlFor={"video-" + props.table}>
                 <IconButton edge="start" raised component="span">
-                    <ImageIcon />
+                    <VideoLibraryIcon />
                 </IconButton>
             </label>
         </div>
