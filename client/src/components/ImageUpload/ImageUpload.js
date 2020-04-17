@@ -35,7 +35,7 @@ export default function ImageUpload(props) {
         }
     };
     return (
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", marginLeft: props.mgl ? props.mgl : "0px" }}>
             <input
                 accept="image/*"
                 id={"image-" + props.table}

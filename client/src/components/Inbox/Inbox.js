@@ -15,6 +15,7 @@ import ChatHistory from '../ChatHistory';
 import InboxInput from '../InboxInput';
 import { db } from '../../db';
 import { sendMsg } from "../../api";
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 const useStyles = makeStyles(theme => ({
     typography: {
@@ -42,10 +43,10 @@ export default function Inbox(props) {
             sendMsg(JSON.stringify(newMsg));
             if (img) {
                 let newMsg;
-            newMsg = { count: db.get(table + "count").value() + 2, type: "chat", body: img, username: props.currentUser, receiver: [props.currentUser, props.user], table: table, deleted: false }
-            sendMsg(JSON.stringify(newMsg));
-            setImg();
-            setLoading(0);
+                newMsg = { count: db.get(table + "count").value() + 2, type: "chat", body: img, username: props.currentUser, receiver: [props.currentUser, props.user], table: table, deleted: false }
+                sendMsg(JSON.stringify(newMsg));
+                setImg();
+                setLoading(0);
             }
             if (!props.onlineUsers.includes(props.user)) {
                 let newMsg2;
@@ -80,7 +81,7 @@ export default function Inbox(props) {
     useEffect(() => {
         if (table !== "") {
             let newMsg2;
-            newMsg2 = {type: "removenoti", username: props.currentUser, table: table }
+            newMsg2 = { type: "removenoti", username: props.currentUser, table: table }
             sendMsg(JSON.stringify(newMsg2));
         }
     }, [table])
@@ -156,8 +157,19 @@ export default function Inbox(props) {
                 </IconButton>
             </div>
             <Divider />
-            <div className="inboxHistory">
+            <div style={{position: "relative"}} className="inboxHistory">
                 <ChatHistory table={table} currentUser={props.currentUser} setChatHistory={setChatHistory} chatHistory={chatHistory} />
+                <div style={{ position: "absolute", bottom: "0", left: "0" }}>
+                    {loading > 0 &&
+                        <div style={{ width: '100px', height: '100px', display: "flex", flexDirection: "column", position: "relative", marginTop: "0.5rem" }} className="progress">
+                            <img src={img} style={{ height: "100%", width: "100%", objectFit: "contain" }} alt="" />
+                            <IconButton style={{ position: "absolute", top: "0", left: "0" }} size="small" onClick={deleteImage}>
+                                <HighlightOffIcon size="small" />
+                            </IconButton>
+                            <progress style={{ width: "100px" }} id="file" value={`${loading}`} max="100"></progress>
+                        </div>
+                    }
+                </div>
             </div>
             <Divider />
             <div className="inboxInput">

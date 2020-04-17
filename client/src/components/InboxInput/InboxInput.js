@@ -7,7 +7,6 @@ import Picker from 'emoji-picker-react';
 import Popover from '@material-ui/core/Popover';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import ImageUpload from '../ImageUpload';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import VideoUpload from '../VideoUpload';
 
 export default function InboxInput(props) {
@@ -36,28 +35,15 @@ export default function InboxInput(props) {
     }, [chosenEmoji]);
     return (
         <div className="InboxInput">
-            <div style={{display: "flex", alignItems: "center"}}>
-            <div>
+            <div style={{ display: "flex", alignItems: "center" }}>
                 <TextareaAutosize ref={mounted} autoFocus={true} id="inboxMessageInput" className="textInboxInput" onKeyDown={props.send} />
-            </div>
-            <div style={{ marginLeft: "0.5rem", minHeight: "1rem" }}>
-                <IconButton size="small" edge="start" aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
-                    <InsertEmoticonIcon />
-                </IconButton>
-            </div>
-            <ImageUpload table={props.table} setImg={props.setImg} setLoading={props.setLoading} />
-            <VideoUpload table={props.table} setImg={props.setImg} setLoading={props.setLoading} />
-            </div>
-            <div style={{marginTop: "0.3rem"}}>
-            {props.loading > 0 &&
-                <div style={{ width: '100px', height: '100px', display: "flex", flexDirection: "column", position: "relative", marginTop: "0.5rem" }} className="progress">
-                    <img src={props.img} style={{ height: "100%", width: "100%", objectFit: "contain"}} alt="" />
-                    <IconButton style={{ position: "absolute", top: "0", left: "0" }} size="small" onClick={props.deleteImage}>
-                        <HighlightOffIcon size="small" />
+                <div style={{ marginLeft: "0.5rem", minHeight: "1rem" }}>
+                    <IconButton size="small" edge="start" aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
+                        <InsertEmoticonIcon />
                     </IconButton>
-                    <progress style={{ width: "100px" }} id="file" value={`${props.loading}`} max="100"></progress>
                 </div>
-            }
+                <ImageUpload table={props.table} setImg={props.setImg} setLoading={props.setLoading} />
+                <VideoUpload table={props.table} setImg={props.setImg} setLoading={props.setLoading} />
             </div>
             <Popover
                 id={id}

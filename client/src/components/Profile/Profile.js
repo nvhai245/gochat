@@ -23,6 +23,8 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import { Paper } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import ImageUpload from '../ImageUpload';
 import { sendMsg } from '../../api';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
@@ -57,6 +59,12 @@ export default function Profile(props) {
     const [instaEditing, setInstaEditing] = useState(false);
     const [birthdayEditing, setBirthdayEditing] = useState(false);
     const [selectedDate, setSelectedDate] = useState("");
+    const [img, setImg] = useState();
+    const [loading, setLoading] = useState(0);
+    const deleteImage = () => {
+        setImg();
+        setLoading(0);
+    }
 
     const enableEmailEdit = () => {
         setEmailEditing(true);
@@ -96,6 +104,8 @@ export default function Profile(props) {
         let newMsg = { type: "updateAvatar", username: props.user.username, body: newAvatar };
         sendMsg(JSON.stringify(newMsg));
         props.setOpenBackdrop(true);
+        setImg();
+        setLoading(0);
     }
 
     const editBirthday = () => {
@@ -166,6 +176,14 @@ export default function Profile(props) {
         setAvatarEditing(false);
     }, [props.user]);
 
+    useEffect(() => {
+        if (img) {
+            document.getElementById("avatarInput").value = img;
+        } else {
+            document.getElementById("avatarInput").value = props.user.avatar
+        }
+    }, [img])
+
     const classes = useStyles();
     return (
         <div className="profileContainer">
@@ -200,17 +218,33 @@ export default function Profile(props) {
                                             </IconButton>
                                         }
                                     </ListItem>
-                                    <ListItem>
+                                    <ListItem style={{alignItems: "flex-start"}}>
                                         <ListItemAvatar>
-                                            <Avatar src={props.user.avatar} />
+                                            <Avatar style={{marginRight: "1rem"}} src={props.user.avatar} />
                                         </ListItemAvatar>
                                         <ListItemText>
-                                            <TextField id="avatarInput" label="Avatar" defaultValue={props.user.avatar} variant="outlined" fullWidth disabled={!avatarEditing} />
+                                            <div style={{display: "flex", flexDirection: "column", justifyContents: "flex-start", alignItems: "flex-start"}}>
+                                            <TextField style={{marginRight: "1rem"}} id="avatarInput" label="Avatar" defaultValue={props.user.avatar} variant="outlined" fullWidth disabled={!avatarEditing} />
+                                            <div>
+                                                {loading > 0 &&
+                                                    <div style={{ width: '100px', height: '100px', display: "flex", flexDirection: "column", position: "relative", marginTop: "0.5rem" }} className="progress">
+                                                        <img src={img} style={{ height: "100%", width: "100%", objectFit: "contain" }} alt="" />
+                                                        <IconButton style={{ position: "absolute", top: "0", left: "0" }} size="small" onClick={deleteImage}>
+                                                            <HighlightOffIcon size="small" />
+                                                        </IconButton>
+                                                        <progress style={{ width: "100px" }} id="file" value={`${loading}`} max="100"></progress>
+                                                    </div>
+                                                }
+                                        </div>
+                                            </div>
                                         </ListItemText>
                                         {avatarEditing ?
-                                            <Button onClick={editAvatar} style={{ marginLeft: "1rem" }} color="primary" variant="contained">
-                                                Save
-                                    </Button>
+                                            <div style={{ display: "flex", alignItems: "center" }}>
+                                                <ImageUpload mgl="1rem" table={props.user.username + "-profile"} setImg={setImg} setLoading={setLoading} />
+                                                <Button onClick={editAvatar} style={{ marginLeft: "1rem" }} color="primary" variant="contained">
+                                                    Save
+                                                </Button>
+                                            </div>
                                             :
                                             <IconButton edge="end" aria-label="edit" onClick={enableAvatarEdit} >
                                                 <EditIcon />
@@ -252,8 +286,8 @@ export default function Profile(props) {
                                                     value={selectedDate}
                                                     onChange={handleDateChange}
                                                     inputVariant="outlined"
-                                                    fullWidth 
-                                                    disabled={!birthdayEditing} 
+                                                    fullWidth
+                                                    disabled={!birthdayEditing}
                                                     KeyboardButtonProps={{
                                                         'aria-label': 'change date',
                                                     }}
@@ -313,6 +347,6 @@ export default function Profile(props) {
                     </Grid>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
